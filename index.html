@@ -3,126 +3,117 @@
  <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Millionaire Funnel - Powerwell Hub</title>
+  <title>Powerwell Direct Hub | Millionaire Funnel</title>
   <script src="https://cdn.tailwindcss.com/3.4.17"></script>
   <script src="https://cdn.jsdelivr.net/npm/lucide@0.263.0/dist/umd/lucide.min.js"></script>
-  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
   <style>
-    html, body { height: 100%; margin: 0; scroll-behavior: smooth; }
+    html, body { height: 100%; margin: 0; scroll-behavior: smooth; background: #0a0e27; color: white; }
     .font-display { font-family: 'Syne', sans-serif; }
     .font-body { font-family: 'DM Sans', sans-serif; }
-    .anim-up { animation: fadeUp 0.8s ease-out both; }
-    @keyframes fadeUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
-    .cta-btn { background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%); transition: all 0.3s ease; }
-    .cta-btn:hover { transform: scale(1.05); box-shadow: 0 10px 30px rgba(245, 158, 11, 0.4); }
-    .benefit-card { background: rgba(255,255,255,0.05); border: 1px solid rgba(245, 158, 11, 0.2); backdrop-filter: blur(10px); }
+    .cta-btn { background: linear-gradient(135deg, #22c55e 0%, #16a34a 100%); transition: all 0.3s ease; }
+    .cta-btn:hover { transform: scale(1.03); filter: brightness(1.1); }
     .faq-answer { display: none; }
     .expanded .faq-answer { display: block; }
+    .expanded i { transform: rotate(180deg); }
   </style>
  </head>
- <body class="h-full font-body" style="background: #0a0e27; color: white;">
+ <body class="font-body">
 
-  <div id="app-wrapper" class="w-full h-full overflow-auto">
-   <section class="relative w-full py-20 px-6 text-center lg:text-left max-w-5xl mx-auto">
-     <div class="anim-up">
-       <span class="px-4 py-1.5 rounded-full text-xs font-bold uppercase bg-green-500/20 text-green-400">Powerwell Direct Hub</span>
-       <h1 class="font-display text-4xl md:text-6xl font-800 mt-6 mb-4">Stop Scrolling, Start Earning. ₱1,998 to Launch.</h1>
-       <p class="text-lg opacity-80 mb-10 max-w-xl">I work at the Powerwell Direct Hub. I see these orders move every day—now I'm showing you how to profit from them.</p>
-       <button onclick="openSignupForm()" class="cta-btn font-display font-bold text-lg px-12 py-4 rounded-xl text-green-950">JOIN THE HUB TEAM</button>
+  <div id="app-wrapper" class="w-full">
+   <section class="py-20 px-6 text-center max-w-4xl mx-auto">
+     <span class="inline-block px-4 py-1 rounded-full bg-green-500/10 text-green-400 text-xs font-bold mb-6">OFFICIAL HUB PARTNER</span>
+     <h1 class="font-display text-5xl md:text-7xl mb-6">₱1,998 to Launch Your Digital Empire.</h1>
+     <p class="text-xl opacity-70 mb-10">Stop scrolling. Start earning from the Powerwell Direct Hub inventory today.</p>
+     <button onclick="openSignupForm()" class="cta-btn text-green-950 font-bold px-10 py-4 rounded-2xl text-xl">JOIN THE TEAM NOW</button>
+   </section>
+
+   <section class="py-16 bg-[#0f1629] border-y border-white/5">
+     <div class="max-w-4xl mx-auto px-6">
+       <div class="aspect-video rounded-3xl overflow-hidden shadow-2xl border border-green-500/20">
+         <iframe width="100%" height="100%" src="https://player.vimeo.com/video/1182892372" frameborder="0" allowfullscreen></iframe>
+       </div>
      </div>
    </section>
 
-   <section class="py-20 bg-[#0f1629]">
-    <div class="max-w-4xl mx-auto px-6">
-      <h2 class="text-center font-display text-3xl font-800 mb-8">Watch the Presentation</h2>
-      <div class="aspect-video rounded-2xl overflow-hidden border border-orange-500/30">
-        <iframe width="100%" height="100%" src="https://player.vimeo.com/video/1182892372" frameborder="0" allowfullscreen></iframe>
-      </div>
-    </div>
-   </section>
+   <footer class="py-10 text-center opacity-30 text-xs">
+     © 2024 Powerwell Direct Hub.
+   </footer>
 
-   <div id="signup-modal" class="fixed inset-0 bg-black/90 z-50 hidden flex items-center justify-center p-4">
-    <div class="bg-white text-gray-900 rounded-2xl shadow-2xl max-w-md w-full p-8 relative">
-      <button onclick="closeSignupForm()" class="absolute top-4 right-4 text-gray-400 hover:text-gray-950">✕</button>
-      
-      <div id="form-container">
-        <h2 class="font-display text-2xl font-800 text-green-900 mb-2">Join the Hub</h2>
-        <p class="text-sm text-gray-500 mb-6">Enter your details to check eligibility.</p>
-        
-        <form id="signup-form" onsubmit="handleSignup(event)">
-          <div class="mb-4">
-            <label class="block text-xs font-bold uppercase mb-1">Full Name</label>
-            <input type="text" id="name" required class="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-green-500 outline-none">
-          </div>
-          <div class="mb-4">
-            <label class="block text-xs font-bold uppercase mb-1">Email Address</label>
-            <input type="email" id="email" required class="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-green-500 outline-none">
-          </div>
-          <div class="mb-4">
-            <label class="block text-xs font-bold uppercase mb-1">Phone Number</label>
-            <input type="tel" id="phone" placeholder="09XXXXXXXXX" required class="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-green-500 outline-none">
-          </div>
-          <button type="submit" id="submit-btn" class="w-full py-4 rounded-lg bg-green-600 text-white font-bold hover:bg-green-700 transition">Get Started Now</button>
-        </form>
-      </div>
+   <div id="signup-modal" class="fixed inset-0 bg-black/80 z-50 hidden flex items-center justify-center p-4">
+     <div class="bg-white text-gray-900 rounded-3xl p-8 max-w-md w-full relative">
+       <button onclick="closeSignupForm()" class="absolute top-4 right-4 text-gray-400">✕</button>
+       
+       <div id="form-content">
+         <h2 class="font-display text-2xl text-green-800 mb-6">Get Started</h2>
+         <form id="reg-form" onsubmit="sendData(event)">
+           <div class="space-y-4">
+             <div>
+               <label class="text-xs font-bold text-gray-500 uppercase">Full Name</label>
+               <input type="text" name="name" id="user-name" required class="w-full p-3 bg-gray-100 rounded-xl outline-none focus:ring-2 focus:ring-green-500">
+             </div>
+             <div>
+               <label class="text-xs font-bold text-gray-500 uppercase">Email</label>
+               <input type="email" name="email" id="user-email" required class="w-full p-3 bg-gray-100 rounded-xl outline-none focus:ring-2 focus:ring-green-500">
+             </div>
+             <div>
+               <label class="text-xs font-bold text-gray-500 uppercase">Phone</label>
+               <input type="tel" name="phone" id="user-phone" placeholder="09123456789" required class="w-full p-3 bg-gray-100 rounded-xl outline-none focus:ring-2 focus:ring-green-500">
+             </div>
+             <button type="submit" id="submit-btn" class="w-full cta-btn text-white py-4 rounded-xl font-bold mt-4">SUBMIT DETAILS</button>
+           </div>
+         </form>
+       </div>
 
-      <div id="signup-success" class="hidden text-center py-10">
-        <div class="text-5xl mb-4">🎉</div>
-        <h2 class="text-2xl font-bold text-green-800">Welcome to the Team!</h2>
-        <p class="text-gray-600 mt-2">Your details have been saved. We will contact you shortly.</p>
-        <button onclick="closeSignupForm()" class="mt-6 text-green-600 font-bold underline">Back to Home</button>
-      </div>
-    </div>
+       <div id="success-message" class="hidden text-center py-8">
+         <div class="text-green-500 text-6xl mb-4">✓</div>
+         <h3 class="text-2xl font-bold mb-2">Details Received!</h3>
+         <p class="text-gray-500">We are checking your info. Check your email shortly.</p>
+         <button onclick="closeSignupForm()" class="mt-6 text-green-600 font-bold">Close Window</button>
+       </div>
+     </div>
    </div>
   </div>
 
   <script>
-    // Replace this with YOUR actual Google Apps Script Web App URL
-    const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycby2oEmkpo8yeUiZnUalblvvz51pilOL-S-5HHDBYI7FOk0kPwi8zEU4BzdN0P9S5VZy/exec';
+    const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyS5WP2Z6wk0S0iOeUiKNVMRodThKOTSDzfX8qNPSYFMpK9KOS6T08tTWV50qmi5bzi/exec";
 
     function openSignupForm() { document.getElementById('signup-modal').classList.remove('hidden'); }
-    function closeSignupForm() { document.getElementById('signup-modal').classList.add('hidden'); }
+    function closeSignupForm() { 
+        document.getElementById('signup-modal').classList.add('hidden');
+        // Reset form for next time
+        document.getElementById('reg-form').reset();
+        document.getElementById('form-content').classList.remove('hidden');
+        document.getElementById('success-message').classList.add('hidden');
+    }
 
-    async function handleSignup(event) {
-      event.preventDefault();
+    async function sendData(e) {
+      e.preventDefault();
       const btn = document.getElementById('submit-btn');
-      const form = document.getElementById('signup-form');
-      
-      // Get Values
-      const data = {
-        name: document.getElementById('name').value,
-        email: document.getElementById('email').value,
-        phone: document.getElementById('phone').value
-      };
-
       btn.disabled = true;
-      btn.textContent = 'Checking Database...';
+      btn.textContent = "Verifying...";
+
+      const formData = new FormData();
+      formData.append('name', document.getElementById('user-name').value);
+      formData.append('email', document.getElementById('user-email').value);
+      formData.append('phone', document.getElementById('user-phone').value);
 
       try {
-        // Send data to Google Sheets
-        // Note: Using 'no-cors' mode sends data but can't read the response. 
-        // To "Check" if user exists, you must use the Google Script code provided below.
-        const response = await fetch(GOOGLE_SCRIPT_URL, {
-          method: 'POST',
-          mode: 'no-cors', 
-          cache: 'no-cache',
-          body: new URLSearchParams(data)
+        // Send to Google
+        await fetch(SCRIPT_URL, { 
+          method: 'POST', 
+          body: formData,
+          mode: 'no-cors' 
         });
 
-        // Since 'no-cors' doesn't return data, we assume success or handle logic in the script.
-        // For a full "Check if exists" on the screen, the Script must handle the Redirect.
+        // Since we use no-cors, we show success immediately
+        document.getElementById('form-content').classList.add('hidden');
+        document.getElementById('success-message').classList.remove('hidden');
         
-        document.getElementById('form-container').classList.add('hidden');
-        document.getElementById('signup-success').classList.remove('hidden');
-        
-        // RESET THE FORM
-        form.reset();
-
-      } catch (error) {
-        alert("Connection Error. Please try again.");
-      } finally {
+      } catch (err) {
+        alert("Wait, something went wrong. Check your connection.");
         btn.disabled = false;
-        btn.textContent = 'Get Started Now';
+        btn.textContent = "SUBMIT DETAILS";
       }
     }
   </script>
