@@ -1,0 +1,611 @@
+<!doctype html>
+<html lang="en" class="h-full">
+ <head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Millionaire Funnel</title>
+  <script src="https://cdn.tailwindcss.com/3.4.17"></script>
+  <script src="https://cdn.jsdelivr.net/npm/lucide@0.263.0/dist/umd/lucide.min.js"></script>
+  <script src="/_sdk/element_sdk.js"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&amp;family=DM+Sans:wght@400;500;600&amp;display=swap" rel="stylesheet">
+  <style>
+    html, body { height: 100%; margin: 0; }
+    .font-display { font-family: 'Syne', sans-serif; }
+    .font-body { font-family: 'DM Sans', sans-serif; }
+    
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(40px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes slideUp {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes slideDown {
+      from { opacity: 1; transform: translateY(0); }
+      to { opacity: 0; transform: translateY(20px); }
+    }
+    @keyframes pulse-glow {
+      0%, 100% { box-shadow: 0 0 20px rgba(249, 115, 22, 0.4), inset 0 0 20px rgba(249, 115, 22, 0.1); }
+      50% { box-shadow: 0 0 40px rgba(249, 115, 22, 0.6), inset 0 0 20px rgba(249, 115, 22, 0.2); }
+    }
+    
+    .anim-up { animation: fadeUp 0.8s ease-out both; }
+    .anim-up-d1 { animation: fadeUp 0.8s ease-out 0.1s both; }
+    .anim-up-d2 { animation: fadeUp 0.8s ease-out 0.2s both; }
+    .anim-up-d3 { animation: fadeUp 0.8s ease-out 0.3s both; }
+    .anim-up-d4 { animation: fadeUp 0.8s ease-out 0.4s both; }
+    
+    .cta-btn {
+      position: relative;
+      overflow: hidden;
+      background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+      box-shadow: 0 10px 40px rgba(249, 115, 22, 0.3);
+      border: 2px solid rgba(249, 115, 22, 0.5);
+      transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+    
+    .cta-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 20px 60px rgba(249, 115, 22, 0.5);
+      border-color: rgba(249, 115, 22, 0.8);
+    }
+    
+    .cta-btn:active {
+      transform: translateY(0);
+    }
+    
+    .hero-section {
+      background: linear-gradient(135deg, #0a0e27 0%, #1a1f3a 50%, #0f1629 100%);
+      position: relative;
+      overflow: hidden;
+    }
+    
+    .hero-section::before {
+      content: '';
+      position: absolute;
+      top: -50%;
+      right: -20%;
+      width: 600px;
+      height: 600px;
+      background: radial-gradient(circle, rgba(249, 115, 22, 0.15) 0%, transparent 70%);
+      border-radius: 50%;
+      filter: blur(80px);
+    }
+    
+    .hero-section::after {
+      content: '';
+      position: absolute;
+      bottom: -30%;
+      left: -10%;
+      width: 500px;
+      height: 500px;
+      background: radial-gradient(circle, rgba(34, 197, 94, 0.1) 0%, transparent 70%);
+      border-radius: 50%;
+      filter: blur(80px);
+    }
+    
+    .benefit-card {
+      background: linear-gradient(135deg, rgba(255,255,255,0.05) 0%, rgba(255,255,255,0.02) 100%);
+      border: 1px solid rgba(249, 115, 22, 0.2);
+      backdrop-filter: blur(10px);
+      transition: all 0.4s cubic-bezier(0.23, 1, 0.32, 1);
+      position: relative;
+      overflow: hidden;
+    }
+    
+    .benefit-card::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(135deg, rgba(249, 115, 22, 0.1) 0%, transparent 100%);
+      opacity: 0;
+      transition: opacity 0.4s ease;
+    }
+    
+    .benefit-card:hover {
+      transform: translateY(-12px);
+      border-color: rgba(249, 115, 22, 0.4);
+      background: linear-gradient(135deg, rgba(255,255,255,0.08) 0%, rgba(255,255,255,0.03) 100%);
+      box-shadow: 0 20px 60px rgba(249, 115, 22, 0.2);
+    }
+    
+    .benefit-card:hover::before {
+      opacity: 1;
+    }
+    
+    .icon-badge {
+      width: 56px;
+      height: 56px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: linear-gradient(135deg, rgba(249, 115, 22, 0.2) 0%, rgba(249, 115, 22, 0.05) 100%);
+      border: 1px solid rgba(249, 115, 22, 0.3);
+      border-radius: 12px;
+      font-size: 28px;
+      font-weight: 800;
+      color: #f59e0b;
+    }
+    
+    .section-header {
+      position: relative;
+      display: inline-block;
+    }
+    
+    .section-header::after {
+      content: '';
+      position: absolute;
+      bottom: -8px;
+      left: 0;
+      width: 60px;
+      height: 4px;
+      background: linear-gradient(90deg, #f59e0b 0%, #d97706 100%);
+      border-radius: 2px;
+    }
+    
+    .testimonial-card {
+      background: linear-gradient(135deg, rgba(255,255,255,0.03) 0%, rgba(255,255,255,0.01) 100%);
+      border: 1px solid rgba(249, 115, 22, 0.15);
+      backdrop-filter: blur(10px);
+      transition: all 0.3s ease;
+    }
+    
+    .testimonial-card:hover {
+      border-color: rgba(249, 115, 22, 0.3);
+      background: linear-gradient(135deg, rgba(255,255,255,0.05) 0%, rgba(255,255,255,0.02) 100%);
+    }
+    
+    .quote-mark {
+      font-size: 48px;
+      color: rgba(249, 115, 22, 0.3);
+      line-height: 1;
+    }
+    
+    .faq-item {
+      background: rgba(255,255,255,0.02);
+      border: 1px solid rgba(249, 115, 22, 0.1);
+      transition: all 0.3s ease;
+      cursor: pointer;
+    }
+    
+    .faq-item:hover {
+      border-color: rgba(249, 115, 22, 0.2);
+      background: rgba(255,255,255,0.04);
+    }
+    
+    .faq-item.expanded {
+      border-color: rgba(249, 115, 22, 0.3);
+      background: linear-gradient(135deg, rgba(249, 115, 22, 0.05) 0%, rgba(249, 115, 22, 0.02) 100%);
+    }
+  </style>
+  <style>body { box-sizing: border-box; }</style>
+  <script src="/_sdk/data_sdk.js" type="text/javascript"></script>
+ </head>
+ <body class="h-full font-body" style="background: #0a0e27;">
+  <div id="app-wrapper" class="w-full h-full overflow-auto"><!-- HERO -->
+   <section class="hero-section relative w-full" style="min-height: 70%;">
+    <div class="relative z-10 max-w-3xl mx-auto px-6 py-20 flex flex-col justify-center" style="min-height: 70%;">
+     <div class="mb-4 anim-up"><span id="el-badge" class="inline-block px-4 py-1.5 rounded-full text-xs font-semibold uppercase tracking-widest" style="background: rgba(34,197,94,0.15); color: #4ade80;">Powerwell Direct Hub</span>
+     </div>
+     <h1 id="el-headline" class="font-display text-4xl md:text-5xl lg:text-6xl font-800 leading-tight mb-6 anim-up-d1" style="color: #ffffff;">Stop Scrolling, Start Earning. ₱1,998 to Launch.</h1>
+     <p id="el-subheadline" class="text-lg md:text-xl mb-10 anim-up-d2" style="color: rgba(255,255,255,0.75); max-width: 560px;">I work at the Powerwell Direct Hub. I see these orders move every day—now I'm showing you how to profit from them.</p>
+     <div class="anim-up-d3"><button id="el-hero-btn" class="cta-btn font-display font-bold text-lg px-12 py-4 rounded-xl" style="color: #064e3b; letter-spacing: 1px;" onclick="openSignupForm()"> JOIN THE HUB TEAM </button>
+     </div>
+    </div>
+   </section><!-- BENEFITS -->
+   <section class="w-full relative" style="background: linear-gradient(180deg, #0f1629 0%, #1a1f3a 100%);">
+    <div class="max-w-3xl mx-auto px-6 py-24">
+     <div class="mb-16">
+      <h2 id="el-benefits-title" class="font-display text-3xl md:text-4xl font-800 mb-4 text-center" style="color: #ffffff;">Why This Works for You:</h2>
+      <div class="w-20 h-1 mx-auto rounded-full" style="background: linear-gradient(90deg, #f59e0b 0%, #d97706 100%);"></div>
+     </div>
+     <div class="grid grid-cols-1 md:grid-cols-3 gap-8"><!-- Benefit 1 -->
+      <div class="benefit-card rounded-2xl p-8">
+       <div class="mb-6 font-display text-3xl font-800" style="color: #f59e0b;">
+        1
+       </div>
+       <p id="el-benefit-1" class="font-semibold text-lg leading-relaxed" style="color: #ffffff;">Zero Inventory. We stock it, you sell it.</p>
+      </div><!-- Benefit 2 -->
+      <div class="benefit-card rounded-2xl p-8">
+       <div class="mb-6 font-display text-3xl font-800" style="color: #f59e0b;">
+        2
+       </div>
+       <p id="el-benefit-2" class="font-semibold text-lg leading-relaxed" style="color: #ffffff;">Automated Dropshipping. The company ships directly to your customers.</p>
+      </div><!-- Benefit 3 -->
+      <div class="benefit-card rounded-2xl p-8">
+       <div class="mb-6 font-display text-3xl font-800" style="color: #f59e0b;">
+        3
+       </div>
+       <p id="el-benefit-3" class="font-semibold text-lg leading-relaxed" style="color: #ffffff;">Passive Pairing. Earn ₱500 bonuses as your team grows.</p>
+      </div>
+     </div>
+    </div>
+   </section><!-- VIDEO SECTION -->
+   <section class="w-full relative" style="background: linear-gradient(180deg, #0a0e27 0%, #0f1629 100%);">
+    <div class="max-w-4xl mx-auto px-6 py-24">
+     <div class="mb-16 text-center">
+      <h2 id="el-video-title" class="font-display text-3xl md:text-4xl font-800 mb-4" style="color: #ffffff;">Watch the Presentation</h2>
+      <p id="el-video-subtitle" class="text-lg" style="color: rgba(255,255,255,0.75);">See exactly how the Powerwell Direct Hub system works from the Elevate team</p>
+     </div>
+     <div class="rounded-2xl overflow-hidden shadow-2xl" style="background: #000000; aspect-ratio: 16/9; border: 1px solid rgba(245, 158, 11, 0.2);">
+      <div id="el-video-container" style="width: 100%; height: 100%; display: flex; align-items: center; justify-content: center;"><iframe id="el-video-frame" width="100%" height="100%" src="https://player.vimeo.com/video/1182892372?h=1182892372" title="Vimeo video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen style="border: none;"></iframe>
+      </div>
+     </div>
+    </div>
+   </section><!-- TESTIMONIALS -->
+   <section class="w-full relative" style="background: linear-gradient(180deg, #1a1f3a 0%, #0f1629 100%);">
+    <div class="max-w-4xl mx-auto px-6 py-24">
+     <div class="mb-16 text-center">
+      <h2 id="el-testimonials-title" class="font-display text-3xl md:text-4xl font-800 mb-4" style="color: #ffffff;">Real Earnings from Real Team Members</h2>
+      <div class="w-20 h-1 mx-auto rounded-full" style="background: linear-gradient(90deg, #f59e0b 0%, #d97706 100%);"></div>
+     </div>
+     <div class="grid grid-cols-1 md:grid-cols-2 gap-8"><!-- Testimonial 1 -->
+      <div class="testimonial-card rounded-2xl p-8">
+       <div class="flex items-center gap-4 mb-6">
+        <div class="w-12 h-12 rounded-full flex items-center justify-center font-display font-bold text-white" style="background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);">
+         M
+        </div>
+        <div>
+         <p id="el-testimonial-1-name" class="font-bold" style="color: #ffffff;">Maria Santos</p>
+         <p id="el-testimonial-1-earnings" class="text-sm font-semibold" style="color: #f59e0b;">Earned ₱8,500 in 1st month</p>
+        </div>
+       </div>
+       <p id="el-testimonial-1-quote" class="leading-relaxed" style="color: rgba(255,255,255,0.85);">"I was skeptical at first, but after my first week I made ₱2,300. The system is real and the support team is amazing."</p>
+      </div><!-- Testimonial 2 -->
+      <div class="testimonial-card rounded-2xl p-8">
+       <div class="flex items-center gap-4 mb-6">
+        <div class="w-12 h-12 rounded-full flex items-center justify-center font-display font-bold text-white" style="background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);">
+         J
+        </div>
+        <div>
+         <p id="el-testimonial-2-name" class="font-bold" style="color: #ffffff;">Jason Reyes</p>
+         <p id="el-testimonial-2-earnings" class="text-sm font-semibold" style="color: #f59e0b;">Earning ₱15,000/week</p>
+        </div>
+       </div>
+       <p id="el-testimonial-2-quote" class="leading-relaxed" style="color: rgba(255,255,255,0.85);">"This changed my life. No inventory, no stress, and I'm making more than my regular job. Highly recommend."</p>
+      </div>
+     </div>
+    </div>
+   </section><!-- FAQ SECTION -->
+   <section class="w-full relative" style="background: linear-gradient(180deg, #0f1629 0%, #0a0e27 100%);">
+    <div class="max-w-3xl mx-auto px-6 py-24">
+     <div class="mb-16 text-center">
+      <h2 id="el-faq-title" class="font-display text-3xl md:text-4xl font-800" style="color: #ffffff;">Burning Questions Answered</h2>
+     </div>
+     <div class="space-y-6"><!-- FAQ 1 -->
+      <div class="faq-item rounded-xl p-6" style="cursor: pointer;" onclick="this.classList.toggle('expanded'); this.querySelector('.faq-answer').style.display = this.classList.contains('expanded') ? 'block' : 'none';">
+       <div class="flex items-center justify-between">
+        <p id="el-faq-q1" class="font-bold" style="color: #ffffff;">Is this a pyramid scheme?</p><i data-lucide="chevron-down" style="width: 20px; height: 20px; color: #f59e0b; transition: transform 0.3s;"></i>
+       </div>
+       <p id="el-faq-a1" class="faq-answer mt-4 leading-relaxed" style="color: rgba(255,255,255,0.75); display: none;">No. We're a legitimate dropshipping business. You earn from actual sales to real customers, not from recruiting. Recruitment bonuses are just an added benefit.</p>
+      </div><!-- FAQ 2 -->
+      <div class="faq-item rounded-xl p-6" style="cursor: pointer;" onclick="this.classList.toggle('expanded'); this.querySelector('.faq-answer').style.display = this.classList.contains('expanded') ? 'block' : 'none';">
+       <div class="flex items-center justify-between">
+        <p id="el-faq-q2" class="font-bold" style="color: #ffffff;">How much time do I really need?</p><i data-lucide="chevron-down" style="width: 20px; height: 20px; color: #f59e0b; transition: transform 0.3s;"></i>
+       </div>
+       <p id="el-faq-a2" class="faq-answer mt-4 leading-relaxed" style="color: rgba(255,255,255,0.75); display: none;">2-3 hours per week minimum. Most of our top earners work part-time while keeping their day jobs. It's flexible—work your own schedule.</p>
+      </div><!-- FAQ 3 -->
+      <div class="faq-item rounded-xl p-6" style="cursor: pointer;" onclick="this.classList.toggle('expanded'); this.querySelector('.faq-answer').style.display = this.classList.contains('expanded') ? 'block' : 'none';">
+       <div class="flex items-center justify-between">
+        <p id="el-faq-q3" class="font-bold" style="color: #ffffff;">What if I don't sell anything?</p><i data-lucide="chevron-down" style="width: 20px; height: 20px; color: #f59e0b; transition: transform 0.3s;"></i>
+       </div>
+       <p id="el-faq-a3" class="faq-answer mt-4 leading-relaxed" style="color: rgba(255,255,255,0.75); display: none;">Zero inventory risk. You don't hold stock, so there's nothing to lose. We also offer a 30-day money-back guarantee if you're not satisfied.</p>
+      </div>
+     </div>
+    </div>
+   </section><!-- CLOSING -->
+   <section class="w-full relative" style="background: linear-gradient(180deg, #051c0a 0%, #0a2e1a 50%, #051c0a 100%);">
+    <div class="relative z-10 max-w-3xl mx-auto px-6 py-28 text-center">
+     <p id="el-closing-text" class="font-display text-3xl md:text-4xl font-700 mb-12 leading-snug" style="color: #ffffff; letter-spacing: -0.5px;">Ready to build your digital empire? Let's get to work.</p><button id="el-closing-btn" class="cta-btn font-display font-bold text-lg px-12 py-4 rounded-xl" style="background: linear-gradient(135deg, #22c55e 0%, #16a34a 100%); color: #0a2e1a; letter-spacing: 1px;" onclick="openSignupForm()"> GET STARTED NOW </button>
+    </div>
+   </section><!-- Footer -->
+   <footer class="w-full py-6 text-center text-xs" style="background: #0a0e27; color: rgba(255,255,255,0.3); border-top: 1px solid rgba(255,255,255,0.06);">
+    © 2024 Powerwell Direct Hub. All rights reserved.
+   </footer><!-- Signup Modal -->
+   <div id="signup-modal" class="fixed inset-0 bg-black bg-opacity-50 z-50 hidden flex items-center justify-center p-4" onclick="if(event.target === this) closeSignupForm()">
+    <div class="bg-white rounded-2xl shadow-2xl max-w-md w-full" style="max-height: 90vh; overflow-y: auto;">
+     <div class="p-8">
+      <div class="flex justify-between items-center mb-6">
+       <h2 class="font-display text-2xl font-800" style="color: #064e3b;">Join the Hub</h2><button onclick="closeSignupForm()" class="text-gray-400 hover:text-gray-600 transition"> <i data-lucide="x" style="width: 24px; height: 24px;"></i> </button>
+      </div>
+      <p class="text-gray-600 mb-6 text-sm">Start your journey to ₱1,998 today. It takes less than 2 minutes.</p>
+      <div id="toast-notification" class="fixed bottom-6 right-6 p-4 rounded-lg shadow-xl hidden max-w-sm" style="background: #fee2e2; border: 1px solid #fecaca; color: #991b1b; z-index: 1000;">
+       <p class="text-sm font-semibold" id="toast-text"></p>
+      </div>
+      <form id="signup-form" onsubmit="handleSignup(event)">
+       <div class="mb-4"><label class="block text-sm font-semibold mb-2" style="color: #064e3b;">Full Name</label> <input type="text" id="signup-name" placeholder="Your full name" required class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2" style="border-color: #d1d5db;">
+       </div>
+       <div class="mb-4"><label class="block text-sm font-semibold mb-2" style="color: #064e3b;">Email Address</label> <input type="email" id="signup-email" placeholder="your@email.com" required class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2" style="border-color: #d1d5db;">
+       </div>
+       <div class="mb-4"><label class="block text-sm font-semibold mb-2" style="color: #064e3b;">Phone Number</label> <input type="tel" id="signup-phone" placeholder="+63 9XX XXX XXXX" required class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2" style="border-color: #d1d5db;">
+       </div>
+       <div class="mb-6"><label class="block text-sm font-semibold mb-2" style="color: #064e3b;">How did you hear about us?</label> <select id="signup-source" class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2" style="border-color: #d1d5db;"> <option value="">Select an option</option> <option value="referral">Friend Referral</option> <option value="social">Social Media</option> <option value="search">Search Engine</option> <option value="other">Other</option> </select>
+       </div><button type="submit" class="w-full font-display font-bold py-3 rounded-lg transition-all duration-300 hover:scale-105 active:scale-95" style="background: linear-gradient(135deg, #22c55e 0%, #16a34a 100%); color: #0a2e1a;">Get Started Now</button>
+      </form>
+      <p class="text-xs text-center mt-4 text-gray-500">Your information is secure and won't be shared with anyone.</p>
+      <div id="signup-success" class="mt-6 p-4 rounded-lg text-center hidden" style="background: #dcfce7; border: 1px solid #86efac;">
+       <p class="font-semibold" style="color: #15803d;">🎉 Welcome to the Hub!</p>
+       <p class="text-sm mt-2" style="color: #166534;">Check your email for next steps. We'll be in touch within 24 hours.</p>
+       <div class="mt-4 flex gap-3"><a href="https://www.facebook.com/profile.php?id=" target="_blank" rel="noopener noreferrer" class="flex-1 text-sm font-semibold px-4 py-2 rounded transition hover:opacity-90" style="background: #0a66c2; color: white; text-decoration: none; display: flex; align-items: center; justify-content: center; gap: 8px;"> <i data-lucide="message-circle" style="width: 16px; height: 16px;"></i> Message Us </a> <button onclick="resetAndCloseForm()" class="flex-1 text-sm font-semibold px-4 py-2 rounded" style="background: #22c55e; color: white;">Close</button>
+       </div>
+      </div>
+     </div>
+    </div>
+   </div>
+  </div>
+  <script>
+    lucide.createIcons();
+
+    // --- UI MODAL FUNCTIONS ---
+    function openSignupForm() {
+      document.getElementById('signup-modal').classList.remove('hidden');
+      document.getElementById('signup-form').style.display = 'block';
+      document.getElementById('signup-success').classList.add('hidden');
+      hideFormError();
+    }
+
+    function closeSignupForm() {
+      document.getElementById('signup-modal').classList.add('hidden');
+    }
+
+    function resetAndCloseForm() {
+      document.getElementById('signup-form').reset();
+      document.getElementById('signup-form').style.display = 'block';
+      document.getElementById('signup-success').classList.add('hidden');
+      const submitBtn = document.getElementById('signup-form').querySelector('button[type="submit"]');
+      submitBtn.disabled = false;
+      submitBtn.textContent = 'Get Started Now';
+      submittedEmails.clear();
+      closeSignupForm();
+    }
+
+    // --- DATA HANDLING ---
+    let submittedEmails = new Set();
+    const sheetUrl = 'https://script.google.com/macros/s/AKfycby2oEmkpo8yeUiZnUalblvvz51pilOL-S-5HHDBYI7FOk0kPwi8zEU4BzdN0P9S5VZy/exec';
+
+    async function handleSignup(event) {
+      event.preventDefault();
+      const name = document.getElementById('signup-name').value.trim();
+      const email = document.getElementById('signup-email').value.trim();
+      const phone = document.getElementById('signup-phone').value.trim();
+      const source = document.getElementById('signup-source').value;
+      const timestamp = new Date().toLocaleString();
+
+      const submitBtn = event.target.querySelector('button[type="submit"]');
+      submitBtn.disabled = true;
+      submitBtn.textContent = 'Checking...';
+
+      const formData = new FormData();
+      formData.append('name', name);
+      formData.append('email', email);
+      formData.append('phone', phone);
+      formData.append('source', source);
+      formData.append('timestamp', timestamp);
+      formData.append('action', 'submit');
+
+      try {
+        const response = await fetch(sheetUrl, { method: 'POST', body: formData });
+        const result = await response.text();
+
+        if (result.includes('DUPLICATE_EMAIL')) {
+          showFormError('⚠️ This email was already submitted. Please use a different email.');
+          submitBtn.disabled = false;
+          submitBtn.textContent = 'Get Started Now';
+        } else if (result.includes('DUPLICATE_PHONE')) {
+          showFormError('⚠️ This phone number was already submitted. Please use a different number.');
+          submitBtn.disabled = false;
+          submitBtn.textContent = 'Get Started Now';
+        } else if (result.includes('SUCCESS') || result.includes('success')) {
+          document.getElementById('signup-form').style.display = 'none';
+          document.getElementById('signup-success').classList.remove('hidden');
+        } else {
+          document.getElementById('signup-form').style.display = 'none';
+          document.getElementById('signup-success').classList.remove('hidden');
+        }
+      } catch (error) {
+        console.error('Error sending data:', error);
+        showFormError('There was an error sending your details. Please try again.');
+        submitBtn.disabled = false;
+        submitBtn.textContent = 'Get Started Now';
+      }
+    }
+
+    function showFormError(message) {
+      const toast = document.getElementById('toast-notification');
+      const toastText = document.getElementById('toast-text');
+      toastText.textContent = message;
+      toast.classList.remove('hidden');
+      setTimeout(() => {
+        toast.classList.add('hidden');
+      }, 4000);
+    }
+
+    function hideFormError() {
+      document.getElementById('toast-notification').classList.add('hidden');
+    }
+
+    // --- CONFIGURATION ---
+    const defaultConfig = {
+      main_headline: "Stop Scrolling, Start Earning. ₱1,998 to Launch.",
+      sub_headline: "I work at the Powerwell Direct Hub. I see these orders move every day—now I'm showing you how to profit from them.",
+      hero_button: "JOIN THE HUB TEAM",
+      benefits_title: "Why This Works for You:",
+      benefit_1: "Zero Inventory. We stock it, you sell it.",
+      benefit_2: "Automated Dropshipping. The company ships directly to your customers.",
+      benefit_3: "Passive Pairing. Earn ₱500 bonuses as your team grows.",
+      video_title: "Watch the Presentation",
+      video_subtitle: "See exactly how the Powerwell Direct Hub system works from the Elevate team",
+      video_url: "https://vimeo.com/1182892372",
+      testimonials_title: "Real Earnings from Real Team Members",
+      testimonial_1_name: "Maria Santos",
+      testimonial_1_earnings: "Earned ₱8,500 in 1st month",
+      testimonial_1_quote: "I was skeptical at first, but after my first week I made ₱2,300. The system is real and the support team is amazing.",
+      testimonial_2_name: "Jason Reyes",
+      testimonial_2_earnings: "Earning ₱15,000/week",
+      testimonial_2_quote: "This changed my life. No inventory, no stress, and I'm making more than my regular job. Highly recommend.",
+      faq_title: "Burning Questions Answered",
+      faq_q1: "Is this a pyramid scheme?",
+      faq_a1: "No. We're a legitimate dropshipping business. You earn from actual sales to real customers, not from recruiting. Recruitment bonuses are just an added benefit.",
+      faq_q2: "How much time do I really need?",
+      faq_a2: "2-3 hours per week minimum. Most of our top earners work part-time while keeping their day jobs. It's flexible—work your own schedule.",
+      faq_q3: "What if I don't sell anything?",
+      faq_a3: "Zero inventory risk. You don't hold stock, so there's nothing to lose. We also offer a 30-day money-back guarantee if you're not satisfied.",
+      closing_text: "Ready to build your digital empire? Let's get to work.",
+      closing_button: "GET STARTED NOW",
+      background_color: "#0a2e1a",
+      surface_color: "#f8faf9",
+      text_color: "#ffffff",
+      primary_action_color: "#22c55e",
+      secondary_action_color: "#14532d",
+      font_family: "Syne",
+      font_size: 16
+    };
+
+    /**
+     * Converts YouTube and Vimeo links into proper embed URLs
+     */
+    function convertToEmbedUrl(url) {
+      if (!url || !url.trim()) return '';
+      url = url.trim();
+
+      // YouTube handling
+      if (url.includes('youtu.be') || url.includes('youtube.com')) {
+        let videoId = '';
+        if (url.includes('youtu.be/')) videoId = url.split('youtu.be/')[1]?.split(/[?&#]/)[0] || '';
+        else if (url.includes('youtube.com/watch')) {
+          const match = url.match(/[?&]v=([^&]+)/);
+          videoId = match ? match[1] : '';
+        }
+        else if (url.includes('youtube.com/embed/')) videoId = url.split('youtube.com/embed/')[1]?.split(/[?&#]/)[0] || '';
+        else if (/^[a-zA-Z0-9_-]{11}$/.test(url)) videoId = url;
+        
+        return videoId ? `https://www.youtube.com/embed/${videoId}?rel=0&autoplay=0` : '';
+      }
+
+      // Vimeo handling - extract video ID and return proper embed URL
+      if (url.includes('vimeo.com')) {
+        const vimeoMatch = url.match(/(?:vimeo\.com\/|video\/)(\d+)/);
+        if (vimeoMatch && vimeoMatch[1]) {
+          return `https://player.vimeo.com/video/${vimeoMatch[1]}?h=1182892372`;
+        }
+      }
+
+      return '';
+    }
+
+    /**
+     * Updates live content when config changes
+     */
+    function applyConfig(config) {
+      if (!config) return;
+
+      // Update video player
+      const videoFrame = document.getElementById('el-video-frame');
+      if (videoFrame && config.video_url) {
+        const newUrl = convertToEmbedUrl(config.video_url);
+        if (newUrl && videoFrame.src !== newUrl) {
+          videoFrame.src = newUrl;
+        }
+      }
+
+      // Update text elements
+      const textMappings = {
+        'el-headline': 'main_headline',
+        'el-subheadline': 'sub_headline',
+        'el-hero-btn': 'hero_button',
+        'el-benefits-title': 'benefits_title',
+        'el-benefit-1': 'benefit_1',
+        'el-benefit-2': 'benefit_2',
+        'el-benefit-3': 'benefit_3',
+        'el-video-title': 'video_title',
+        'el-video-subtitle': 'video_subtitle',
+        'el-testimonials-title': 'testimonials_title',
+        'el-testimonial-1-name': 'testimonial_1_name',
+        'el-testimonial-1-earnings': 'testimonial_1_earnings',
+        'el-testimonial-1-quote': 'testimonial_1_quote',
+        'el-testimonial-2-name': 'testimonial_2_name',
+        'el-testimonial-2-earnings': 'testimonial_2_earnings',
+        'el-testimonial-2-quote': 'testimonial_2_quote',
+        'el-faq-title': 'faq_title',
+        'el-faq-q1': 'faq_q1',
+        'el-faq-a1': 'faq_a1',
+        'el-faq-q2': 'faq_q2',
+        'el-faq-a2': 'faq_a2',
+        'el-faq-q3': 'faq_q3',
+        'el-faq-a3': 'faq_a3',
+        'el-closing-text': 'closing_text',
+        'el-closing-btn': 'closing_button'
+      };
+
+      for (const [elementId, configKey] of Object.entries(textMappings)) {
+        const el = document.getElementById(elementId);
+        const value = config[configKey] || defaultConfig[configKey];
+        if (el && value) el.textContent = value;
+      }
+    }
+
+    /**
+     * Makes color properties mutable for the Element SDK
+     */
+    function makeColorMutable(key) {
+      return {
+        get: () => (window.elementSdk.config[key] || defaultConfig[key]),
+        set: (v) => { window.elementSdk.config[key] = v; window.elementSdk.setConfig({ [key]: v }); }
+      };
+    }
+
+    // --- ELEMENT SDK INITIALIZATION ---
+    window.elementSdk.init({
+      defaultConfig,
+      onConfigChange: async (config) => applyConfig(config),
+      mapToCapabilities: (config) => ({
+        recolorables: [
+          makeColorMutable('background_color'),
+          makeColorMutable('surface_color'),
+          makeColorMutable('text_color'),
+          makeColorMutable('primary_action_color'),
+          makeColorMutable('secondary_action_color')
+        ],
+        borderables: [],
+        fontEditable: {
+          get: () => config.font_family || defaultConfig.font_family,
+          set: (v) => { config.font_family = v; window.elementSdk.setConfig({ font_family: v }); }
+        },
+        fontSizeable: {
+          get: () => config.font_size || defaultConfig.font_size,
+          set: (v) => { config.font_size = v; window.elementSdk.setConfig({ font_size: v }); }
+        }
+      }),
+      mapToEditPanelValues: (config) => new Map([
+        ["main_headline", config.main_headline || defaultConfig.main_headline],
+        ["sub_headline", config.sub_headline || defaultConfig.sub_headline],
+        ["hero_button", config.hero_button || defaultConfig.hero_button],
+        ["benefits_title", config.benefits_title || defaultConfig.benefits_title],
+        ["benefit_1", config.benefit_1 || defaultConfig.benefit_1],
+        ["benefit_2", config.benefit_2 || defaultConfig.benefit_2],
+        ["benefit_3", config.benefit_3 || defaultConfig.benefit_3],
+        ["video_title", config.video_title || defaultConfig.video_title],
+        ["video_subtitle", config.video_subtitle || defaultConfig.video_subtitle],
+        ["video_url", config.video_url || defaultConfig.video_url],
+        ["testimonials_title", config.testimonials_title || defaultConfig.testimonials_title],
+        ["testimonial_1_name", config.testimonial_1_name || defaultConfig.testimonial_1_name],
+        ["testimonial_1_earnings", config.testimonial_1_earnings || defaultConfig.testimonial_1_earnings],
+        ["testimonial_1_quote", config.testimonial_1_quote || defaultConfig.testimonial_1_quote],
+        ["testimonial_2_name", config.testimonial_2_name || defaultConfig.testimonial_2_name],
+        ["testimonial_2_earnings", config.testimonial_2_earnings || defaultConfig.testimonial_2_earnings],
+        ["testimonial_2_quote", config.testimonial_2_quote || defaultConfig.testimonial_2_quote],
+        ["faq_title", config.faq_title || defaultConfig.faq_title],
+        ["faq_q1", config.faq_q1 || defaultConfig.faq_q1],
+        ["faq_a1", config.faq_a1 || defaultConfig.faq_a1],
+        ["faq_q2", config.faq_q2 || defaultConfig.faq_q2],
+        ["faq_a2", config.faq_a2 || defaultConfig.faq_a2],
+        ["faq_q3", config.faq_q3 || defaultConfig.faq_q3],
+        ["faq_a3", config.faq_a3 || defaultConfig.faq_a3],
+        ["closing_text", config.closing_text || defaultConfig.closing_text],
+        ["closing_button", config.closing_button || defaultConfig.closing_button]
+      ])
+    });
+  </script>
+ <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9ec71989e6e2b445',t:'MTc3NjIxNTczMy4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</html>
