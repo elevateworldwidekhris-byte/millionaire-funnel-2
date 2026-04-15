@@ -34,99 +34,97 @@
 
     /* Emerald Glassmorphism */
     .glass-panel {
-      background: rgba(6, 78, 59, 0.1);
-      backdrop-filter: blur(12px);
-      border: 1px solid rgba(212, 175, 55, 0.2);
+      background: rgba(6, 78, 59, 0.15);
+      backdrop-filter: blur(15px);
+      border: 1px solid rgba(212, 175, 55, 0.3);
     }
 
     .hero-overlay {
-      background: linear-gradient(to bottom, rgba(5,5,5,0.4) 0%, rgba(5,5,5,0.9) 100%);
+      background: linear-gradient(to bottom, rgba(5,5,5,0.5) 0%, rgba(5,5,5,0.95) 100%);
     }
-
-    input:focus { border-color: #d4af37 !important; }
   </style>
  </head>
  <body class="font-body">
 
   <div id="app-wrapper" class="w-full">
-   <section class="relative min-h-[80vh] flex items-center justify-center py-24 px-6 text-center bg-cover bg-fixed bg-center" 
+   <section class="relative min-h-[85vh] flex items-center justify-center py-24 px-6 text-center bg-cover bg-fixed bg-center" 
             style="background-image: url('https://images.unsplash.com/photo-1550751827-4bd374c3f58b?q=80&w=2070');">
      
      <div class="absolute inset-0 hero-overlay z-0"></div>
 
      <div class="relative z-10 max-w-4xl mx-auto">
-       <div class="inline-block px-4 py-1 rounded-full border border-[#d4af37]/40 bg-[#064e3b]/30 text-[#d4af37] text-xs font-bold tracking-widest mb-8 uppercase">
-         Elite Digital Partnership
+       <div class="inline-block px-4 py-1 rounded-full border border-[#d4af37]/40 bg-[#064e3b]/40 text-[#d4af37] text-xs font-bold tracking-widest mb-8 uppercase">
+         Elite Partner Hub
        </div>
        <h1 class="font-display text-5xl md:text-8xl mb-8 leading-tight tracking-tight">
          ₱1,998 to Launch Your <span class="text-gold">Digital Empire.</span>
        </h1>
-       <p class="text-xl md:text-2xl opacity-90 mb-12 font-light text-emerald-50 max-w-2xl mx-auto">
-         Access the exclusive Powerwell Hub inventory and transform your scrolling into high-margin profit.
+       <p class="text-xl md:text-2xl opacity-90 mb-12 font-light text-emerald-50 max-w-2xl mx-auto leading-relaxed">
+         Direct access to the Powerwell Hub inventory. Turn your network into a high-margin business.
        </p>
        <button onclick="openSignupForm()" class="cta-btn font-display font-extrabold px-12 py-5 rounded-full text-xl uppercase tracking-wider">
-         Secure Your Spot Now
+         Join The Elite Team
        </button>
      </div>
    </section>
 
    <section class="py-24 bg-[#050505] relative overflow-hidden">
-     <div class="absolute top-0 left-1/2 -translate-x-1/2 w-full h-96 bg-emerald-900/20 blur-[120px] rounded-full"></div>
+     <div class="absolute top-0 left-1/2 -translate-x-1/2 w-full h-96 bg-emerald-900/10 blur-[120px] rounded-full"></div>
      
      <div class="max-w-5xl mx-auto px-6 relative z-10">
        <div class="text-center mb-12">
-         <h2 class="font-display text-3xl md:text-4xl font-bold mb-4 italic">The Presentation</h2>
-         <div class="w-24 h-1 bg-gradient-to-right from-transparent via-[#d4af37] to-transparent mx-auto"></div>
+         <h2 class="font-display text-3xl md:text-4xl font-bold mb-4 italic text-white">The Opportunity Presentation</h2>
+         <div class="w-24 h-1 bg-gradient-to-r from-transparent via-[#d4af37] to-transparent mx-auto"></div>
        </div>
        
-       <div class="aspect-video rounded-3xl overflow-hidden shadow-[0_0_50px_rgba(6,78,59,0.3)] border border-[#d4af37]/20">
+       <div class="aspect-video rounded-3xl overflow-hidden shadow-[0_0_60px_rgba(6,78,59,0.2)] border border-[#d4af37]/20">
          <iframe width="100%" height="100%" src="https://player.vimeo.com/video/1182892372" frameborder="0" allowfullscreen></iframe>
        </div>
      </div>
    </section>
 
    <footer class="py-12 text-center border-t border-white/5 bg-black">
-     <p class="text-[#d4af37] font-bold tracking-widest text-sm opacity-50 uppercase">© 2026 Powerwell Direct Hub Elite</p>
+     <p class="text-[#d4af37] font-bold tracking-widest text-xs opacity-50 uppercase">© 2026 Powerwell Direct Hub Elite</p>
    </footer>
 
    <div id="signup-modal" class="fixed inset-0 bg-black/95 z-50 hidden flex items-center justify-center p-4">
-     <div class="glass-panel text-white rounded-[2rem] p-1 shadow-2xl max-w-md w-full relative">
-       <div class="bg-[#050505] rounded-[1.8rem] p-8">
+     <div class="glass-panel text-white rounded-[2.5rem] p-1 shadow-2xl max-w-md w-full relative">
+       <div class="bg-[#050505] rounded-[2.3rem] p-8 md:p-10">
          <button onclick="closeSignupForm()" class="absolute top-6 right-6 text-[#d4af37] hover:scale-125 transition">✕</button>
          
          <div id="form-content">
-           <h2 class="font-display text-3xl text-gold mb-2">Join the Elite</h2>
-           <p class="text-sm text-emerald-200/60 mb-8 uppercase tracking-widest">Entry Verification Required</p>
+           <h2 class="font-display text-3xl text-gold mb-2">Initialize Partner</h2>
+           <p class="text-[10px] text-emerald-200/50 mb-8 uppercase tracking-[0.2em]">Secure Member Registration</p>
            
            <form id="reg-form" onsubmit="sendData(event)" class="space-y-5">
              <div>
-               <label class="text-[10px] font-bold text-[#d4af37] uppercase ml-1">Full Identity</label>
-               <input type="text" id="user-name" placeholder="Name" required class="w-full p-4 bg-white/5 border border-white/10 rounded-2xl outline-none focus:border-[#d4af37] transition text-white">
+               <label class="text-[10px] font-bold text-[#d4af37] uppercase ml-1 mb-2 block">Full Name</label>
+               <input type="text" id="user-name" required class="w-full p-4 bg-white/5 border border-white/10 rounded-2xl outline-none focus:border-[#d4af37] transition text-white placeholder-white/20" placeholder="Enter Full Name">
              </div>
              <div>
-               <label class="text-[10px] font-bold text-[#d4af37] uppercase ml-1">Private Email</label>
-               <input type="email" id="user-email" placeholder="email@example.com" required class="w-full p-4 bg-white/5 border border-white/10 rounded-2xl outline-none focus:border-[#d4af37] transition text-white">
+               <label class="text-[10px] font-bold text-[#d4af37] uppercase ml-1 mb-2 block">Email Address</label>
+               <input type="email" id="user-email" required class="w-full p-4 bg-white/5 border border-white/10 rounded-2xl outline-none focus:border-[#d4af37] transition text-white placeholder-white/20" placeholder="name@email.com">
              </div>
              <div>
-               <label class="text-[10px] font-bold text-[#d4af37] uppercase ml-1">Contact Number</label>
+               <label class="text-[10px] font-bold text-[#d4af37] uppercase ml-1 mb-2 block">Phone Number</label>
                <input type="tel" id="user-phone" placeholder="09XXXXXXXXX" required class="w-full p-4 bg-white/5 border border-white/10 rounded-2xl outline-none focus:border-[#d4af37] transition text-white">
              </div>
-             <button type="submit" id="submit-btn" class="w-full cta-btn py-5 rounded-2xl font-bold mt-4 shadow-lg uppercase tracking-tighter">Initialize Application</button>
+             <button type="submit" id="submit-btn" class="w-full cta-btn py-5 rounded-2xl font-bold mt-4 shadow-lg uppercase tracking-wider text-sm">Submit Credentials</button>
            </form>
          </div>
 
-         <div id="success-message" class="hidden text-center py-10">
-           <div class="w-20 h-20 bg-emerald-900/50 border border-[#d4af37] rounded-full flex items-center justify-center mx-auto mb-6">
+         <div id="success-message" class="hidden text-center py-8">
+           <div class="w-20 h-20 bg-emerald-900/40 border border-[#d4af37] rounded-full flex items-center justify-center mx-auto mb-6">
              <i data-lucide="shield-check" class="text-[#d4af37] w-10 h-10"></i>
            </div>
-           <h3 class="text-3xl font-display text-gold mb-4">Identity Verified</h3>
-           <p class="text-emerald-100/70 mb-10 leading-relaxed">Your details are now in our private database. Connect with our leadership on Facebook to proceed.</p>
+           <h3 class="text-3xl font-display text-gold mb-4">Verification Sent</h3>
+           <p class="text-emerald-100/70 mb-10 text-sm leading-relaxed">Your details have been saved to our private inventory sheet. Join our official community to get started.</p>
            
            <div class="space-y-4">
              <a href="https://www.facebook.com/profile.php?id=61587556223299" target="_blank" class="block w-full bg-[#1877F2] text-white font-bold py-5 rounded-2xl flex items-center justify-center gap-3 hover:brightness-110 transition shadow-lg">
-               <i data-lucide="facebook" class="w-5 h-5"></i> ACCESS THE COMMUNITY
+               <i data-lucide="facebook" class="w-5 h-5"></i> VISIT OUR FACEBOOK
              </a>
-             <button onclick="closeSignupForm()" class="text-[#d4af37] text-xs font-bold uppercase tracking-widest opacity-60 hover:opacity-100">Dismiss</button>
+             <button onclick="closeSignupForm()" class="text-[#d4af37] text-xs font-bold uppercase tracking-widest opacity-60 hover:opacity-100 mt-4">Close Window</button>
            </div>
          </div>
        </div>
@@ -137,7 +135,8 @@
   <script>
     lucide.createIcons();
 
-    const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzQWF3Of9YYlA3dtsa1hido6QSGlQpWni_VensjKsNjb-nmzkucvtLTgOzTHWlr3cOv/exec";
+    // YOUR NEWEST SCRIPT URL
+    const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzvG7Wd3wEUAvJtVZmPcIr1bvgLZggQUbejVR-H4TQEkFORTa8VqQeptfGOQw94ESge/exec";
 
     function openSignupForm() { 
         document.getElementById('signup-modal').classList.remove('hidden'); 
@@ -145,7 +144,7 @@
         document.getElementById('success-message').classList.add('hidden');
         const btn = document.getElementById('submit-btn');
         btn.disabled = false;
-        btn.textContent = "Initialize Application";
+        btn.textContent = "Submit Credentials";
     }
 
     function closeSignupForm() { 
@@ -157,21 +156,32 @@
       e.preventDefault();
       const btn = document.getElementById('submit-btn');
       btn.disabled = true;
-      btn.textContent = "Verifying Identity...";
+      btn.textContent = "Processing...";
 
-      const params = new URLSearchParams();
-      params.append('name', document.getElementById('user-name').value);
-      params.append('email', document.getElementById('user-email').value);
-      params.append('phone', document.getElementById('user-phone').value);
+      // Build parameters string manually for maximum compatibility
+      const name = encodeURIComponent(document.getElementById('user-name').value);
+      const email = encodeURIComponent(document.getElementById('user-email').value);
+      const phone = encodeURIComponent(document.getElementById('user-phone').value);
+      
+      const payload = `name=${name}&email=${email}&phone=${phone}`;
 
       try {
-        await fetch(SCRIPT_URL, { method: 'POST', body: params, mode: 'no-cors' });
+        await fetch(SCRIPT_URL, { 
+          method: 'POST', 
+          mode: 'no-cors',
+          headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+          body: payload
+        });
+
+        // UI Feedback
         document.getElementById('form-content').classList.add('hidden');
         document.getElementById('success-message').classList.remove('hidden');
+        
       } catch (err) {
-        alert("Submission Failed. Check Connection.");
+        console.error(err);
+        alert("Verification failed. Please check your internet.");
         btn.disabled = false;
-        btn.textContent = "Initialize Application";
+        btn.textContent = "Submit Credentials";
       }
     }
   </script>
