@@ -70,4 +70,89 @@
             </div>
             <h3 class="font-bold text-xl mb-2">FDA License to Operate</h3>
             <p class="text-sm text-gray-500 mb-4">Verified Food & Drug Administration Compliance</p>
-            <a href="
+            <a href="https://drive.google.com/file/d/1mHskFhrW3kzUWEaU8R-PJCGRjkYQNcBu/view?usp=sharing" target="_blank" class="text-[#d4af37] font-bold text-sm underline">View Certificate</a>
+         </div>
+         <div class="group cursor-pointer">
+            <div class="aspect-[3/4] rounded-2xl bg-white/5 border border-white/10 flex items-center justify-center overflow-hidden mb-4 relative">
+              <img src="https://images.unsplash.com/photo-1586281380349-632531db7ed4?q=80&w=2070" class="absolute inset-0 w-full h-full object-cover opacity-20 group-hover:opacity-40 transition">
+              <i data-lucide="badge-check" class="w-16 h-16 text-[#d4af37] relative z-10"></i>
+            </div>
+            <h3 class="font-bold text-xl mb-2">DTI Business Registration</h3>
+            <p class="text-sm text-gray-500 mb-4">Official Department of Trade and Industry Approval</p>
+            <a href="https://drive.google.com/file/d/1UMuBHDD2URLfq1appzgbGzRGjMneXZxP/view?usp=sharing" target="_blank" class="text-[#d4af37] font-bold text-sm underline">View Certificate</a>
+         </div>
+       </div>
+     </div>
+   </section>
+
+   <footer class="py-12 text-center bg-black">
+     <p class="text-[#d4af37] font-bold tracking-widest text-xs opacity-50 uppercase">© 2026 Powerwell Direct Hub Elite • DTI & FDA COMPLIANT</p>
+   </footer>
+
+   <div id="signup-modal" class="fixed inset-0 bg-black/95 z-50 hidden flex items-center justify-center p-4">
+     <div class="glass-panel text-white rounded-[2.5rem] p-1 shadow-2xl max-w-md w-full relative">
+       <div class="bg-[#050505] rounded-[2.3rem] p-8 md:p-10">
+         <button onclick="closeSignupForm()" class="absolute top-6 right-6 text-[#d4af37] hover:scale-125 transition">✕</button>
+         <div id="form-content">
+           <h2 class="font-display text-3xl text-gold mb-2 text-center">Initialize Partner</h2>
+           <p class="text-[10px] text-emerald-200/50 mb-8 uppercase tracking-[0.2em] text-center">Secure Member Registration</p>
+           <form id="reg-form" onsubmit="sendData(event)" class="space-y-5">
+             <input type="text" id="user-name" placeholder="Full Name" required class="w-full p-4 bg-white/5 border border-white/10 rounded-2xl outline-none focus:border-[#d4af37] text-white">
+             <input type="email" id="user-email" placeholder="Email Address" required class="w-full p-4 bg-white/5 border border-white/10 rounded-2xl outline-none focus:border-[#d4af37] text-white">
+             <input type="tel" id="user-phone" placeholder="09XXXXXXXXX" required class="w-full p-4 bg-white/5 border border-white/10 rounded-2xl outline-none focus:border-[#d4af37] text-white">
+             <button type="submit" id="submit-btn" class="w-full cta-btn py-5 rounded-2xl font-bold mt-4 shadow-lg uppercase tracking-wider text-sm">Submit Credentials</button>
+           </form>
+         </div>
+         <div id="success-message" class="hidden text-center py-8">
+           <div class="w-20 h-20 bg-emerald-900/40 border border-[#d4af37] rounded-full flex items-center justify-center mx-auto mb-6"><i data-lucide="shield-check" class="text-[#d4af37] w-10 h-10"></i></div>
+           <h3 class="text-3xl font-display text-gold mb-4">Verification Sent</h3>
+           <a href="https://www.facebook.com/profile.php?id=61587556223299" target="_blank" class="block w-full bg-[#1877F2] text-white font-bold py-5 rounded-2xl flex items-center justify-center gap-3 shadow-lg"><i data-lucide="facebook" class="w-5 h-5"></i> VISIT OUR FACEBOOK</a>
+           <button onclick="closeSignupForm()" class="text-[#d4af37] text-xs font-bold uppercase tracking-widest opacity-60 mt-8">Close Window</button>
+         </div>
+       </div>
+     </div>
+   </div>
+  </div>
+
+  <script>
+    lucide.createIcons();
+    const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxTaeQRJhh-YC_uVG9m1LH8K1cVKTql4GtE4HVfTbF88IAU_xgH8vpZvE5oUa0HZUd8/exec";
+
+    function openSignupForm() { 
+        document.getElementById('signup-modal').classList.remove('hidden'); 
+        document.getElementById('form-content').classList.remove('hidden');
+        document.getElementById('success-message').classList.add('hidden');
+        const btn = document.getElementById('submit-btn');
+        btn.disabled = false;
+        btn.textContent = "Submit Credentials";
+    }
+
+    function closeSignupForm() { 
+        document.getElementById('signup-modal').classList.add('hidden');
+        document.getElementById('reg-form').reset();
+    }
+
+    async function sendData(e) {
+      e.preventDefault();
+      const btn = document.getElementById('submit-btn');
+      btn.disabled = true;
+      btn.textContent = "Processing...";
+
+      const formData = new FormData();
+      formData.append('name', document.getElementById('user-name').value);
+      formData.append('email', document.getElementById('user-email').value);
+      formData.append('phone', document.getElementById('user-phone').value);
+
+      try {
+        await fetch(SCRIPT_URL, { method: 'POST', mode: 'no-cors', body: formData });
+        document.getElementById('form-content').classList.add('hidden');
+        document.getElementById('success-message').classList.remove('hidden');
+      } catch (err) {
+        alert("Error sending details.");
+        btn.disabled = false;
+        btn.textContent = "Submit Credentials";
+      }
+    }
+  </script>
+ </body>
+</html>
