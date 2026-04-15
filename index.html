@@ -3,7 +3,7 @@
  <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Powerwell Direct Hub | Elite Partner</title>
+  <title>Powerwell Direct Hub | Official Certified Partner</title>
   <script src="https://cdn.tailwindcss.com/3.4.17"></script>
   <script src="https://cdn.jsdelivr.net/npm/lucide@0.263.0/dist/umd/lucide.min.js"></script>
   <link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
@@ -15,106 +15,59 @@
     .cta-btn { background: linear-gradient(135deg, #d4af37 0%, #aa8a2e 100%); color: #052e16; box-shadow: 0 4px 20px rgba(212, 175, 55, 0.3); transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
     .cta-btn:hover { transform: translateY(-3px) scale(1.02); box-shadow: 0 10px 30px rgba(212, 175, 55, 0.5); filter: brightness(1.1); }
     .glass-panel { background: rgba(6, 78, 59, 0.15); backdrop-filter: blur(15px); border: 1px solid rgba(212, 175, 55, 0.3); }
-    .hero-overlay { background: linear-gradient(to bottom, rgba(5,5,5,0.5) 0%, rgba(5,5,5,0.95) 100%); }
+    .badge-card { background: rgba(255,255,255,0.03); border: 1px solid rgba(212, 175, 55, 0.2); transition: 0.3s; }
   </style>
  </head>
  <body class="font-body">
 
   <div id="app-wrapper" class="w-full">
-   <section class="relative min-h-[85vh] flex items-center justify-center py-24 px-6 text-center bg-cover bg-fixed bg-center" 
+   <section class="relative min-h-[90vh] flex items-center justify-center py-24 px-6 text-center bg-cover bg-fixed bg-center" 
             style="background-image: url('https://images.unsplash.com/photo-1550751827-4bd374c3f58b?q=80&w=2070');">
-     <div class="absolute inset-0 hero-overlay z-0"></div>
-     <div class="relative z-10 max-w-4xl mx-auto">
-       <div class="inline-block px-4 py-1 rounded-full border border-[#d4af37]/40 bg-[#064e3b]/40 text-[#d4af37] text-xs font-bold tracking-widest mb-8 uppercase">Elite Partner Hub</div>
+     <div class="absolute inset-0 bg-gradient-to-b from-black/60 to-[#050505] z-0"></div>
+     
+     <div class="relative z-10 max-w-5xl mx-auto">
+       <div class="flex items-center justify-center gap-4 mb-8">
+          <div class="flex items-center gap-1 px-3 py-1 rounded bg-white/10 border border-white/20 text-[10px] font-bold tracking-tighter uppercase"><i data-lucide="check-circle" class="w-3 text-emerald-400"></i> DTI Approved</div>
+          <div class="flex items-center gap-1 px-3 py-1 rounded bg-white/10 border border-white/20 text-[10px] font-bold tracking-tighter uppercase"><i data-lucide="check-circle" class="w-3 text-emerald-400"></i> FDA Compliant</div>
+       </div>
+
        <h1 class="font-display text-5xl md:text-8xl mb-8 leading-tight tracking-tight">₱1,998 to Launch Your <span class="text-gold">Digital Empire.</span></h1>
-       <p class="text-xl md:text-2xl opacity-90 mb-12 font-light text-emerald-50 max-w-2xl mx-auto leading-relaxed">Direct access to the Powerwell Hub inventory. Turn your network into a high-margin business.</p>
-       <button onclick="openSignupForm()" class="cta-btn font-display font-extrabold px-12 py-5 rounded-full text-xl uppercase tracking-wider">Join The Elite Team</button>
-     </div>
-   </section>
+       <p class="text-xl md:text-2xl opacity-90 mb-12 font-light text-emerald-50 max-w-2xl mx-auto leading-relaxed">
+         Build a legacy with <span class="text-[#d4af37] font-bold">New Zealand Sourced</span>, FDA-approved premium products.
+       </p>
+       
+       <button onclick="openSignupForm()" class="cta-btn font-display font-extrabold px-12 py-6 rounded-full text-xl uppercase tracking-widest mb-16">Join The Elite Team</button>
 
-   <section class="py-24 bg-[#050505] relative overflow-hidden">
-     <div class="max-w-5xl mx-auto px-6 relative z-10 text-center">
-       <h2 class="font-display text-3xl md:text-4xl font-bold mb-4 italic text-white">The Opportunity Presentation</h2>
-       <div class="w-24 h-1 bg-gradient-to-r from-transparent via-[#d4af37] to-transparent mx-auto mb-12"></div>
-       <div class="aspect-video rounded-3xl overflow-hidden shadow-[0_0_60px_rgba(6,78,59,0.2)] border border-[#d4af37]/20">
-         <iframe width="100%" height="100%" src="https://player.vimeo.com/video/1182892372" frameborder="0" allowfullscreen></iframe>
+       <div class="grid grid-cols-2 md:grid-cols-4 gap-4 max-w-4xl mx-auto">
+          <div class="p-4 rounded-2xl border border-white/5 bg-white/5 flex flex-col items-center gap-2">
+            <i data-lucide="leaf" class="text-emerald-400"></i>
+            <span class="text-[10px] font-bold uppercase tracking-widest text-emerald-100">100% Pure & Organic</span>
+          </div>
+          <div class="p-4 rounded-2xl border border-white/5 bg-white/5 flex flex-col items-center gap-2">
+            <i data-lucide="map-pin" class="text-emerald-400"></i>
+            <span class="text-[10px] font-bold uppercase tracking-widest text-emerald-100">NZ Sourced</span>
+          </div>
+          <div class="p-4 rounded-2xl border border-white/5 bg-white/5 flex flex-col items-center gap-2">
+            <i data-lucide="flower-2" class="text-emerald-400"></i>
+            <span class="text-[10px] font-bold uppercase tracking-widest text-emerald-100">Vegan / Plant-Based</span>
+          </div>
+          <div class="p-4 rounded-2xl border border-white/5 bg-white/5 flex flex-col items-center gap-2">
+            <i data-lucide="shield" class="text-emerald-400"></i>
+            <span class="text-[10px] font-bold uppercase tracking-widest text-emerald-100">Halal Certified</span>
+          </div>
        </div>
      </div>
    </section>
 
-   <footer class="py-12 text-center border-t border-white/5 bg-black">
-     <p class="text-[#d4af37] font-bold tracking-widest text-xs opacity-50 uppercase">© 2026 Powerwell Direct Hub Elite</p>
-   </footer>
-
-   <div id="signup-modal" class="fixed inset-0 bg-black/95 z-50 hidden flex items-center justify-center p-4">
-     <div class="glass-panel text-white rounded-[2.5rem] p-1 shadow-2xl max-w-md w-full relative">
-       <div class="bg-[#050505] rounded-[2.3rem] p-8 md:p-10">
-         <button onclick="closeSignupForm()" class="absolute top-6 right-6 text-[#d4af37] hover:scale-125 transition">✕</button>
-         <div id="form-content">
-           <h2 class="font-display text-3xl text-gold mb-2 text-center">Initialize Partner</h2>
-           <p class="text-[10px] text-emerald-200/50 mb-8 uppercase tracking-[0.2em] text-center">Secure Member Registration</p>
-           <form id="reg-form" onsubmit="sendData(event)" class="space-y-5">
-             <div><label class="text-[10px] font-bold text-[#d4af37] uppercase ml-1 mb-2 block">Full Name</label>
-             <input type="text" id="user-name" required class="w-full p-4 bg-white/5 border border-white/10 rounded-2xl outline-none focus:border-[#d4af37] transition text-white"></div>
-             <div><label class="text-[10px] font-bold text-[#d4af37] uppercase ml-1 mb-2 block">Email Address</label>
-             <input type="email" id="user-email" required class="w-full p-4 bg-white/5 border border-white/10 rounded-2xl outline-none focus:border-[#d4af37] transition text-white"></div>
-             <div><label class="text-[10px] font-bold text-[#d4af37] uppercase ml-1 mb-2 block">Phone Number</label>
-             <input type="tel" id="user-phone" placeholder="09XXXXXXXXX" required class="w-full p-4 bg-white/5 border border-white/10 rounded-2xl outline-none focus:border-[#d4af37] transition text-white"></div>
-             <button type="submit" id="submit-btn" class="w-full cta-btn py-5 rounded-2xl font-bold mt-4 shadow-lg uppercase tracking-wider text-sm">Submit Credentials</button>
-           </form>
-         </div>
-         <div id="success-message" class="hidden text-center py-8">
-           <div class="w-20 h-20 bg-emerald-900/40 border border-[#d4af37] rounded-full flex items-center justify-center mx-auto mb-6"><i data-lucide="shield-check" class="text-[#d4af37] w-10 h-10"></i></div>
-           <h3 class="text-3xl font-display text-gold mb-4">Verification Sent</h3>
-           <p class="text-emerald-100/70 mb-10 text-sm leading-relaxed">Details saved. Visit our Facebook to finalize your activation.</p>
-           <div class="space-y-4">
-             <a href="https://www.facebook.com/profile.php?id=61587556223299" target="_blank" class="block w-full bg-[#1877F2] text-white font-bold py-5 rounded-2xl flex items-center justify-center gap-3 hover:brightness-110 transition shadow-lg"><i data-lucide="facebook" class="w-5 h-5"></i> VISIT OUR FACEBOOK</a>
-             <button onclick="closeSignupForm()" class="text-[#d4af37] text-xs font-bold uppercase tracking-widest opacity-60 hover:opacity-100 mt-4">Close Window</button>
-           </div>
-         </div>
-       </div>
-     </div>
-   </div>
-  </div>
-
-  <script>
-    lucide.createIcons();
-    const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxTaeQRJhh-YC_uVG9m1LH8K1cVKTql4GtE4HVfTbF88IAU_xgH8vpZvE5oUa0HZUd8/exec";
-
-    function openSignupForm() { 
-        document.getElementById('signup-modal').classList.remove('hidden'); 
-        document.getElementById('form-content').classList.remove('hidden');
-        document.getElementById('success-message').classList.add('hidden');
-        document.getElementById('submit-btn').disabled = false;
-        document.getElementById('submit-btn').textContent = "Submit Credentials";
-    }
-
-    function closeSignupForm() { 
-        document.getElementById('signup-modal').classList.add('hidden');
-        document.getElementById('reg-form').reset();
-    }
-
-    async function sendData(e) {
-      e.preventDefault();
-      const btn = document.getElementById('submit-btn');
-      btn.disabled = true;
-      btn.textContent = "Processing...";
-
-      const formData = new FormData();
-      formData.append('name', document.getElementById('user-name').value);
-      formData.append('email', document.getElementById('user-email').value);
-      formData.append('phone', document.getElementById('user-phone').value);
-
-      try {
-        await fetch(SCRIPT_URL, { method: 'POST', mode: 'no-cors', body: formData });
-        document.getElementById('form-content').classList.add('hidden');
-        document.getElementById('success-message').classList.remove('hidden');
-      } catch (err) {
-        alert("Submission failed. Check connection.");
-        btn.disabled = false;
-        btn.textContent = "Submit Credentials";
-      }
-    }
-  </script>
- </body>
-</html>
+   <section class="py-24 bg-black border-y border-white/5">
+     <div class="max-w-6xl mx-auto px-6 text-center">
+       <h2 class="font-display text-3xl text-gold mb-16 uppercase tracking-[0.3em]">Official Documentation</h2>
+       <div class="grid md:grid-cols-2 gap-12">
+         <div class="group cursor-pointer">
+            <div class="aspect-[3/4] rounded-2xl bg-white/5 border border-white/10 flex items-center justify-center overflow-hidden mb-4 relative">
+              <img src="https://images.unsplash.com/photo-1586281380349-632531db7ed4?q=80&w=2070" class="absolute inset-0 w-full h-full object-cover opacity-20 group-hover:opacity-40 transition">
+              <i data-lucide="file-text" class="w-16 h-16 text-[#d4af37] relative z-10"></i>
+            </div>
+            <h3 class="font-bold text-xl mb-2">FDA License to Operate</h3>
+            <p class="text-sm text-gray-500 mb-4">Verified Food & Drug Administration Compliance</p>
+            <a href="
