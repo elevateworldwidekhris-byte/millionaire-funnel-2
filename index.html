@@ -9,27 +9,11 @@
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,600;0,700;1,600&family=Montserrat:wght@300;400;700&display=swap" rel="stylesheet">
   <style>
     html, body { height: 100%; margin: 0; scroll-behavior: smooth; background: #050505; color: #ffffff; }
-    
-    /* Elegant Serif for Headlines */
     .font-premium { font-family: 'Cormorant Garamond', serif; }
-    /* Modern Sans for Body */
     .font-body { font-family: 'Montserrat', sans-serif; }
-
-    .text-gold { 
-      background: linear-gradient(to right, #bf953f, #fcf6ba, #b38728, #fbf5b7, #aa771c); 
-      -webkit-background-clip: text; 
-      -webkit-text-fill-color: transparent; 
-    }
-
-    .cta-btn { 
-      background: linear-gradient(135deg, #d4af37 0%, #aa8a2e 100%); 
-      color: #052e16; 
-      box-shadow: 0 4px 20px rgba(212, 175, 55, 0.3); 
-      transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); 
-      letter-spacing: 0.1em;
-    }
+    .text-gold { background: linear-gradient(to right, #bf953f, #fcf6ba, #b38728, #fbf5b7, #aa771c); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+    .cta-btn { background: linear-gradient(135deg, #d4af37 0%, #aa8a2e 100%); color: #052e16; box-shadow: 0 4px 20px rgba(212, 175, 55, 0.3); transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); letter-spacing: 0.1em; }
     .cta-btn:hover { transform: translateY(-3px); box-shadow: 0 10px 30px rgba(212, 175, 55, 0.5); filter: brightness(1.1); }
-    
     .glass-panel { background: rgba(6, 78, 59, 0.15); backdrop-filter: blur(15px); border: 1px solid rgba(212, 175, 55, 0.3); }
     .cert-card { background: #111; border: 1px solid rgba(212, 175, 55, 0.1); transition: 0.3s; }
   </style>
@@ -41,13 +25,13 @@
             style="background-image: url('https://images.unsplash.com/photo-1550751827-4bd374c3f58b?q=80&w=2070');">
      <div class="absolute inset-0 bg-black/75 z-0"></div>
      
-     <div class="relative z-10 max-w-5xl mx-auto">
+     <div class="relative z-10 max-w-6xl mx-auto">
        <div class="flex items-center justify-center gap-3 mb-10">
           <span class="px-4 py-1 rounded-full bg-white/5 border border-[#d4af37]/30 text-[9px] font-bold uppercase text-[#d4af37] tracking-[0.3em]">Official Elite Access</span>
        </div>
 
-       <h1 class="font-premium text-6xl md:text-9xl mb-10 leading-[0.9] tracking-tight">
-         ₱1,998 to Launch Your <br>
+       <h1 class="font-premium text-5xl md:text-8xl lg:text-9xl mb-10 leading-[1.1] md:leading-[1] tracking-tight">
+         ₱1,998 to Launch Your <br class="hidden md:block">
          <span class="text-gold italic font-semibold">Digital Empire.</span>
        </h1>
 
@@ -123,7 +107,6 @@
          <div id="success-message" class="hidden text-center py-8">
            <div class="w-16 h-16 bg-emerald-900/40 border border-[#d4af37] rounded-full flex items-center justify-center mx-auto mb-8"><i data-lucide="shield-check" class="text-[#d4af37] w-8 h-8"></i></div>
            <h3 class="text-3xl font-premium text-gold mb-4 uppercase">Verification Sent</h3>
-           <p class="font-body text-white/50 mb-10 text-xs leading-relaxed tracking-wide">Connect with our official Facebook to complete setup.</p>
            <a href="https://www.facebook.com/profile.php?id=61587556223299" target="_blank" class="block w-full bg-[#1877F2] text-white font-bold py-5 rounded-2xl flex items-center justify-center gap-3 text-xs tracking-widest uppercase shadow-lg hover:brightness-110 transition">FACEBOOK ACCESS</a>
          </div>
        </div>
@@ -135,15 +118,8 @@
     lucide.createIcons();
     const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxTaeQRJhh-YC_uVG9m1LH8K1cVKTql4GtE4HVfTbF88IAU_xgH8vpZvE5oUa0HZUd8/exec";
 
-    function openSignupForm() { 
-        document.getElementById('signup-modal').classList.remove('hidden'); 
-        document.getElementById('form-content').classList.remove('hidden');
-        document.getElementById('success-message').classList.add('hidden');
-    }
-
-    function closeSignupForm() { 
-        document.getElementById('signup-modal').classList.add('hidden');
-    }
+    function openSignupForm() { document.getElementById('signup-modal').classList.remove('hidden'); document.getElementById('form-content').classList.remove('hidden'); document.getElementById('success-message').classList.add('hidden'); }
+    function closeSignupForm() { document.getElementById('signup-modal').classList.add('hidden'); }
 
     async function sendData(e) {
       e.preventDefault();
@@ -158,11 +134,7 @@
         await fetch(SCRIPT_URL, { method: 'POST', mode: 'no-cors', body: formData });
         document.getElementById('form-content').classList.add('hidden');
         document.getElementById('success-message').classList.remove('hidden');
-      } catch (err) {
-        alert("System busy. Try again.");
-        btn.disabled = false;
-        btn.textContent = "Submit Application";
-      }
+      } catch (err) { alert("System busy. Try again."); btn.disabled = false; btn.textContent = "Submit Application"; }
     }
   </script>
  </body>
