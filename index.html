@@ -6,47 +6,73 @@
   <title>Powerwell Direct Hub | Official Certified Partner</title>
   <script src="https://cdn.tailwindcss.com/3.4.17"></script>
   <script src="https://cdn.jsdelivr.net/npm/lucide@0.263.0/dist/umd/lucide.min.js"></script>
-  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,600;0,700;1,600&family=Montserrat:wght@300;400;700&display=swap" rel="stylesheet">
   <style>
     html, body { height: 100%; margin: 0; scroll-behavior: smooth; background: #050505; color: #ffffff; }
-    .font-display { font-family: 'Syne', sans-serif; }
-    .font-body { font-family: 'DM Sans', sans-serif; }
-    .text-gold { background: linear-gradient(to right, #bf953f, #fcf6ba, #b38728, #fbf5b7, #aa771c); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
-    .cta-btn { background: linear-gradient(135deg, #d4af37 0%, #aa8a2e 100%); color: #052e16; box-shadow: 0 4px 20px rgba(212, 175, 55, 0.3); transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
-    .cta-btn:hover { transform: translateY(-3px) scale(1.02); box-shadow: 0 10px 30px rgba(212, 175, 55, 0.5); filter: brightness(1.1); }
+    
+    /* Elegant Serif for Headlines */
+    .font-premium { font-family: 'Cormorant Garamond', serif; }
+    /* Modern Sans for Body */
+    .font-body { font-family: 'Montserrat', sans-serif; }
+
+    .text-gold { 
+      background: linear-gradient(to right, #bf953f, #fcf6ba, #b38728, #fbf5b7, #aa771c); 
+      -webkit-background-clip: text; 
+      -webkit-text-fill-color: transparent; 
+    }
+
+    .cta-btn { 
+      background: linear-gradient(135deg, #d4af37 0%, #aa8a2e 100%); 
+      color: #052e16; 
+      box-shadow: 0 4px 20px rgba(212, 175, 55, 0.3); 
+      transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); 
+      letter-spacing: 0.1em;
+    }
+    .cta-btn:hover { transform: translateY(-3px); box-shadow: 0 10px 30px rgba(212, 175, 55, 0.5); filter: brightness(1.1); }
+    
     .glass-panel { background: rgba(6, 78, 59, 0.15); backdrop-filter: blur(15px); border: 1px solid rgba(212, 175, 55, 0.3); }
-    .cert-card { background: #111; border: 1px solid rgba(212, 175, 55, 0.2); transition: 0.3s; }
-    .cert-card:hover { border-color: #d4af37; transform: translateY(-5px); }
+    .cert-card { background: #111; border: 1px solid rgba(212, 175, 55, 0.1); transition: 0.3s; }
   </style>
  </head>
- <body class="font-body">
+ <body class="font-body font-light">
 
   <div id="app-wrapper" class="w-full">
-   <section class="relative min-h-[85vh] flex items-center justify-center py-20 px-6 text-center bg-cover bg-fixed bg-center" 
+   <section class="relative min-h-[90vh] flex items-center justify-center py-20 px-6 text-center bg-cover bg-fixed bg-center" 
             style="background-image: url('https://images.unsplash.com/photo-1550751827-4bd374c3f58b?q=80&w=2070');">
-     <div class="absolute inset-0 bg-black/70 z-0"></div>
+     <div class="absolute inset-0 bg-black/75 z-0"></div>
+     
      <div class="relative z-10 max-w-5xl mx-auto">
-       <div class="flex items-center justify-center gap-3 mb-8">
-          <span class="px-3 py-1 rounded bg-emerald-500/20 border border-emerald-500/40 text-[10px] font-bold uppercase text-emerald-400 tracking-widest">DTI REGISTERED</span>
-          <span class="px-3 py-1 rounded bg-emerald-500/20 border border-emerald-500/40 text-[10px] font-bold uppercase text-emerald-400 tracking-widest">FDA COMPLIANT</span>
+       <div class="flex items-center justify-center gap-3 mb-10">
+          <span class="px-4 py-1 rounded-full bg-white/5 border border-[#d4af37]/30 text-[9px] font-bold uppercase text-[#d4af37] tracking-[0.3em]">Official Elite Access</span>
        </div>
-       <h1 class="font-display text-5xl md:text-8xl mb-8 leading-tight tracking-tight">₱1,998 to Launch Your <span class="text-gold">Digital Empire.</span></h1>
-       <p class="text-xl md:text-2xl opacity-90 mb-12 font-light text-emerald-50 max-w-2xl mx-auto">Direct access to the Powerwell Hub inventory. <br>Join an elite community of 500+ active partners.</p>
-       <button onclick="openSignupForm()" class="cta-btn font-display font-extrabold px-12 py-6 rounded-full text-xl uppercase tracking-widest">Join The Elite Team</button>
+
+       <h1 class="font-premium text-6xl md:text-9xl mb-10 leading-[0.9] tracking-tight">
+         ₱1,998 to Launch Your <br>
+         <span class="text-gold italic font-semibold">Digital Empire.</span>
+       </h1>
+
+       <p class="text-lg md:text-xl opacity-70 mb-14 font-light tracking-wide max-w-2xl mx-auto leading-relaxed">
+         Direct access to the Powerwell Hub inventory. <br>
+         Join an elite community of <span class="text-white font-bold">500+ active partners</span> nationwide.
+       </p>
+
+       <button onclick="openSignupForm()" class="cta-btn font-body font-bold px-14 py-6 rounded-full text-sm uppercase transition-all">
+         Initialize Partnership
+       </button>
        
-       <div class="mt-16 grid grid-cols-2 md:grid-cols-4 gap-4 max-w-3xl mx-auto opacity-80">
-          <div class="flex flex-col items-center gap-2"><i data-lucide="leaf" class="w-5 text-emerald-400"></i><span class="text-[9px] font-bold uppercase">100% Pure & Organic</span></div>
-          <div class="flex flex-col items-center gap-2"><i data-lucide="globe" class="w-5 text-emerald-400"></i><span class="text-[9px] font-bold uppercase">Premium NZ Sourced</span></div>
-          <div class="flex flex-col items-center gap-2"><i data-lucide="flower" class="w-5 text-emerald-400"></i><span class="text-[9px] font-bold uppercase">Vegan / Plant-Based</span></div>
-          <div class="flex flex-col items-center gap-2"><i data-lucide="check-circle-2" class="w-5 text-emerald-400"></i><span class="text-[9px] font-bold uppercase">Halal Certified</span></div>
+       <div class="mt-24 grid grid-cols-2 md:grid-cols-4 gap-8 max-w-4xl mx-auto opacity-60">
+          <div class="flex flex-col items-center gap-3"><i data-lucide="leaf" class="w-5 text-[#d4af37]"></i><span class="text-[9px] font-bold uppercase tracking-widest">Organic</span></div>
+          <div class="flex flex-col items-center gap-3"><i data-lucide="globe" class="w-5 text-[#d4af37]"></i><span class="text-[9px] font-bold uppercase tracking-widest">NZ Sourced</span></div>
+          <div class="flex flex-col items-center gap-3"><i data-lucide="flower" class="w-5 text-[#d4af37]"></i><span class="text-[9px] font-bold uppercase tracking-widest">Plant-Based</span></div>
+          <div class="flex flex-col items-center gap-3"><i data-lucide="check-circle-2" class="w-5 text-[#d4af37]"></i><span class="text-[9px] font-bold uppercase tracking-widest">Halal Cert</span></div>
        </div>
      </div>
    </section>
 
    <section class="py-24 bg-black">
      <div class="max-w-5xl mx-auto px-6 text-center">
-       <h2 class="font-display text-3xl text-gold mb-12 uppercase tracking-widest italic">The Opportunity Presentation</h2>
-       <div class="aspect-video rounded-3xl overflow-hidden shadow-[0_0_50px_rgba(6,78,59,0.3)] border border-white/10">
+       <h2 class="font-premium text-4xl text-gold mb-12 italic">The Opportunity Presentation</h2>
+       <div class="aspect-video rounded-3xl overflow-hidden shadow-[0_0_80px_rgba(191,149,63,0.15)] border border-white/5">
          <iframe width="100%" height="100%" src="https://player.vimeo.com/video/1182892372" frameborder="0" allowfullscreen></iframe>
        </div>
      </div>
@@ -54,55 +80,51 @@
 
    <section class="py-24 bg-[#050505] border-t border-white/5">
      <div class="max-w-5xl mx-auto px-6 text-center">
-       <h2 class="font-display text-3xl text-white mb-4 uppercase tracking-[0.2em]">Verified Legal Proof</h2>
-       <p class="text-emerald-100/50 mb-16 text-sm">Official DTI and FDA documentation for Powerwell Direct Hub</p>
+       <h2 class="font-premium text-4xl text-white mb-4 uppercase tracking-[0.1em]">Legal Compliance</h2>
+       <p class="text-sm opacity-40 mb-16 tracking-widest">Official DTI and FDA documentation</p>
        
-       <div class="grid md:grid-cols-2 gap-8">
-         <div class="cert-card p-4 rounded-[2rem]">
-           <h3 class="font-bold text-[#d4af37] mb-4 text-sm uppercase tracking-widest">FDA License to Operate</h3>
-           <div class="rounded-2xl overflow-hidden bg-black mb-6">
-             <img src="https://i.ibb.co/JFHyLv80/image.png" alt="FDA Certificate" class="w-full h-auto">
+       <div class="grid md:grid-cols-2 gap-10">
+         <div class="cert-card p-6 rounded-3xl">
+           <h3 class="font-body font-bold text-[#d4af37] mb-6 text-xs uppercase tracking-[0.2em]">FDA License to Operate</h3>
+           <div class="rounded-xl overflow-hidden bg-black mb-8 border border-white/5">
+             <img src="https://i.ibb.co/JFHyLv80/image.png" alt="FDA" class="w-full h-auto opacity-90">
            </div>
-           <a href="https://drive.google.com/file/d/1mHskFhrW3kzUWEaU8R-PJCGRjkYQNcBu/view?usp=sharing" target="_blank" class="inline-flex items-center gap-2 text-xs font-bold text-white/60 hover:text-[#d4af37] transition underline">
-             <i data-lucide="external-link" class="w-3"></i> OPEN ORIGINAL GOOGLE DRIVE FILE
-           </a>
+           <a href="https://drive.google.com/file/d/1mHskFhrW3kzUWEaU8R-PJCGRjkYQNcBu/view?usp=sharing" target="_blank" class="text-[10px] font-bold text-white/40 hover:text-[#d4af37] transition underline tracking-widest">VIEW ON GOOGLE DRIVE</a>
          </div>
 
-         <div class="cert-card p-4 rounded-[2rem]">
-           <h3 class="font-bold text-[#d4af37] mb-4 text-sm uppercase tracking-widest">DTI Business Registration</h3>
-           <div class="rounded-2xl overflow-hidden bg-black mb-6">
-             <img src="https://i.ibb.co/yFHqGcnY/image.png" alt="DTI Registration" class="w-full h-auto">
+         <div class="cert-card p-6 rounded-3xl">
+           <h3 class="font-body font-bold text-[#d4af37] mb-6 text-xs uppercase tracking-[0.2em]">DTI Business Name</h3>
+           <div class="rounded-xl overflow-hidden bg-black mb-8 border border-white/5">
+             <img src="https://i.ibb.co/yFHqGcnY/image.png" alt="DTI" class="w-full h-auto opacity-90">
            </div>
-           <a href="https://drive.google.com/file/d/1UMuBHDD2URLfq1appzgbGzRGjMneXZxP/view?usp=sharing" target="_blank" class="inline-flex items-center gap-2 text-xs font-bold text-white/60 hover:text-[#d4af37] transition underline">
-             <i data-lucide="external-link" class="w-3"></i> OPEN ORIGINAL GOOGLE DRIVE FILE
-           </a>
+           <a href="https://drive.google.com/file/d/1UMuBHDD2URLfq1appzgbGzRGjMneXZxP/view?usp=sharing" target="_blank" class="text-[10px] font-bold text-white/40 hover:text-[#d4af37] transition underline tracking-widest">VIEW ON GOOGLE DRIVE</a>
          </div>
        </div>
      </div>
    </section>
 
-   <footer class="py-12 text-center bg-black border-t border-white/5">
-     <p class="text-[#d4af37] font-bold tracking-widest text-[10px] opacity-40 uppercase">© 2026 Powerwell Direct Hub • Authorized Partner Portal</p>
+   <footer class="py-16 text-center bg-black border-t border-white/5">
+     <p class="text-[#d4af37] font-bold tracking-[0.4em] text-[9px] opacity-40 uppercase">Powerwell Direct Hub • 2026 Elite Partnership</p>
    </footer>
 
-   <div id="signup-modal" class="fixed inset-0 bg-black/95 z-50 hidden flex items-center justify-center p-4">
+   <div id="signup-modal" class="fixed inset-0 bg-black/98 z-50 hidden flex items-center justify-center p-4">
      <div class="glass-panel text-white rounded-[2.5rem] p-1 shadow-2xl max-w-md w-full relative">
-       <div class="bg-[#050505] rounded-[2.3rem] p-8 md:p-10">
-         <button onclick="closeSignupForm()" class="absolute top-6 right-6 text-[#d4af37] hover:scale-125 transition">✕</button>
+       <div class="bg-[#050505] rounded-[2.3rem] p-8 md:p-12">
+         <button onclick="closeSignupForm()" class="absolute top-8 right-8 text-[#d4af37] hover:scale-125 transition">✕</button>
          <div id="form-content">
-           <h2 class="font-display text-3xl text-gold mb-8 text-center uppercase tracking-tighter">Partner Access</h2>
-           <form id="reg-form" onsubmit="sendData(event)" class="space-y-4">
-             <input type="text" id="user-name" placeholder="Full Name" required class="w-full p-4 bg-white/5 border border-white/10 rounded-2xl outline-none focus:border-[#d4af37] text-white">
-             <input type="email" id="user-email" placeholder="Email Address" required class="w-full p-4 bg-white/5 border border-white/10 rounded-2xl outline-none focus:border-[#d4af37] text-white">
-             <input type="tel" id="user-phone" placeholder="Phone Number" required class="w-full p-4 bg-white/5 border border-white/10 rounded-2xl outline-none focus:border-[#d4af37] text-white">
-             <button type="submit" id="submit-btn" class="w-full cta-btn py-5 rounded-2xl font-bold mt-4 uppercase text-sm tracking-widest">Submit Application</button>
+           <h2 class="font-premium text-4xl text-gold mb-10 text-center uppercase tracking-tighter">Partner Access</h2>
+           <form id="reg-form" onsubmit="sendData(event)" class="space-y-6">
+             <input type="text" id="user-name" placeholder="Full Name" required class="w-full p-5 bg-white/5 border border-white/10 rounded-2xl outline-none focus:border-[#d4af37] text-white font-body text-sm">
+             <input type="email" id="user-email" placeholder="Email Address" required class="w-full p-5 bg-white/5 border border-white/10 rounded-2xl outline-none focus:border-[#d4af37] text-white font-body text-sm">
+             <input type="tel" id="user-phone" placeholder="Phone Number" required class="w-full p-5 bg-white/5 border border-white/10 rounded-2xl outline-none focus:border-[#d4af37] text-white font-body text-sm">
+             <button type="submit" id="submit-btn" class="w-full cta-btn py-5 rounded-2xl font-bold mt-6 uppercase text-xs">Submit Application</button>
            </form>
          </div>
          <div id="success-message" class="hidden text-center py-8">
-           <div class="w-16 h-16 bg-emerald-900/40 border border-[#d4af37] rounded-full flex items-center justify-center mx-auto mb-6"><i data-lucide="shield-check" class="text-[#d4af37] w-8 h-8"></i></div>
-           <h3 class="text-2xl font-display text-gold mb-4 uppercase">Verification Sent</h3>
-           <p class="text-emerald-100/60 mb-8 text-xs leading-relaxed">Your data has been secured. Connect with our official Facebook to finish your setup.</p>
-           <a href="https://www.facebook.com/profile.php?id=61587556223299" target="_blank" class="block w-full bg-[#1877F2] text-white font-bold py-5 rounded-2xl flex items-center justify-center gap-3"><i data-lucide="facebook" class="w-5 h-5"></i> ACCESS FACEBOOK</a>
+           <div class="w-16 h-16 bg-emerald-900/40 border border-[#d4af37] rounded-full flex items-center justify-center mx-auto mb-8"><i data-lucide="shield-check" class="text-[#d4af37] w-8 h-8"></i></div>
+           <h3 class="text-3xl font-premium text-gold mb-4 uppercase">Verification Sent</h3>
+           <p class="font-body text-white/50 mb-10 text-xs leading-relaxed tracking-wide">Connect with our official Facebook to complete setup.</p>
+           <a href="https://www.facebook.com/profile.php?id=61587556223299" target="_blank" class="block w-full bg-[#1877F2] text-white font-bold py-5 rounded-2xl flex items-center justify-center gap-3 text-xs tracking-widest uppercase shadow-lg hover:brightness-110 transition">FACEBOOK ACCESS</a>
          </div>
        </div>
      </div>
@@ -127,7 +149,7 @@
       e.preventDefault();
       const btn = document.getElementById('submit-btn');
       btn.disabled = true;
-      btn.textContent = "Processing...";
+      btn.textContent = "Processing Application...";
       const formData = new FormData();
       formData.append('name', document.getElementById('user-name').value);
       formData.append('email', document.getElementById('user-email').value);
@@ -137,7 +159,7 @@
         document.getElementById('form-content').classList.add('hidden');
         document.getElementById('success-message').classList.remove('hidden');
       } catch (err) {
-        alert("Error sending details.");
+        alert("System busy. Try again.");
         btn.disabled = false;
         btn.textContent = "Submit Application";
       }
