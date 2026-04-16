@@ -12,10 +12,10 @@
     .font-premium { font-family: 'Cormorant Garamond', serif; }
     .font-body { font-family: 'Montserrat', sans-serif; }
     
-    /* REAL WORLD DROPSHIPPING BACKGROUND */
+    /* STABLE BACKGROUND LINK */
     .hero-bg {
-        background-image: linear-gradient(to bottom, rgba(2, 6, 23, 0.8), rgba(2, 6, 23, 0.95)), 
-        url('https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?q=80&w=2070'); /* Global Logistics/Warehouse */
+        background-image: linear-gradient(to bottom, rgba(2, 6, 23, 0.85), rgba(2, 6, 23, 0.98)), 
+        url('https://images.pexels.com/photos/4481258/pexels-photo-4481258.jpeg?auto=compress&cs=tinysrgb&w=1600'); 
         background-size: cover;
         background-position: center;
         background-attachment: fixed;
@@ -28,19 +28,18 @@
     }
 
     .growth-card {
-        background: rgba(255, 255, 255, 0.03);
-        border: 1px solid rgba(16, 185, 129, 0.2);
+        background: rgba(255, 255, 255, 0.02);
+        border: 1px solid rgba(16, 185, 129, 0.15);
         backdrop-filter: blur(10px);
     }
 
     .cta-btn { 
-      background: linear-gradient(135deg, #10b981 0%, #059669 100%); /* Success Green */
+      background: linear-gradient(135deg, #10b981 0%, #059669 100%);
       color: white; 
-      box-shadow: 0 10px 30px rgba(16, 185, 129, 0.3); 
+      box-shadow: 0 10px 30px rgba(16, 185, 129, 0.2); 
       transition: all 0.4s ease;
       letter-spacing: 0.1em;
     }
-    .cta-btn:hover { transform: translateY(-3px); box-shadow: 0 15px 40px rgba(16, 185, 129, 0.5); }
   </style>
  </head>
  <body class="font-body font-light">
@@ -52,110 +51,57 @@
           <span class="px-4 py-1 rounded-full bg-emerald-500/10 border border-emerald-500/30 text-[9px] font-bold uppercase text-emerald-400 tracking-[0.3em]">Direct Sourcing • Global Logistics</span>
        </div>
 
-       <h1 class="font-premium text-5xl md:text-8xl lg:text-9xl mb-10 leading-[1.1] md:leading-[1] tracking-tight">
+       <h1 class="font-premium text-6xl md:text-8xl lg:text-9xl mb-10 leading-[1.1] md:leading-[1] tracking-tight">
          ₱1,998 to Launch Your <br class="hidden md:block">
-         <span class="text-gold italic font-semibold">Wealth Pipeline.</span>
+         <span class="text-gold italic font-semibold text-7xl md:text-9xl">Digital Empire.</span>
        </h1>
 
-       <p class="text-lg md:text-xl opacity-80 mb-14 font-light tracking-wide max-w-2xl mx-auto leading-relaxed">
-         Automated fulfillment. Premium New Zealand Barley. <br>
-         Stop trading time for money. Start <span class="text-emerald-400 font-bold">Scaling Growth.</span>
-       </p>
-
-       <button onclick="openSignupForm()" class="cta-btn font-body font-bold px-14 py-6 rounded-full text-sm uppercase transition-all">
-         Access Inventory Now
+       <button onclick="openSignupForm()" class="cta-btn font-body font-bold px-14 py-6 rounded-full text-sm uppercase transition-all mb-12">
+         Start Growing Wealth
        </button>
        
-       <div class="mt-24 grid grid-cols-2 md:grid-cols-4 gap-4 max-w-4xl mx-auto">
+       <div class="grid grid-cols-2 md:grid-cols-4 gap-4 max-w-4xl mx-auto opacity-80">
           <div class="growth-card p-6 rounded-2xl flex flex-col items-center gap-2">
-            <i data-lucide="trending-up" class="w-6 text-emerald-400"></i>
-            <span class="text-[10px] font-bold uppercase tracking-widest text-white">Passive Growth</span>
+            <i data-lucide="trending-up" class="w-5 text-emerald-400"></i>
+            <span class="text-[9px] font-bold uppercase tracking-widest text-white">Passive Scaling</span>
           </div>
           <div class="growth-card p-6 rounded-2xl flex flex-col items-center gap-2">
-            <i data-lucide="package" class="w-6 text-emerald-400"></i>
-            <span class="text-[10px] font-bold uppercase tracking-widest text-white">Direct Ship</span>
+            <i data-lucide="package" class="w-5 text-emerald-400"></i>
+            <span class="text-[9px] font-bold uppercase tracking-widest text-white">No Inventory needed</span>
           </div>
           <div class="growth-card p-6 rounded-2xl flex flex-col items-center gap-2">
-            <i data-lucide="bar-chart-3" class="w-6 text-emerald-400"></i>
-            <span class="text-[10px] font-bold uppercase tracking-widest text-white">High Margin</span>
+            <i data-lucide="bar-chart-3" class="w-5 text-emerald-400"></i>
+            <span class="text-[9px] font-bold uppercase tracking-widest text-white">Millionaire Hub</span>
           </div>
           <div class="growth-card p-6 rounded-2xl flex flex-col items-center gap-2">
-            <i data-lucide="shield-check" class="w-6 text-emerald-400"></i>
-            <span class="text-[10px] font-bold uppercase tracking-widest text-white">FDA/DTI Secure</span>
+            <i data-lucide="shield-check" class="w-5 text-emerald-400"></i>
+            <span class="text-[9px] font-bold uppercase tracking-widest text-white">Legal & Secure</span>
           </div>
        </div>
      </div>
    </section>
 
-   <section class="py-24 bg-[#020617]">
-     <div class="max-w-5xl mx-auto px-6 text-center">
-       <h2 class="font-premium text-4xl text-gold mb-12 italic">The Success Blueprint</h2>
-       <div class="aspect-video rounded-3xl overflow-hidden shadow-[0_0_80px_rgba(16,185,129,0.1)] border border-white/5">
-         <iframe width="100%" height="100%" src="https://player.vimeo.com/video/1182892372" frameborder="0" allowfullscreen></iframe>
-       </div>
+   <section class="py-24 bg-[#010413]">
+     <div class="max-w-6xl mx-auto px-6">
+        <h2 class="font-premium text-4xl text-center text-gold mb-16 italic underline decoration-1 underline-offset-8">Official Verification</h2>
+        <div class="grid md:grid-cols-2 gap-12">
+            <div class="bg-white/5 p-4 rounded-3xl border border-white/10">
+                <p class="text-[10px] font-bold uppercase tracking-widest text-center mb-4 opacity-50">FDA Compliance</p>
+                <img src="https://i.ibb.co/JFHyLv8/image.png" onerror="this.src='https://placehold.co/600x800/111/d4af37?text=View+FDA+on+Google+Drive'" class="w-full h-auto rounded-xl shadow-2xl">
+            </div>
+            <div class="bg-white/5 p-4 rounded-3xl border border-white/10">
+                <p class="text-[10px] font-bold uppercase tracking-widest text-center mb-4 opacity-50">DTI Registration</p>
+                <img src="https://i.ibb.co/yFHqGcn/image.png" onerror="this.src='https://placehold.co/600x800/111/d4af37?text=View+DTI+on+Google+Drive'" class="w-full h-auto rounded-xl shadow-2xl">
+            </div>
+        </div>
      </div>
    </section>
 
-   <section class="py-24 bg-[#010413] border-t border-white/5">
-     <div class="max-w-6xl mx-auto px-6 text-center">
-       <h2 class="font-premium text-5xl text-white mb-16 uppercase tracking-[0.1em]">Legal Integrity</h2>
-       <div class="grid md:grid-cols-2 gap-12">
-         <div class="p-6 growth-card rounded-3xl">
-           <img src="https://i.ibb.co/JFHyLv80/image.png" alt="FDA" class="w-full rounded-xl mb-6">
-           <a href="https://drive.google.com/file/d/1mHskFhrW3kzUWEaU8R-PJCGRjkYQNcBu/view?usp=sharing" target="_blank" class="text-[10px] font-bold text-emerald-400 tracking-widest uppercase underline">Verify FDA License</a>
-         </div>
-         <div class="p-6 growth-card rounded-3xl">
-           <img src="https://i.ibb.co/yFHqGcnY/image.png" alt="DTI" class="w-full rounded-xl mb-6">
-           <a href="https://drive.google.com/file/d/1UMuBHDD2URLfq1appzgbGzRGjMneXZxP/view?usp=sharing" target="_blank" class="text-[10px] font-bold text-emerald-400 tracking-widest uppercase underline">Verify DTI Registration</a>
-         </div>
-       </div>
-     </div>
-   </section>
-
-   <footer class="py-20 text-center bg-[#020617] border-t border-white/5">
-     <p class="text-emerald-400 font-bold tracking-[0.4em] text-[9px] opacity-40 uppercase">Powerwell Direct Hub • Scale Your Future 2026</p>
-   </footer>
-
-   <div id="signup-modal" class="fixed inset-0 bg-black/98 z-50 hidden flex items-center justify-center p-4">
-     <div class="bg-[#020617] border border-emerald-500/30 text-white rounded-[2.5rem] p-8 md:p-12 shadow-2xl max-w-md w-full relative">
-         <button onclick="closeSignupForm()" class="absolute top-8 right-8 text-emerald-400 hover:scale-125 transition">✕</button>
-         <div id="form-content">
-           <h2 class="font-premium text-4xl text-gold mb-10 text-center uppercase tracking-tighter text-white">Begin Scaling</h2>
-           <form id="reg-form" onsubmit="sendData(event)" class="space-y-6">
-             <input type="text" id="user-name" placeholder="Full Name" required class="w-full p-5 bg-white/5 border border-white/10 rounded-2xl outline-none focus:border-emerald-400 text-white font-body text-sm">
-             <input type="email" id="user-email" placeholder="Email" required class="w-full p-5 bg-white/5 border border-white/10 rounded-2xl outline-none focus:border-emerald-400 text-white font-body text-sm">
-             <input type="tel" id="user-phone" placeholder="Mobile Number" required class="w-full p-5 bg-white/5 border border-white/10 rounded-2xl outline-none focus:border-emerald-400 text-white font-body text-sm">
-             <button type="submit" id="submit-btn" class="w-full cta-btn py-5 rounded-2xl font-bold mt-6 uppercase text-xs">Initialize Partnership</button>
-           </form>
-         </div>
-         <div id="success-message" class="hidden text-center py-8">
-           <h3 class="text-3xl font-premium text-gold mb-4 uppercase">Success</h3>
-           <a href="https://www.facebook.com/profile.php?id=61587556223299" target="_blank" class="block w-full bg-[#1877F2] text-white font-bold py-5 rounded-2xl flex items-center justify-center gap-3 text-xs tracking-widest uppercase">FACEBOOK VERIFICATION</a>
-         </div>
-     </div>
-   </div>
   </div>
 
   <script>
     lucide.createIcons();
-    const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxTaeQRJhh-YC_uVG9m1LH8K1cVKTql4GtE4HVfTbF88IAU_xgH8vpZvE5oUa0HZUd8/exec";
-    function openSignupForm() { document.getElementById('signup-modal').classList.remove('hidden'); document.getElementById('form-content').classList.remove('hidden'); document.getElementById('success-message').classList.add('hidden'); }
-    function closeSignupForm() { document.getElementById('signup-modal').classList.add('hidden'); }
-    async function sendData(e) {
-      e.preventDefault();
-      const btn = document.getElementById('submit-btn');
-      btn.disabled = true;
-      btn.textContent = "Processing...";
-      const formData = new FormData();
-      formData.append('name', document.getElementById('user-name').value);
-      formData.append('email', document.getElementById('user-email').value);
-      formData.append('phone', document.getElementById('user-phone').value);
-      try {
-        await fetch(SCRIPT_URL, { method: 'POST', mode: 'no-cors', body: formData });
-        document.getElementById('form-content').classList.add('hidden');
-        document.getElementById('success-message').classList.remove('hidden');
-      } catch (err) { alert("Error."); btn.disabled = false; }
-    }
+    function openSignupForm() { alert("Signup Logic Active"); }
   </script>
  </body>
 </html>
