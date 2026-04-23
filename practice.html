@@ -71,7 +71,7 @@
          <div class="cert-card p-6 rounded-3xl">
            <h3 class="font-body font-bold text-[#d4af37] mb-6 text-xs uppercase tracking-[0.2em]">FDA License to Operate</h3>
            <div class="rounded-xl overflow-hidden bg-white/5 mb-8 border border-white/5">
-             <img src="fda.jpg" alt="FDA" class="w-full h-auto opacity-95">
+             <img src="fda.jpg" alt="FDA Certificate" class="w-full h-auto opacity-95">
            </div>
            <a href="https://drive.google.com/file/d/1mHskFhrW3kzUWEaU8R-PJCGRjkYQNcBu/view?usp=sharing" target="_blank" class="text-[10px] font-bold text-white/40 hover:text-[#d4af37] transition underline tracking-widest">VIEW ON GOOGLE DRIVE</a>
          </div>
@@ -79,7 +79,7 @@
          <div class="cert-card p-6 rounded-3xl">
            <h3 class="font-body font-bold text-[#d4af37] mb-6 text-xs uppercase tracking-[0.2em]">DTI Business Name</h3>
            <div class="rounded-xl overflow-hidden bg-white/5 mb-8 border border-white/5">
-             <img src="dti.jpg" alt="DTI" class="w-full h-auto opacity-95">
+             <img src="dti.jpg" alt="DTI Certificate" class="w-full h-auto opacity-95">
            </div>
            <a href="https://drive.google.com/file/d/1UMuBHDD2URLfq1appzgbGzRGjMneXZxP/view?usp=sharing" target="_blank" class="text-[10px] font-bold text-white/40 hover:text-[#d4af37] transition underline tracking-widest">VIEW ON GOOGLE DRIVE</a>
          </div>
@@ -109,8 +109,8 @@
          <div id="success-message" class="hidden text-center py-8">
            <div class="w-16 h-16 bg-emerald-900/40 border border-[#d4af37] rounded-full flex items-center justify-center mx-auto mb-8"><i data-lucide="shield-check" class="text-[#d4af37] w-8 h-8"></i></div>
            <h3 class="text-3xl font-premium text-gold mb-4 uppercase">Verification Sent</h3>
-           <p class="text-xs opacity-50 mb-6">The form will reset in a few seconds...</p>
-           <a href="https://www.facebook.com/profile.php?id=61587556223299" target="_blank" class="block w-full bg-[#1877F2] text-white font-bold py-5 rounded-2xl flex items-center justify-center gap-3 text-xs tracking-widest uppercase shadow-lg">FACEBOOK ACCESS</a>
+           <p class="text-xs opacity-50 mb-6">The form will reset automatically...</p>
+           <a href="https://www.facebook.com/profile.php?id=61587556223299" target="_blank" class="block w-full bg-[#1877F2] text-white font-bold py-5 rounded-2xl flex items-center justify-center gap-3 text-xs tracking-widest uppercase shadow-lg">CONNECT ON FACEBOOK</a>
          </div>
 
        </div>
@@ -123,20 +123,30 @@
     const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxTaeQRJhh-YC_uVG9m1LH8K1cVKTql4GtE4HVfTbF88IAU_xgH8vpZvE5oUa0HZUd8/exec";
 
     function openSignupForm() { 
-        document.getElementById('signup-modal').classList.remove('hidden'); 
+        // Force reset the view and button state every time it's opened
         document.getElementById('form-content').classList.remove('hidden'); 
         document.getElementById('success-message').classList.add('hidden'); 
+        document.getElementById('signup-modal').classList.remove('hidden'); 
+        
+        const btn = document.getElementById('submit-btn');
+        btn.disabled = false;
+        btn.textContent = "Submit Application";
     }
 
     function closeSignupForm() { 
         document.getElementById('signup-modal').classList.add('hidden'); 
-        // Reset the form values when closed
         document.getElementById('reg-form').reset();
+        
+        // Reset button state just in case
+        const btn = document.getElementById('submit-btn');
+        btn.disabled = false;
+        btn.textContent = "Submit Application";
     }
 
     async function sendData(e) {
       e.preventDefault();
       const btn = document.getElementById('submit-btn');
+      
       btn.disabled = true;
       btn.textContent = "Processing Application...";
       
@@ -148,15 +158,12 @@
       try {
         await fetch(SCRIPT_URL, { method: 'POST', mode: 'no-cors', body: formData });
         
-        // Show success message
         document.getElementById('form-content').classList.add('hidden');
         document.getElementById('success-message').classList.remove('hidden');
 
-        // NEW FIX: Wait 5 seconds, then refresh the form and close modal
+        // Automatically close and reset everything after 5 seconds
         setTimeout(() => {
             closeSignupForm();
-            btn.disabled = false;
-            btn.textContent = "Submit Application";
         }, 5000);
 
       } catch (err) { 
