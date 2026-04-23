@@ -70,16 +70,16 @@
        <div class="grid md:grid-cols-2 gap-10">
          <div class="cert-card p-6 rounded-3xl">
            <h3 class="font-body font-bold text-[#d4af37] mb-6 text-xs uppercase tracking-[0.2em]">FDA License to Operate</h3>
-           <div class="rounded-xl overflow-hidden bg-black mb-8 border border-white/5">
-             <img src="https://i.ibb.co/JFHyLv80/image.png" alt="FDA" class="w-full h-auto opacity-90">
+           <div class="rounded-xl overflow-hidden bg-white/5 mb-8 border border-white/5">
+             <img src="fda.jpg" alt="FDA" class="w-full h-auto opacity-95">
            </div>
            <a href="https://drive.google.com/file/d/1mHskFhrW3kzUWEaU8R-PJCGRjkYQNcBu/view?usp=sharing" target="_blank" class="text-[10px] font-bold text-white/40 hover:text-[#d4af37] transition underline tracking-widest">VIEW ON GOOGLE DRIVE</a>
          </div>
 
          <div class="cert-card p-6 rounded-3xl">
            <h3 class="font-body font-bold text-[#d4af37] mb-6 text-xs uppercase tracking-[0.2em]">DTI Business Name</h3>
-           <div class="rounded-xl overflow-hidden bg-black mb-8 border border-white/5">
-             <img src="https://i.ibb.co/yFHqGcnY/image.png" alt="DTI" class="w-full h-auto opacity-90">
+           <div class="rounded-xl overflow-hidden bg-white/5 mb-8 border border-white/5">
+             <img src="dti.jpg" alt="DTI" class="w-full h-auto opacity-95">
            </div>
            <a href="https://drive.google.com/file/d/1UMuBHDD2URLfq1appzgbGzRGjMneXZxP/view?usp=sharing" target="_blank" class="text-[10px] font-bold text-white/40 hover:text-[#d4af37] transition underline tracking-widest">VIEW ON GOOGLE DRIVE</a>
          </div>
@@ -95,6 +95,7 @@
      <div class="glass-panel text-white rounded-[2.5rem] p-1 shadow-2xl max-w-md w-full relative">
        <div class="bg-[#050505] rounded-[2.3rem] p-8 md:p-12">
          <button onclick="closeSignupForm()" class="absolute top-8 right-8 text-[#d4af37] hover:scale-125 transition">✕</button>
+         
          <div id="form-content">
            <h2 class="font-premium text-4xl text-gold mb-10 text-center uppercase tracking-tighter">Partner Access</h2>
            <form id="reg-form" onsubmit="sendData(event)" class="space-y-6">
@@ -104,11 +105,14 @@
              <button type="submit" id="submit-btn" class="w-full cta-btn py-5 rounded-2xl font-bold mt-6 uppercase text-xs">Submit Application</button>
            </form>
          </div>
+
          <div id="success-message" class="hidden text-center py-8">
            <div class="w-16 h-16 bg-emerald-900/40 border border-[#d4af37] rounded-full flex items-center justify-center mx-auto mb-8"><i data-lucide="shield-check" class="text-[#d4af37] w-8 h-8"></i></div>
            <h3 class="text-3xl font-premium text-gold mb-4 uppercase">Verification Sent</h3>
-           <a href="https://www.facebook.com/profile.php?id=61587556223299" target="_blank" class="block w-full bg-[#1877F2] text-white font-bold py-5 rounded-2xl flex items-center justify-center gap-3 text-xs tracking-widest uppercase shadow-lg hover:brightness-110 transition">FACEBOOK ACCESS</a>
+           <p class="text-xs opacity-50 mb-6">The form will reset in a few seconds...</p>
+           <a href="https://www.facebook.com/profile.php?id=61587556223299" target="_blank" class="block w-full bg-[#1877F2] text-white font-bold py-5 rounded-2xl flex items-center justify-center gap-3 text-xs tracking-widest uppercase shadow-lg">FACEBOOK ACCESS</a>
          </div>
+
        </div>
      </div>
    </div>
@@ -118,23 +122,48 @@
     lucide.createIcons();
     const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxTaeQRJhh-YC_uVG9m1LH8K1cVKTql4GtE4HVfTbF88IAU_xgH8vpZvE5oUa0HZUd8/exec";
 
-    function openSignupForm() { document.getElementById('signup-modal').classList.remove('hidden'); document.getElementById('form-content').classList.remove('hidden'); document.getElementById('success-message').classList.add('hidden'); }
-    function closeSignupForm() { document.getElementById('signup-modal').classList.add('hidden'); }
+    function openSignupForm() { 
+        document.getElementById('signup-modal').classList.remove('hidden'); 
+        document.getElementById('form-content').classList.remove('hidden'); 
+        document.getElementById('success-message').classList.add('hidden'); 
+    }
+
+    function closeSignupForm() { 
+        document.getElementById('signup-modal').classList.add('hidden'); 
+        // Reset the form values when closed
+        document.getElementById('reg-form').reset();
+    }
 
     async function sendData(e) {
       e.preventDefault();
       const btn = document.getElementById('submit-btn');
       btn.disabled = true;
       btn.textContent = "Processing Application...";
+      
       const formData = new FormData();
       formData.append('name', document.getElementById('user-name').value);
       formData.append('email', document.getElementById('user-email').value);
       formData.append('phone', document.getElementById('user-phone').value);
+      
       try {
         await fetch(SCRIPT_URL, { method: 'POST', mode: 'no-cors', body: formData });
+        
+        // Show success message
         document.getElementById('form-content').classList.add('hidden');
         document.getElementById('success-message').classList.remove('hidden');
-      } catch (err) { alert("System busy. Try again."); btn.disabled = false; btn.textContent = "Submit Application"; }
+
+        // NEW FIX: Wait 5 seconds, then refresh the form and close modal
+        setTimeout(() => {
+            closeSignupForm();
+            btn.disabled = false;
+            btn.textContent = "Submit Application";
+        }, 5000);
+
+      } catch (err) { 
+        alert("System busy. Try again."); 
+        btn.disabled = false; 
+        btn.textContent = "Submit Application"; 
+      }
     }
   </script>
  </body>
