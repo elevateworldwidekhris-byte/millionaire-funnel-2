@@ -109,10 +109,9 @@
          <div id="success-message" class="hidden text-center py-8">
            <div class="w-16 h-16 bg-emerald-900/40 border border-[#d4af37] rounded-full flex items-center justify-center mx-auto mb-8"><i data-lucide="shield-check" class="text-[#d4af37] w-8 h-8"></i></div>
            <h3 class="text-3xl font-premium text-gold mb-4 uppercase">Verification Sent</h3>
-           <p class="text-xs opacity-50 mb-6">The form will reset automatically...</p>
+           <p class="text-xs opacity-50 mb-6">Redirecting in 5 seconds...</p>
            <a href="https://www.facebook.com/profile.php?id=61587556223299" target="_blank" class="block w-full bg-[#1877F2] text-white font-bold py-5 rounded-2xl flex items-center justify-center gap-3 text-xs tracking-widest uppercase shadow-lg">CONNECT ON FACEBOOK</a>
          </div>
-
        </div>
      </div>
    </div>
@@ -123,7 +122,6 @@
     const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxTaeQRJhh-YC_uVG9m1LH8K1cVKTql4GtE4HVfTbF88IAU_xgH8vpZvE5oUa0HZUd8/exec";
 
     function openSignupForm() { 
-        // Force reset the view and button state every time it's opened
         document.getElementById('form-content').classList.remove('hidden'); 
         document.getElementById('success-message').classList.add('hidden'); 
         document.getElementById('signup-modal').classList.remove('hidden'); 
@@ -136,17 +134,11 @@
     function closeSignupForm() { 
         document.getElementById('signup-modal').classList.add('hidden'); 
         document.getElementById('reg-form').reset();
-        
-        // Reset button state just in case
-        const btn = document.getElementById('submit-btn');
-        btn.disabled = false;
-        btn.textContent = "Submit Application";
     }
 
     async function sendData(e) {
       e.preventDefault();
       const btn = document.getElementById('submit-btn');
-      
       btn.disabled = true;
       btn.textContent = "Processing Application...";
       
@@ -161,9 +153,11 @@
         document.getElementById('form-content').classList.add('hidden');
         document.getElementById('success-message').classList.remove('hidden');
 
-        // Automatically close and reset everything after 5 seconds
+        // Reset and close automatically after 5 seconds so new users can sign up
         setTimeout(() => {
             closeSignupForm();
+            btn.disabled = false;
+            btn.textContent = "Submit Application";
         }, 5000);
 
       } catch (err) { 
