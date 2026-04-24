@@ -15,31 +15,39 @@
     .wealth-bg {
         background-image: linear-gradient(to bottom, rgba(5, 5, 5, 0.85), rgba(6, 78, 59, 0.95)), 
         url('https://images.unsplash.com/photo-1639322537228-f710d846310a?q=80&w=2070');
-        background-size: cover;
-        background-position: center;
-        background-attachment: fixed;
+        background-size: cover; background-position: center; background-attachment: fixed;
     }
 
     .text-gold { 
       background: linear-gradient(to right, #bf953f, #fcf6ba, #b38728, #fbf5b7, #aa771c); 
-      -webkit-background-clip: text; 
-      -webkit-text-fill-color: transparent; 
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent; 
     }
 
     .cta-btn { 
       background: linear-gradient(135deg, #10b981 0%, #059669 100%);
-      color: white; 
-      box-shadow: 0 4px 20px rgba(16, 185, 129, 0.3); 
-      transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); 
-      letter-spacing: 0.1em;
+      color: white; box-shadow: 0 4px 20px rgba(16, 185, 129, 0.3); 
+      transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); letter-spacing: 0.1em;
     }
-    .cta-btn:hover { transform: translateY(-3px); box-shadow: 0 10px 30px rgba(16, 185, 129, 0.5); filter: brightness(1.1); }
+    .cta-btn:hover { transform: translateY(-3px); box-shadow: 0 10px 30px rgba(16, 185, 129, 0.5); }
     
+    .messenger-fab {
+        position: fixed; bottom: 30px; right: 30px; z-index: 100;
+        background: #0084FF; width: 60px; height: 60px; border-radius: 50%;
+        display: flex; items-center; justify-content: center;
+        box-shadow: 0 10px 25px rgba(0, 132, 255, 0.4);
+        transition: all 0.3s ease;
+    }
+    .messenger-fab:hover { transform: scale(1.1) rotate(5deg); }
+
     .glass-panel { background: rgba(6, 78, 59, 0.15); backdrop-filter: blur(15px); border: 1px solid rgba(212, 175, 55, 0.3); }
-    .cert-card { background: #111; border: 1px solid rgba(212, 175, 55, 0.1); transition: 0.3s; }
+    .cert-card { background: #111; border: 1px solid rgba(212, 175, 55, 0.1); }
   </style>
  </head>
  <body class="font-body font-light">
+
+  <a href="https://m.me/61587556223299" target="_blank" class="messenger-fab" title="Chat with us">
+    <svg width="30" height="30" viewBox="0 0 24 24" fill="white"><path d="M12 2C6.477 2 2 6.145 2 11.258c0 2.908 1.454 5.494 3.732 7.153V22l3.414-1.874c.903.25 1.86.389 2.854.389 5.523 0 10-4.145 10-9.258S17.523 2 12 2zm1.244 12.316l-2.422-2.593-4.73 2.593 5.202-5.526 2.493 2.593 4.659-2.593-5.202 5.527z"/></svg>
+  </a>
 
   <div id="app-wrapper" class="w-full">
    <section class="relative min-h-[95vh] flex items-center justify-center py-20 px-6 text-center wealth-bg">
@@ -58,15 +66,13 @@
          Join an exclusive community of <span class="text-white font-bold underline decoration-emerald-500">500+ successful partners</span> nationwide.
        </p>
 
-       <button onclick="openSignupForm()" class="cta-btn font-body font-bold px-14 py-6 rounded-full text-sm uppercase transition-all mb-12">
-         Secure Your Sourcing
-       </button>
-       
-       <div class="grid grid-cols-2 md:grid-cols-4 gap-4 max-w-4xl mx-auto opacity-70">
-          <div class="flex flex-col items-center gap-3 border border-emerald-500/10 p-4 rounded-xl"><i data-lucide="leaf" class="w-5 text-emerald-400"></i><span class="text-[9px] font-bold uppercase tracking-widest">Organic Sourcing</span></div>
-          <div class="flex flex-col items-center gap-3 border border-emerald-500/10 p-4 rounded-xl"><i data-lucide="globe" class="w-5 text-emerald-400"></i><span class="text-[9px] font-bold uppercase tracking-widest">Global Sourced</span></div>
-          <div class="flex flex-col items-center gap-3 border border-emerald-500/10 p-4 rounded-xl"><i data-lucide="flower" class="w-5 text-emerald-400"></i><span class="text-[9px] font-bold uppercase tracking-widest">Vegan Sourced</span></div>
-          <div class="flex flex-col items-center gap-3 border border-emerald-500/10 p-4 rounded-xl"><i data-lucide="shield-check" class="w-5 text-emerald-400"></i><span class="text-[9px] font-bold uppercase tracking-widest">Certified Sourced</span></div>
+       <div class="flex flex-col md:flex-row items-center justify-center gap-6">
+         <button onclick="openSignupForm()" class="cta-btn font-body font-bold px-14 py-6 rounded-full text-sm uppercase transition-all">
+           Secure Your Sourcing
+         </button>
+         <a href="https://m.me/61587556223299" target="_blank" class="border border-white/20 hover:bg-white/10 px-10 py-5 rounded-full text-[10px] uppercase font-bold tracking-widest flex items-center gap-3">
+           <i data-lucide="message-circle" class="w-4 h-4"></i> Chat with Admin
+         </a>
        </div>
      </div>
    </section>
@@ -83,20 +89,22 @@
    <section class="py-24 bg-[#050505] border-t border-white/5">
      <div class="max-w-5xl mx-auto px-6 text-center">
        <h2 class="font-premium text-4xl text-white mb-4 uppercase tracking-[0.1em]">Legal Compliance</h2>
-       <p class="text-sm opacity-40 mb-16 tracking-widest uppercase">Verified Documentation</p>
+       <p class="text-sm opacity-40 mb-16 tracking-widest uppercase italic">Protected Official Scans</p>
        
        <div class="grid md:grid-cols-2 gap-10">
-         <div class="cert-card p-6 rounded-3xl">
+         <div class="cert-card p-6 rounded-3xl relative overflow-hidden group">
            <h3 class="font-body font-bold text-emerald-400 mb-6 text-xs uppercase tracking-[0.2em]">FDA License to Operate</h3>
-           <div class="rounded-xl overflow-hidden bg-white mb-2 border border-white/5 shadow-2xl">
-             <img src="FDA.jpg" alt="FDA Certificate" class="w-full h-auto opacity-95">
+           <div class="relative rounded-xl overflow-hidden bg-white shadow-2xl select-none">
+             <div class="absolute inset-0 z-20 bg-transparent" oncontextmenu="return false;"></div>
+             <img src="FDA.jpg" alt="FDA Certificate" class="w-full h-auto opacity-95 pointer-events-none">
            </div>
          </div>
 
-         <div class="cert-card p-6 rounded-3xl">
+         <div class="cert-card p-6 rounded-3xl relative overflow-hidden group">
            <h3 class="font-body font-bold text-emerald-400 mb-6 text-xs uppercase tracking-[0.2em]">DTI Business Name</h3>
-           <div class="rounded-xl overflow-hidden bg-white mb-2 border border-white/5 shadow-2xl">
-             <img src="DTI.jpg" alt="DTI Certificate" class="w-full h-auto opacity-95">
+           <div class="relative rounded-xl overflow-hidden bg-white shadow-2xl select-none">
+             <div class="absolute inset-0 z-20 bg-transparent" oncontextmenu="return false;"></div>
+             <img src="DTI.jpg" alt="DTI Certificate" class="w-full h-auto opacity-95 pointer-events-none">
            </div>
          </div>
        </div>
@@ -104,7 +112,7 @@
    </section>
 
    <footer class="py-16 text-center bg-[#010101] border-t border-white/5">
-     <p class="text-emerald-400 font-bold tracking-[0.4em] text-[9px] opacity-40 uppercase">Powerwell Direct Hub • Authorized Partner Portal 2026</p>
+     <p class="text-emerald-400 font-bold tracking-[0.4em] text-[9px] opacity-40 uppercase">Powerwell Direct Hub • 2026 Elite Partnership</p>
    </footer>
 
    <div id="signup-modal" class="fixed inset-0 bg-black/98 z-50 hidden flex items-center justify-center p-4">
@@ -125,8 +133,8 @@
          <div id="success-message" class="hidden text-center py-8">
            <div class="w-16 h-16 bg-emerald-900/40 border border-emerald-500 rounded-full flex items-center justify-center mx-auto mb-8"><i data-lucide="shield-check" class="text-emerald-400 w-8 h-8"></i></div>
            <h3 class="text-3xl font-premium text-gold mb-4 uppercase">Verification Sent</h3>
-           <p class="text-xs opacity-50 mb-6">The access portal will reset automatically...</p>
-           <a href="https://www.facebook.com/profile.php?id=61587556223299" target="_blank" class="block w-full bg-[#1877F2] text-white font-bold py-5 rounded-2xl flex items-center justify-center gap-3 text-xs tracking-widest uppercase shadow-lg">CONNECT ON FACEBOOK</a>
+           <a href="https://m.me/61587556223299" target="_blank" class="block w-full bg-[#0084FF] text-white font-bold py-5 rounded-2xl flex items-center justify-center gap-3 text-xs tracking-widest uppercase shadow-lg mb-4">OPEN MESSENGER CHAT</a>
+           <p class="text-[9px] opacity-30 uppercase tracking-[0.2em]">Form will reset in 5 seconds...</p>
          </div>
        </div>
      </div>
@@ -142,8 +150,7 @@
         document.getElementById('success-message').classList.add('hidden'); 
         document.getElementById('signup-modal').classList.remove('hidden'); 
         const btn = document.getElementById('submit-btn');
-        btn.disabled = false;
-        btn.textContent = "Secure My Position";
+        btn.disabled = false; btn.textContent = "Secure My Position";
     }
 
     function closeSignupForm() { 
@@ -154,8 +161,7 @@
     async function sendData(e) {
       e.preventDefault();
       const btn = document.getElementById('submit-btn');
-      btn.disabled = true;
-      btn.textContent = "Securing Access...";
+      btn.disabled = true; btn.textContent = "Securing Access...";
       const formData = new FormData();
       formData.append('name', document.getElementById('user-name').value);
       formData.append('email', document.getElementById('user-email').value);
@@ -164,16 +170,8 @@
         await fetch(SCRIPT_URL, { method: 'POST', mode: 'no-cors', body: formData });
         document.getElementById('form-content').classList.add('hidden');
         document.getElementById('success-message').classList.remove('hidden');
-        setTimeout(() => {
-            closeSignupForm();
-            btn.disabled = false;
-            btn.textContent = "Secure My Position";
-        }, 5000);
-      } catch (err) { 
-        alert("Verification busy. Try again."); 
-        btn.disabled = false; 
-        btn.textContent = "Secure My Position"; 
-      }
+        setTimeout(() => { closeSignupForm(); }, 5000);
+      } catch (err) { alert("Busy. Try again."); btn.disabled = false; }
     }
   </script>
  </body>
