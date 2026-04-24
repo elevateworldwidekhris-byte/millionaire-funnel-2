@@ -12,10 +12,9 @@
     .font-premium { font-family: 'Cormorant Garamond', serif; }
     .font-body { font-family: 'Montserrat', sans-serif; }
     
-    /* NEW: High-Authority Wealth & Money Background */
     .wealth-bg {
         background-image: linear-gradient(to bottom, rgba(5, 5, 5, 0.85), rgba(6, 78, 59, 0.95)), 
-        url('https://images.unsplash.com/photo-1639322537228-f710d846310a?q=80&w=2070'); /* Abstract Money/Crypto/Scale */
+        url('https://images.unsplash.com/photo-1639322537228-f710d846310a?q=80&w=2070');
         background-size: cover;
         background-position: center;
         background-attachment: fixed;
@@ -28,7 +27,7 @@
     }
 
     .cta-btn { 
-      background: linear-gradient(135deg, #10b981 0%, #059669 100%); /* Success Green */
+      background: linear-gradient(135deg, #10b981 0%, #059669 100%);
       color: white; 
       box-shadow: 0 4px 20px rgba(16, 185, 129, 0.3); 
       transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); 
@@ -89,18 +88,16 @@
        <div class="grid md:grid-cols-2 gap-10">
          <div class="cert-card p-6 rounded-3xl">
            <h3 class="font-body font-bold text-emerald-400 mb-6 text-xs uppercase tracking-[0.2em]">FDA License to Operate</h3>
-           <div class="rounded-xl overflow-hidden bg-white/5 mb-8 border border-white/5 shadow-2xl">
-             <img src="fda.jpg" alt="FDA Certificate" class="w-full h-auto opacity-95">
+           <div class="rounded-xl overflow-hidden bg-white mb-2 border border-white/5 shadow-2xl">
+             <img src="FDA.jpg" alt="FDA Certificate" class="w-full h-auto opacity-95">
            </div>
-           <a href="https://drive.google.com/file/d/1mHskFhrW3kzUWEaU8R-PJCGRjkYQNcBu/view?usp=sharing" target="_blank" class="text-[10px] font-bold text-white/40 hover:text-emerald-400 transition underline tracking-widest uppercase">VIEW ON GOOGLE DRIVE</a>
          </div>
 
          <div class="cert-card p-6 rounded-3xl">
            <h3 class="font-body font-bold text-emerald-400 mb-6 text-xs uppercase tracking-[0.2em]">DTI Business Name</h3>
-           <div class="rounded-xl overflow-hidden bg-white/5 mb-8 border border-white/5 shadow-2xl">
-             <img src="dti.jpg" alt="DTI Certificate" class="w-full h-auto opacity-95">
+           <div class="rounded-xl overflow-hidden bg-white mb-2 border border-white/5 shadow-2xl">
+             <img src="DTI.jpg" alt="DTI Certificate" class="w-full h-auto opacity-95">
            </div>
-           <a href="https://drive.google.com/file/d/1UMuBHDD2URLfq1appzgbGzRGjMneXZxP/view?usp=sharing" target="_blank" class="text-[10px] font-bold text-white/40 hover:text-emerald-400 transition underline tracking-widest uppercase">VIEW ON GOOGLE DRIVE</a>
          </div>
        </div>
      </div>
@@ -144,7 +141,6 @@
         document.getElementById('form-content').classList.remove('hidden'); 
         document.getElementById('success-message').classList.add('hidden'); 
         document.getElementById('signup-modal').classList.remove('hidden'); 
-        
         const btn = document.getElementById('submit-btn');
         btn.disabled = false;
         btn.textContent = "Secure My Position";
@@ -160,24 +156,19 @@
       const btn = document.getElementById('submit-btn');
       btn.disabled = true;
       btn.textContent = "Securing Access...";
-      
       const formData = new FormData();
       formData.append('name', document.getElementById('user-name').value);
       formData.append('email', document.getElementById('user-email').value);
       formData.append('phone', document.getElementById('user-phone').value);
-      
       try {
         await fetch(SCRIPT_URL, { method: 'POST', mode: 'no-cors', body: formData });
-        
         document.getElementById('form-content').classList.add('hidden');
         document.getElementById('success-message').classList.remove('hidden');
-
         setTimeout(() => {
             closeSignupForm();
             btn.disabled = false;
             btn.textContent = "Secure My Position";
         }, 5000);
-
       } catch (err) { 
         alert("Verification busy. Try again."); 
         btn.disabled = false; 
