@@ -1,0 +1,1728 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Trivia Master — Complete Arcade & GM Hub</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        /* =========================================
+           CORE CSS & VARIABLES (SHARED)
+           ========================================= */
+        :root {
+            --text-main: #2c3e50; --text-muted: #7f8c8d; --card-bg: rgba(255, 255, 255, 0.98);
+            --accent: #d4af37; --accent-hover: #aa8c2c; --primary: #1e3c72; --primary-dark: #122546;
+            --highlight: #f1c40f; --success: #27ae60; --danger: #c0392b; --border-radius: 16px;
+            --transition: all 0.2s ease;
+        }
+        body { font-family: 'Poppins', sans-serif; background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%); color: var(--text-main); margin: 0; min-height: 100vh; transition: background 0.5s ease; overflow-x: hidden; scroll-behavior: smooth; }
+
+        body.menu-state { background: #0f172a; color: #f8fafc; display: flex; align-items: center; justify-content: center; }
+        body.solo-state { background: #0f172a; color: #f8fafc; padding: 20px; text-align: center; }
+        body.gm-state { background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%); }
+        body.intense-blitz-active { background: linear-gradient(135deg, #4a0e17 0%, #1a0508 100%) !important; }
+
+        .container { max-width: 1000px; margin: 0 auto; padding: 30px 20px 100px 20px; }
+        .hidden { display: none !important; }
+        .view-section { animation: fadeIn 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(15px); } to { opacity: 1; transform: translateY(0); } }
+
+        .card { background: var(--card-bg); border-radius: var(--border-radius); padding: 30px; box-shadow: 0 15px 35px rgba(0,0,0,0.2); color: var(--text-main); }
+
+        button { font-family: inherit; transition: var(--transition); cursor: pointer; }
+        .btn-primary { background: var(--primary); color: white; border: none; padding: 14px 28px; border-radius: 30px; font-size: 1.1rem; font-weight: 700; width: 100%; box-shadow: 0 6px 15px rgba(30,60,114,0.3); }
+        .btn-primary:hover { background: var(--primary-dark); transform: translateY(-2px); box-shadow: 0 8px 20px rgba(30,60,114,0.4); }
+        .btn-primary:disabled { opacity: 0.5; cursor: not-allowed; transform: none; box-shadow: none; }
+        .btn-secondary { background: white; border: 2px solid var(--primary); color: var(--primary); padding: 10px 20px; border-radius: 30px; font-weight: 600; font-size: 0.95rem; }
+        .btn-secondary:hover { background: var(--primary); color: white; transform: translateY(-1px); }
+
+        .btn-return-menu { background: var(--danger); color: white; border: none; border-radius: 8px; padding: 8px 15px; font-weight: bold; cursor: pointer; transition: 0.2s; font-size: 0.9rem; }
+        .btn-return-menu:hover { background: #991b1b; }
+
+        /* =========================================
+           MAIN MENU & POPUPS
+           ========================================= */
+        .main-menu-container { text-align: center; background: #1e293b; padding: 50px; border-radius: 20px; box-shadow: 0 20px 50px rgba(0,0,0,0.5); border: 1px solid rgba(255,255,255,0.1); max-width: 600px; width: 90%; margin: auto;}
+        .main-menu-container h1 { font-size: 3rem; color: #3b82f6; margin: 0 0 10px 0; text-transform: uppercase; letter-spacing: 2px; }
+        .main-menu-container p { color: #94a3b8; margin-bottom: 30px; font-size: 1.1rem; }
+
+        .mode-btn { width: 100%; padding: 20px; margin-bottom: 15px; border-radius: 12px; border: none; font-family: inherit; font-size: 1.2rem; font-weight: 800; cursor: pointer; transition: all 0.3s; text-transform: uppercase; display: flex; flex-direction: column; align-items: center; gap: 5px; }
+        .mode-btn span { font-size: 0.85rem; font-weight: 600; opacity: 0.8; text-transform: none; }
+        .mode-btn-gm { background: linear-gradient(135deg, #1e3c72, #2a5298); color: white; border: 2px solid #3b82f6; }
+        .mode-btn-solo { background: linear-gradient(135deg, #059669, #10b981); color: white; border: 2px solid #34d399; }
+
+        .solo-input { width: 100%; padding: 15px; border-radius: 8px; border: 2px solid #3b82f6; background: #0f172a; color: white; font-size: 1.1rem; box-sizing: border-box; text-align: center; font-weight: bold; margin-bottom: 20px; outline: none; }
+
+        /* =========================================
+           SOLO MODE CSS
+           ========================================= */
+        #solo-app .card { background: #1e293b; color: white; border: 1px solid rgba(255,255,255,0.1); margin: 20px auto; max-width: 650px;}
+        .solo-top-stats { display: flex; justify-content: space-between; align-items: center; max-width: 900px; margin: 0 auto 20px auto; background: #1e293b; padding: 15px 25px; border-radius: 50px; border: 1px solid rgba(255,255,255,0.1); font-weight: 800; font-size: 1.1rem; }
+
+        .game-select-bar { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 10px; max-width: 900px; margin: 0 auto 30px auto; }
+        .game-btn { background: #334155; color: white; padding: 15px; border-radius: 12px; font-weight: 800; font-size: 1.1rem; border: 2px solid transparent; cursor: pointer; transition: 0.2s; }
+        .game-btn.active { border-color: #3b82f6; background: #1e293b; box-shadow: 0 0 15px rgba(59,130,246,0.3); }
+
+        #solo-categories-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 15px; max-width: 900px; margin: 0 auto; }
+        .solo-cat-card { background: #1e293b; border: 2px solid #3b82f6; border-radius: 12px; padding: 25px 15px; cursor: pointer; transition: 0.3s; }
+        .solo-cat-card.completed { border-color: #94a3b8; opacity: 0.3; pointer-events: none; background: #0f172a; }
+
+        .solo-timer-bar-container { width: 100%; height: 10px; background: #334155; border-radius: 5px; margin: 20px 0; overflow: hidden; }
+        .solo-timer-bar { height: 100%; background: #10b981; width: 100%; transition: width 1s linear; }
+
+        .solo-options-grid { display: grid; grid-template-columns: 1fr; gap: 10px; text-align: left; }
+        .solo-opt-btn { background: #334155; color: white; padding: 18px 20px; border-radius: 8px; font-size: 1.1rem; border: 2px solid transparent; font-weight: 600; text-align: left; cursor: pointer;}
+        .solo-opt-btn:hover:not(:disabled) { border-color: #3b82f6; background: #475569;}
+        .solo-opt-btn:disabled { opacity: 0.4; cursor: not-allowed; }
+
+        /* Power-Ups (Solo) */
+        .powerup-bar { display: flex; justify-content: center; gap: 10px; margin-bottom: 15px; }
+        .pu-btn { background: #8b5cf6; border: none; color: white; padding: 8px 15px; border-radius: 20px; font-weight: bold; font-size: 0.85rem; cursor: pointer; transition: 0.2s; }
+        .pu-btn:hover:not(:disabled) { background: #7c3aed; transform: translateY(-2px); }
+        .pu-btn:disabled { background: #475569; opacity: 0.5; cursor: not-allowed; transform: none; }
+        .chances-display { font-size: 1.2rem; color: #ef4444; font-weight: bold; letter-spacing: 3px; }
+
+        /* Memory & Scramble (Solo) */
+        #solo-memory-board { display: grid; gap: 10px; margin: 20px auto; perspective: 1000px; justify-content: center; }
+        .mem-card { width: 70px; height: 90px; position: relative; transform-style: preserve-3d; transition: transform 0.5s; cursor: pointer; }
+        .mem-card.flipped { transform: rotateY(180deg); }
+        .mem-card .front, .mem-card .back { width: 100%; height: 100%; position: absolute; backface-visibility: hidden; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 2rem; box-shadow: 0 4px 8px rgba(0,0,0,0.3); }
+        .mem-card .back { background: #3b82f6; border: 2px solid #fff; color: white; }
+        .mem-card .front { background: white; transform: rotateY(180deg); border: 2px solid #10b981; }
+
+        .scramble-word { font-size: 2.5rem; font-weight: 900; letter-spacing: 8px; color: #f59e0b; margin: 20px 0; text-transform: uppercase; }
+        .diff-btn { background: #334155; padding: 10px 20px; margin: 5px; font-size: 0.9rem; color: white; border:none; border-radius:5px; cursor:pointer; font-weight:bold;}
+        .diff-btn.active { background: #3b82f6; border: 2px solid #fff; }
+
+        /* Notification Toast (Anti-Cheat) */
+        #toast-container { position: fixed; top: 20px; right: 20px; z-index: 100000; display: flex; flex-direction: column; gap: 10px; pointer-events: none; }
+        .toast { background: #ef4444; color: white; padding: 15px 25px; border-radius: 8px; font-weight: bold; box-shadow: 0 4px 12px rgba(0,0,0,0.3); animation: slideInRight 0.3s ease forwards, fadeOut 0.5s ease 3s forwards; display: flex; align-items: center; gap: 10px;}
+        @keyframes slideInRight { from { transform: translateX(100%); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
+        @keyframes fadeOut { to { opacity: 0; visibility: hidden; } }
+
+        /* =========================================
+           GM MODE CSS
+           ========================================= */
+        header { text-align: center; margin-bottom: 30px; color: #ffffff; position: relative; }
+        h1 { font-size: 3rem; font-weight: 800; margin: 0; text-shadow: 2px 2px 8px rgba(0,0,0,0.3); letter-spacing: -1px; }
+        p.subtitle { font-size: 1.1rem; opacity: 0.9; margin: 5px 0 0 0; }
+        .game-duration-clock { display: inline-block; background: rgba(0, 0, 0, 0.5); padding: 8px 20px; border-radius: 30px; font-weight: 700; font-size: 1rem; margin-top: 12px; border: 1px solid rgba(255,255,255,0.3); color: #f1c40f; }
+
+        .rules-card { background: #fefcbf; border-left: 6px solid #d69e2e; padding: 18px 25px; border-radius: 12px; margin-bottom: 25px; text-align: left; color: var(--text-main); }
+        .rules-card h4 { margin: 0 0 8px 0; color: #744210; font-size: 1.05rem; text-transform: uppercase; }
+        .rules-card ul { margin: 0; padding-left: 20px; font-size: 0.9rem; color: #553c9a; font-weight: 500; line-height: 1.6; }
+
+        .setup-box { max-width: 500px; margin: 0 auto; text-align: center; border-top: 8px solid var(--accent); }
+        .input-group { margin-bottom: 20px; text-align: left; }
+        .input-group label { display: block; font-weight: 700; margin-bottom: 8px; color: var(--primary); }
+        .gm-input { width: 100%; padding: 12px 16px; border: 2px solid #cbd5e1; border-radius: 12px; font-family: inherit; font-size: 1.05rem; box-sizing: border-box; background: #f8fafc; transition: var(--transition); }
+        .gm-input:focus { outline: none; border-color: var(--accent); background: #fff; box-shadow: 0 0 0 3px rgba(212,175,55,0.2); }
+
+        .btn-random { background: linear-gradient(135deg, #f1c40f, #f39c12); border: none; color: white; text-shadow: 1px 1px 2px rgba(0,0,0,0.2); }
+        .btn-intervention { background: linear-gradient(135deg, #9b59b6, #8e44ad); border: none; color: white; }
+        .btn-audience { background: linear-gradient(135deg, #1abc9c, #16a085); border: none; color: white; }
+        .btn-finalboss { background: linear-gradient(135deg, #e74c3c, #c0392b); border: none; color: white; font-weight: 800; }
+        .btn-pu { background: #f1f5f9; border: 1px solid #cbd5e1; color: #64748b; font-size: 0.75rem; padding: 4px 10px; border-radius: 20px; font-weight: 700; cursor: pointer;}
+
+        .top-nav { display: flex; justify-content: center; gap: 15px; margin-bottom: 25px; background: rgba(0,0,0,0.2); padding: 12px; border-radius: 50px; }
+        .btn-nav { background: transparent; color: white; border: none; padding: 10px 24px; border-radius: 30px; font-weight: 700; font-size: 1rem; }
+        .btn-nav.active { background: white; color: var(--primary); }
+
+        .game-menu-bar { display: flex; justify-content: center; margin-bottom: 25px; gap: 12px; flex-wrap: wrap; }
+        #categories-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px; transition: all 0.3s ease; padding: 10px; }
+        #categories-grid.randomizing-active .category-card:not(.random-highlight) { opacity: 0.25; transform: scale(0.92); filter: grayscale(80%); }
+
+        .category-card { background: var(--card-bg); border-radius: var(--border-radius); padding: 30px 20px; text-align: center; cursor: pointer; transition: all 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275); box-shadow: 0 8px 20px rgba(0,0,0,0.1); border: 4px solid transparent; display: flex; flex-direction: column; justify-content: space-between; color: var(--text-main);}
+        .category-card:hover { transform: translateY(-5px) scale(1.02); border-color: var(--accent); }
+        .category-card.completed { background: #e2e8f0; opacity: 0.7; border-color: transparent; }
+        .category-card.random-highlight { transform: scale(1.15) !important; border: 4px solid var(--highlight) !important; background: #fffde7 !important; z-index: 10; position: relative; }
+
+        .category-title { font-size: 1.25rem; margin: 0; color: var(--primary-dark); font-weight: 800; }
+        .category-desc { display: block; font-size: 0.85rem; color: var(--text-muted); margin-top: 6px; margin-bottom: 15px; font-weight: 500; flex-grow: 1; }
+        .winner-badge { display: inline-block; margin-bottom: 10px; font-size: 0.85rem; color: white; background: var(--success); padding: 4px 12px; border-radius: 12px; font-weight: 700; }
+
+        .master-sheet { background: #fff; border-top: 8px solid var(--accent); border-radius: var(--border-radius); padding: 35px; }
+        .ms-category { background: #f8fafc; border-left: 4px solid var(--accent); padding: 15px; border-radius: 8px; margin-top: 15px; }
+        .ms-ans { color: var(--success); font-weight: 700; margin-bottom: 10px; font-size: 0.95rem; }
+
+        .modifier-control-panel { background: #f8fafc; border: 2px solid #e2e8f0; border-radius: 16px; padding: 15px; margin-bottom: 15px; display: flex; justify-content: space-around; flex-wrap: wrap; gap: 10px; }
+        .mod-pill { background: #fff; border: 2px solid #cbd5e1; padding: 8px 20px; border-radius: 30px; font-size: 0.9rem; font-weight: 700; color: var(--text-main); cursor: pointer; transition: var(--transition); }
+        .mod-pill.active-silent { background: #e0f2fe; border-color: #0ea5e9; color: #0284c7; }
+        .mod-pill.active-speed { background: #fef2f2; border-color: #ef4444; color: #b91c1c; }
+
+        .live-modifier-notice { background: #fff3cd; color: #856404; padding: 10px; border-radius: 8px; font-weight: 700; font-size: 0.9rem; margin-bottom: 15px; border-left: 5px solid #ffc107; text-align: center; }
+        .auto-blitz-banner { background: #ef4444; color: white; padding: 12px; border-radius: 12px; font-weight: 800; text-align: center; margin-bottom: 15px; }
+
+        .blitz-timer-wrapper { margin: 15px auto; max-width: 650px; background: #e2e8f0; height: 24px; border-radius: 12px; overflow: hidden; position: relative; border: 2px solid #cbd5e1; }
+        .blitz-timer-bar { background: linear-gradient(90deg, #ef4444, #f59e0b); height: 100%; width: 100%; transition: width 1s linear; }
+        .blitz-timer-text { position: absolute; width: 100%; text-align: center; font-weight: 800; font-size: 0.85rem; color: #ffffff; top: 2px; }
+
+        .question-viewer-card { background: white; border-radius: var(--border-radius); padding: 40px; text-align: center; border: 4px solid transparent; transition: all 0.3s ease; }
+        body.intense-blitz-active .question-viewer-card { border-color: #ef4444; box-shadow: 0 0 25px rgba(239,68,68,0.3); }
+
+        .top-bar { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
+        .q-progress { font-size: 1rem; font-weight: 800; color: var(--accent); margin-bottom: 15px; text-transform: uppercase; }
+        .q-text { font-size: 1.6rem; font-weight: 700; margin: 0 0 30px 0; color: var(--primary-dark); line-height: 1.4; }
+
+        .options-grid { display: grid; grid-template-columns: 1fr; gap: 12px; max-width: 700px; margin: 0 auto 30px auto; text-align: left; }
+        .option-item { background: #f1f5f9; padding: 16px 20px; border-radius: 12px; font-weight: 600; border: 2px solid #cbd5e1; font-size: 1.1rem; cursor: pointer; transition: var(--transition); color: var(--text-main);}
+        .option-item:hover { background: #e2e8f0; border-color: #94a3b8; }
+        .option-item.correct { background: #dcfce7 !important; border-color: #22c55e !important; color: #166534 !important; font-weight: 800; }
+        .option-item.wrong { background: #fee2e2 !important; border-color: #ef4444 !important; color: #991b1b !important; opacity: 0.7; }
+
+        .answer-panel { margin: 20px auto; padding: 18px; background: #fef08a; border: 3px dashed #eab308; color: #854d0e; border-radius: 16px; font-weight: 800; font-size: 1.2rem; max-width: 700px; }
+        .viewer-nav-actions { display: flex; justify-content: space-between; align-items: center; max-width: 700px; margin: 0 auto; border-top: 2px solid #e2e8f0; padding-top: 25px; }
+
+        .scoring-dashboard-embedded { max-width: 750px; margin: 25px auto 0 auto; background: #f8fafc; border-radius: 16px; padding: 20px; border: 2px solid #e2e8f0; }
+        .scoring-rows-grid { display: flex; flex-direction: column; gap: 10px; }
+        .scoring-row { display: flex; justify-content: space-between; align-items: center; background: white; padding: 10px 15px; border-radius: 12px; border: 1px solid #cbd5e1; color: var(--text-main);}
+        .scoring-row .team-info { display: flex; align-items: center; gap: 10px; flex: 1; }
+        .scoring-row .team-identity { font-weight: 700; color: var(--primary-dark); font-size: 1.05rem; }
+
+        .actions-cluster { display: flex; align-items: center; gap: 8px; }
+        .current-val { font-weight: 800; font-size: 1.3rem; min-width: 35px; text-align: center; color: var(--primary); background: #e2e8f0; padding: 4px 8px; border-radius: 8px; }
+        .btn-adjustment { width: 36px; height: 36px; border-radius: 50%; border: none; font-weight: 800; font-size: 1.2rem; cursor: pointer; display: flex; align-items: center; justify-content: center; }
+        .btn-inc { background: #22c55e; color: white; } .btn-dec { background: #ef4444; color: white; }
+
+        /* Pop-Ups & Interventions */
+        .popup-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(15, 23, 42, 0.9); display: flex; align-items: center; justify-content: center; z-index: 10000;}
+        .popup-card { background: white; width: 90%; max-width: 550px; padding: 40px; border-radius: 20px; text-align: center; border-top: 8px solid var(--accent); color: var(--text-main); }
+        .popup-badge { font-size: 0.85rem; font-weight: 700; color: white; background: var(--primary); padding: 5px 15px; border-radius: 20px; text-transform: uppercase; display: inline-block; margin-bottom: 15px; }
+        .popup-title { font-size: 2.2rem; font-weight: 800; color: var(--primary-dark); margin: 0 0 10px 0; line-height: 1.2; }
+        .popup-desc { font-size: 1.1rem; color: var(--text-muted); margin: 0 0 30px 0; }
+
+        .popup-card.intervention-mode { background: #130f40 !important; border-top: 6px solid #e056fd !important; }
+        .popup-card.audience-mode { background: #eef2f7 !important; border-top: 6px solid #009688 !important; }
+        .popup-card.leaderboard-mode { width: 95%; max-width: 800px; padding: 30px; }
+
+        .intervention-scroll-box { background: rgba(255, 255, 255, 0.06); border: 2px dashed #be2edd; padding: 25px 20px; border-radius: 12px; margin: 15px 0 25px 0; text-align: center; }
+        .audience-scroll-box { background: #fff; border: 2px dashed #009688; padding: 25px 20px; border-radius: 12px; margin: 15px 0 25px 0; text-align: center; }
+        .intervention-question-text { font-size: 1.3rem; font-weight: 600; color: #ffffff; line-height: 1.45; }
+        .audience-question-text { font-size: 1.3rem; font-weight: 600; color: var(--text-main); line-height: 1.45; }
+
+        .di-choice-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 20px; }
+        .btn-di-choice { background: rgba(224, 86, 253, 0.15); border: 2px solid #e056fd; color: #ffffff; padding: 15px; border-radius: 12px; font-weight: 700; font-size: 1.1rem; cursor: pointer; }
+
+        .popup-action-grid { display: flex; flex-direction: column; gap: 10px; }
+        .wager-grid { display: grid; grid-template-columns: 1fr; gap: 10px; margin-bottom: 20px; text-align: left; background:#f8fafc; padding: 15px; border-radius: 12px;}
+        .wager-row { display: flex; justify-content: space-between; align-items: center; }
+        .wager-row input { width: 100px; padding: 8px; text-align: center; font-weight: 800; border-color: #e74c3c; color: #c0392b;}
+
+        .scoreboard-table { width: 100%; border-collapse: collapse; margin-top: 15px; background: white; border-radius: 10px; overflow: hidden; margin-bottom: 10px; }
+        .scoreboard-table th, .scoreboard-table td { padding: 12px 15px; text-align: left; border-bottom: 1px solid #e2e8f0; }
+        .scoreboard-table th { background: var(--primary); color: white; }
+        .score-number { font-weight: 700; color: var(--primary); font-size: 1.2rem; }
+        .sb-edit-btn { background:#e2e8f0; border:none; border-radius:4px; font-weight:bold; cursor:pointer; width:28px; height:28px; margin: 0 2px;}
+
+        .iframe-container { width: 100%; height: 500px; border: 2px solid #e2e8f0; border-radius: 12px; overflow: hidden; margin-bottom: 20px; background: #f8fafc; }
+        .iframe-container iframe { width: 100%; height: 100%; border: none; }
+    </style>
+</head>
+<body class="menu-state" id="main-body">
+
+<div id="toast-container"></div>
+
+<div id="main-menu" class="main-menu-container view-section">
+    <h1>Trivia Arcade & Hub</h1>
+    <p>Choose your game mode to begin.</p>
+
+    <button class="mode-btn mode-btn-solo" onclick="selectMode('solo')">
+        👤 Solo Arcade Mode
+        <span>Trivia • Memory Match • Word Scramble</span>
+    </button>
+
+    <button class="mode-btn mode-btn-gm" onclick="selectMode('gm')">
+        👑 Host Group Game (GM)
+        <span>Password Protected Ministry Hub</span>
+    </button>
+</div>
+
+<div id="gm-password-screen" class="card view-section hidden" style="background:#1e293b; color:white; padding:40px; max-width:400px; margin:auto; border-radius:16px; text-align:center;">
+    <h2 style="color:#3b82f6; margin-top:0;">Host Panel Lock</h2>
+    <p style="color:#94a3b8; margin-bottom: 20px;">Enter the Master Key to access GM Mode.</p>
+    <input type="password" id="gm-password-input" class="solo-input" placeholder="Enter Password">
+    <button class="btn-primary" onclick="verifyGMPassword()">Unlock Dashboard</button>
+    <button class="btn-primary" style="background:#475569; margin-top:10px;" onclick="returnToMenu()">Back to Menu</button>
+</div>
+
+<div id="solo-app" class="hidden container">
+    <div style="display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 5px;">
+        <h1 style="font-size: 2.5rem; font-weight: 900; color: #3b82f6; text-transform: uppercase; margin: 0;">Arcade Hub</h1>
+        <button class="btn-return-menu" onclick="returnToMenu()">⬅ Exit to Menu</button>
+    </div>
+    <p style="color: #94a3b8; margin-top: 5px; font-weight: 600; text-align: left;">Play games to increase your Global Score!</p>
+
+    <div id="solo-login-screen" class="card view-section">
+        <h2 style="margin-top:0; color:#3b82f6;">Enter Arcade</h2>
+        <p id="returning-user-msg" style="color:#10b981; font-weight:bold; font-size:0.9rem; margin-bottom:15px; display:none;">Welcome back! We detected you played before.</p>
+        <input type="text" id="solo-player-name" class="solo-input" placeholder="Enter Your IGN / Codename" autocomplete="off" maxlength="15">
+        <button class="btn-primary" onclick="startSoloGame()">Enter Hub</button>
+    </div>
+
+    <!-- SOLO TOP NAVIGATION -->
+    <div id="solo-top-nav" class="solo-top-stats view-section hidden">
+        <div style="flex: 1; text-align: left;">👤 <span id="solo-nav-player-name">Player</span></div>
+        <div style="flex: 1; text-align: center; color: #10b981;">🏆 <span id="solo-nav-score">0</span> PTS</div>
+        <div style="flex: 1; text-align: right; display:flex; justify-content:flex-end; gap:8px;">
+            <button class="btn-secondary" style="padding: 5px 12px; font-size: 0.85rem;" onclick="openSoloScoreboard()">📊 Stats</button>
+            <button class="btn-primary" style="padding: 5px 12px; font-size: 0.85rem; width: auto; background: #8b5cf6;" onclick="openGlobalLeaderboard()">🌍 Global Board</button>
+        </div>
+    </div>
+
+    <div id="solo-board-screen" class="view-section hidden">
+        <div class="game-select-bar">
+            <button class="game-btn active" id="tab-trivia" onclick="switchGameTab('trivia')">🧠 Trivia Master</button>
+            <button class="game-btn" id="tab-memory" onclick="switchGameTab('memory')">🃏 Memory Match</button>
+            <button class="game-btn" id="tab-scramble" onclick="switchGameTab('scramble')">🔠 Word Scramble</button>
+        </div>
+
+        <div id="sect-trivia">
+            <div id="solo-categories-grid"></div>
+        </div>
+
+        <div id="sect-memory" class="hidden card">
+            <h2 style="color:#10b981; margin-top:0;">Memory Match</h2>
+            <p style="color:#94a3b8;">Hanapin ang lahat ng pares bago maubos ang oras!</p>
+            <div>
+                <button class="diff-btn active" id="btn-mem-easy" onclick="setMemMode('easy')">Easy (6 Pairs)</button>
+                <button class="diff-btn" id="btn-mem-hard" onclick="setMemMode('hard')">Hard (10 Pairs)</button>
+            </div>
+            <div style="display:flex; justify-content:space-between; font-weight:bold; margin-top:15px;">
+                <span style="color:#f59e0b">Pairs: <span id="solo-mem-pairs">0 / 0</span></span>
+                <span style="color:#ef4444; font-size:1.5rem;" id="solo-mem-timer">120s</span>
+            </div>
+            <div id="solo-memory-board"></div>
+            <button class="btn-primary" style="background:#10b981; margin-top:20px;" id="solo-btn-start-mem" onclick="startMemGame()">Start Memory Game</button>
+        </div>
+
+        <div id="sect-scramble" class="hidden card">
+            <h2 style="color:#f59e0b; margin-top:0;">Word Scramble</h2>
+            <p style="color:#94a3b8;">Ayusin ang mga ginulong letra. Pabilisan sa loob ng 60 seconds!</p>
+            <div>
+                <button class="diff-btn active" id="btn-scr-easy" onclick="setScrMode('easy')">Easy Words</button>
+                <button class="diff-btn" id="btn-scr-hard" onclick="setScrMode('hard')">Hard Words</button>
+            </div>
+
+            <div id="scr-game-area" class="hidden" style="margin-top: 20px; padding-top: 20px; border-top: 1px solid rgba(255,255,255,0.1);">
+                <div style="display:flex; justify-content:space-between; font-weight:bold; align-items:center;">
+                    <span style="color:#10b981; font-size:1.2rem;">Score: <span id="scr-score">0</span></span>
+                    <span style="color:#ef4444; font-size:1.5rem;" id="scr-timer">60s</span>
+                </div>
+                <div class="scramble-word" id="scr-word">L O A D I N G</div>
+                <div style="font-size: 1.1rem; color: #94a3b8; margin-bottom: 25px; font-style: italic;" id="scr-clue">Clue: Hintayin...</div>
+                <div style="display: flex; gap: 10px; margin-bottom: 20px;">
+                    <input type="text" id="scr-input" class="solo-input" placeholder="Type your answer..." autocomplete="off" style="margin:0; flex:1; text-transform: uppercase;">
+                    <button class="btn-primary" style="width:auto;" onclick="checkScrAnswer()">Enter</button>
+                </div>
+                <button class="btn-primary" style="background:#475569;" onclick="skipScrWord()">⏭️ Skip Word</button>
+            </div>
+
+            <button class="btn-primary" style="background:#f59e0b; margin-top:15px;" id="btn-scr-start" onclick="startScrambleGame()">Start 60s Challenge</button>
+        </div>
+    </div>
+
+    <!-- SOLO QUESTION SCREEN (WITH POWERUPS AND CHANCES) -->
+    <div id="solo-question-screen" class="card view-section hidden">
+        <div class="powerup-bar">
+            <button class="pu-btn" id="btn-pu-5050" onclick="useFiftyFifty()">✨ 50/50 (1x)</button>
+            <button class="pu-btn" id="btn-pu-time" onclick="useTimeFreeze()">⏳ +15s (1x)</button>
+        </div>
+
+        <div style="display:flex; justify-content:space-between; align-items:center;">
+            <div style="display:flex; flex-direction:column; align-items:flex-start;">
+                <span style="color:#94a3b8; font-weight:bold;" id="solo-q-counter">Q 1/5</span>
+                <span class="chances-display" id="solo-q-chances">❤️❤️</span>
+            </div>
+            <span style="font-weight: 900; font-size: 1.5rem;" id="solo-timer-display">15s</span>
+        </div>
+        <div class="solo-timer-bar-container"><div class="solo-timer-bar" id="solo-timer-bar"></div></div>
+
+        <div style="font-size: 1.3rem; font-weight: 700; margin-bottom: 25px;" id="solo-question-text"></div>
+        <div class="solo-options-grid" id="solo-options-container"></div>
+    </div>
+
+    <div id="solo-review-screen" class="card view-section hidden">
+        <h2 style="color:#10b981; margin-top:0;" id="solo-review-title">Completed!</h2>
+        <p style="font-weight:bold;">Score Earned: <span id="solo-cat-total-score" style="color:#3b82f6; font-size:1.2rem;">0</span></p>
+        <div id="solo-review-list" style="margin-top: 20px;"></div>
+        <button class="btn-primary" style="margin-top:20px;" onclick="returnToSoloBoard()">Back to Arcade Board</button>
+    </div>
+</div>
+
+<div id="gm-app" class="hidden container">
+    <header>
+        <button class="btn-return-menu" style="position: absolute; left: 0; top: 0;" onclick="returnToMenu()">⬅ Exit to Menu</button>
+        <h1>Ministry Trivia Hub</h1>
+        <p class="subtitle" id="main-subtitle">Setup natin ang inyong game settings para makapagsimula na.</p>
+        <div id="game-session-clock-wrapper" class="game-duration-clock hidden">⏱️ Run Time: 00:00</div>
+    </header>
+
+    <div id="setup-view" class="view-section card setup-box">
+        <div class="rules-card">
+            <h4>📜 Paano Laruin (House Rules Summary)</h4>
+            <ul>
+                <li><strong>Pag-Puntos:</strong> Gamitin ang + at - buttons sa ilalim ng bawat slide. Ang system na ang bahala mag-save!</li>
+                <li><strong>Silent Disciple:</strong> Bawal magsalita ang team, purong senyas at sulat lang.</li>
+                <li><strong>Category Toggle:</strong> Pwedeng i-click ang maliit na button sa ilalim ng category card para i-Open / i-Close ito.</li>
+            </ul>
+        </div>
+        <div class="input-group">
+            <label>Ilang ministries o teams ang maglalaban ngayon?</label>
+            <input type="number" id="team-count" class="gm-input" min="2" max="10" placeholder="Halimbawa: 3">
+        </div>
+        <button class="btn-primary" onclick="playClick(); generateTeamInputs()">I-configure ang mga Teams</button>
+        <div id="team-names-container" style="margin-top: 20px;"></div>
+        <button id="start-game-btn" class="btn-primary hidden" style="background:#22c55e;" onclick="playClick(); startGame()">Simulan na ang Board! 🚀</button>
+    </div>
+
+    <div id="top-nav-view" class="top-nav hidden view-section">
+        <button id="nav-board" class="btn-nav active" onclick="playClick(); switchTab('board')">🎮 Main Board</button>
+        <button id="nav-sheet" class="btn-nav" onclick="playClick(); switchTab('sheet')">🕵️‍♂️ Master Sheet (Cheat Key)</button>
+    </div>
+
+    <div id="master-sheet-view" class="view-section hidden master-sheet">
+        <h2 style="text-align:center; color: var(--primary); margin:0 0 15px 0;">🕵️‍♂️ Answer Key Explorer</h2>
+        <div class="input-group" style="max-width:400px; margin: 0 auto 20px auto;">
+            <label style="text-align:center;">Pumili ng Category:</label>
+            <select id="ms-cat-select" class="gm-input" onchange="updateMasterSheet()"></select>
+        </div>
+        <div id="ms-cat-content"></div>
+    </div>
+
+    <div id="categories-view" class="view-section hidden">
+        <div class="rules-card" style="margin-bottom: 20px; border-color: var(--primary); background: #f8fafc;">
+            <h4 style="color: var(--primary); font-weight: 800;">📖 Board Controls Guide</h4>
+            <ul>
+                <li><strong>Power-Ups (sa Scoreboard):</strong> ⚡ <b>x2</b> (Doble points), 🚫 <b>Block</b> (Bawal sumagot ang isang kalaban).</li>
+                <li><strong>Divine Bonus & Audience:</strong> Mag-a-add ang points sa team na pipiliin mo.</li>
+                <li><strong>Auto-Blitz:</strong> May 20% chance na mag-auto activate ang Speed Blitz bago pumasok sa category.</li>
+            </ul>
+        </div>
+
+        <div id="blitz-warning-banner" class="auto-blitz-banner hidden">
+            ⚠️ ALERT: 7s SPEED BLITZ WILL AUTO-ACTIVATE ON THE NEXT CATEGORY!
+        </div>
+
+        <div class="modifier-control-panel">
+            <div class="mod-pill" id="mod-silent" onclick="toggleModifier('silent')">🤫 Silent Disciple: OFF</div>
+            <div class="mod-pill" id="mod-speed" onclick="toggleModifier('speed')">⚡ 7s Speed Blitz: OFF</div>
+        </div>
+
+        <div class="game-menu-bar">
+            <button class="btn-secondary btn-random" id="btn-randomize" onclick="startRandomizer()">🎲 Randomizer</button>
+            <button class="btn-secondary btn-intervention" onclick="triggerDivineIntervention()">🔥 Divine Bonus</button>
+            <button class="btn-secondary btn-audience" onclick="triggerAudienceIntermission()">👥 Audience</button>
+            <button class="btn-secondary btn-finalboss" onclick="triggerFinalBoss()">💀 Final Boss (Wager)</button>
+            <button class="btn-secondary" style="background:#22c55e; color:white; border-color:#22c55e;" onclick="openScoreboardPopup()">🏆 Scoreboard</button>
+        </div>
+
+        <div id="categories-grid"></div>
+    </div>
+
+    <div id="questions-view" class="view-section hidden">
+        <div class="top-bar">
+            <button class="btn-secondary" onclick="playClick(); clearBlitzInterval(); backToCategoriesFromQuestions()">← Iwanan ang Category</button>
+            <h2 id="current-category-title" style="margin:0; color:white; text-shadow: 1px 1px 4px rgba(0,0,0,0.2);">Category</h2>
+        </div>
+        <div class="question-viewer-card">
+            <div id="live-modifier-notice-container"></div>
+
+            <div id="blitz-timer-container" class="blitz-timer-wrapper hidden">
+                <div class="blitz-timer-bar" id="blitz-live-bar"></div>
+                <div class="blitz-timer-text" id="blitz-live-text">REMAINING TIME: 7s</div>
+            </div>
+
+            <div class="q-progress" id="question-progress-label">Question 1 of 5</div>
+            <div id="question-body-area"></div>
+            <div class="viewer-nav-actions">
+                <button class="btn-secondary" id="btn-prev-slide" onclick="playClick(); changeQuestionSlide(-1)">← Nakaraan</button>
+                <button class="btn-primary" id="btn-action-slide" style="width:auto; margin:0;" onclick="playClick(); handleSlideAction()">Ipakita ang Sagot</button>
+                <button class="btn-secondary" id="btn-next-slide" onclick="playClick(); changeQuestionSlide(1)">Susunod →</button>
+            </div>
+
+            <div class="scoring-dashboard-embedded">
+                <h3 style="margin-bottom:10px; color:var(--text-main);">Live Score Console</h3>
+                <div class="scoring-rows-grid" id="embedded-scoring-rows"></div>
+            </div>
+            <button class="btn-primary" id="btn-finalize-cat" style="background: var(--success); max-width: 350px; margin: 30px auto 0 auto; display:none;" onclick="playClick(); clearBlitzInterval(); finalizeCategorySession()">Tapusin at I-save ang Category</button>
+        </div>
+    </div>
+</div>
+
+<div id="announcement-popup" class="popup-overlay hidden">
+    <div class="popup-card" id="main-popup-card">
+        <span class="popup-badge" id="popup-badge-label">Target Chosen</span>
+        <div class="popup-title" id="popup-cat-title">Category Name</div>
+        <div class="popup-desc" id="popup-cat-desc">Category Description</div>
+
+        <div id="popup-dynamic-injection-zone"></div>
+
+        <div class="popup-action-grid" id="popup-standard-actions">
+            <button class="btn-primary" onclick="closeAnnouncementPopup(true)">Buksan na ang mga Tanong!</button>
+            <button class="btn-secondary" onclick="triggerReSpin()">🎲 I-Spin Ulit (Respin)</button>
+            <button class="btn-secondary" style="border-color: var(--text-muted); color: var(--text-muted);" onclick="closeAnnouncementPopup(false)">← Cancel</button>
+        </div>
+
+        <div class="popup-action-grid hidden" id="popup-intervention-actions">
+            <button class="btn-primary" style="background:#27ae60; border:none; display:none;" id="btn-reveal-ans">Ipakita ang Tamang Sagot</button>
+            <button class="btn-secondary" onclick="closeInterventionPopup()">I-Close ang Window</button>
+        </div>
+
+        <div class="popup-action-grid hidden" id="popup-scoreboard-actions">
+            <button class="btn-secondary" onclick="closeScoreboardPopup()">I-Dismiss ang Standings</button>
+        </div>
+
+        <div class="popup-action-grid hidden" id="popup-finalboss-actions">
+            <button class="btn-primary" style="background:#c0392b;" onclick="startFinalBossQuestion()">Handa na, Ilabas ang Tanong!</button>
+            <button class="btn-secondary" onclick="closeInterventionPopup()">Cancel Boss Round</button>
+        </div>
+    </div>
+</div>
+
+<script>
+    // ==========================================
+    // TOAST NOTIFICATIONS (Anti-Cheat)
+    // ==========================================
+    function showToast(message) {
+        let container = el('toast-container');
+        let toast = document.createElement('div');
+        toast.className = 'toast';
+        toast.innerHTML = `<span>⚠️</span> ${message}`;
+        container.appendChild(toast);
+        setTimeout(() => toast.remove(), 3500);
+    }
+
+    // ==========================================
+    // MENU NAVIGATION & LOCAL STORAGE
+    // ==========================================
+    function selectMode(mode) {
+        hide('main-menu');
+        if (mode === 'gm') {
+            document.body.className = 'gm-state';
+            show('gm-password-screen');
+        } else {
+            document.body.className = 'solo-state';
+            show('solo-app');
+            if (soloPlayer.name === "") {
+                const savedName = localStorage.getItem('trivia_username');
+                if (savedName) {
+                    el('solo-player-name').value = savedName;
+                    el('returning-user-msg').style.display = 'block';
+                }
+                show('solo-login-screen');
+                hide('solo-top-nav');
+                hide('solo-board-screen');
+            } else {
+                hide('solo-login-screen');
+                show('solo-top-nav');
+                show('solo-board-screen');
+            }
+        }
+    }
+
+    function verifyGMPassword() {
+        if (document.getElementById('gm-password-input').value === 'MEGA') {
+            hide('gm-password-screen');
+            show('gm-app');
+        } else {
+            alert("⚠️ INCORRECT PASSWORD. Access Denied.");
+        }
+    }
+
+    function returnToMenu() {
+        if (gameClockInterval) { clearInterval(gameClockInterval); gameClockInterval = null; }
+        clearBlitzInterval();
+        hide('questions-view'); hide('categories-view'); hide('top-nav-view'); hide('master-sheet-view');
+        show('setup-view');
+
+        clearInterval(tInt); clearInterval(memInt); clearInterval(scrInt);
+        hide('solo-question-screen'); hide('scr-game-area'); hide('solo-review-screen');
+        el('solo-btn-start-mem').style.display = 'block'; el('solo-memory-board').innerHTML = '';
+        el('btn-scr-start').style.display = 'block';
+        activeCat = ""; memActive = false; scrActive = false;
+        hide('solo-board-screen');
+
+        soloPlayer.name = "";
+        soloPlayer.score = 0;
+        el('solo-player-name').value = "";
+        el('solo-nav-score').textContent = "0";
+
+        triviaCompleted = [];
+        memCompleted = { easy: false, hard: false };
+        scrCompleted = { easy: false, hard: false };
+
+        hide('solo-app'); hide('gm-app'); hide('gm-password-screen');
+        show('main-menu');
+        document.body.className = 'menu-state';
+    }
+
+    const el = id => document.getElementById(id);
+    const show = id => { const e = el(id); if(e) e.classList.remove('hidden'); };
+    const hide = id => { const e = el(id); if(e) e.classList.add('hidden'); };
+
+    // ==========================================
+    // AUDIO SYNTHESIZER (GM MODE)
+    // ==========================================
+    const AudioContext = window.AudioContext || window.webkitAudioContext;
+    let audioCtx;
+    function initAudio() { if (!audioCtx) audioCtx = new AudioContext(); if (audioCtx.state === 'suspended') audioCtx.resume(); }
+    function playSound(f1, f2, type, d, vol=0.15) {
+        initAudio(); const osc = audioCtx.createOscillator(), gain = audioCtx.createGain();
+        osc.connect(gain); gain.connect(audioCtx.destination); osc.type = type;
+        osc.frequency.setValueAtTime(f1, audioCtx.currentTime);
+        if(f2) osc.frequency.exponentialRampToValueAtTime(f2, audioCtx.currentTime + d);
+        gain.gain.setValueAtTime(vol, audioCtx.currentTime); gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + d);
+        osc.start(); osc.stop(audioCtx.currentTime + d);
+    }
+    function playClick() { playSound(550, 250, 'sine', 0.08, 0.1); }
+    function playBloop(i) { playSound(450 + ((i % 6) * 70), 0, 'sine', 0.07, 0.1); }
+    function playDing() { playSound(880, 1760, 'sine', 0.6); }
+    function playBuzzer() {
+        initAudio(); [110, 115].forEach(f => {
+            const osc = audioCtx.createOscillator(), gain = audioCtx.createGain();
+            osc.connect(gain); gain.connect(audioCtx.destination); osc.type = 'sawtooth'; osc.frequency.value = f;
+            gain.gain.setValueAtTime(0.15, audioCtx.currentTime); gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.5);
+            osc.start(); osc.stop(audioCtx.currentTime + 0.5);
+        });
+    }
+    function playSiren() {
+        initAudio();
+        const osc = audioCtx.createOscillator(), gain = audioCtx.createGain();
+        osc.connect(gain); gain.connect(audioCtx.destination); osc.type = 'square';
+        gain.gain.setValueAtTime(0.1, audioCtx.currentTime); gain.gain.linearRampToValueAtTime(0, audioCtx.currentTime + 1.5);
+        osc.frequency.setValueAtTime(400, audioCtx.currentTime);
+        osc.frequency.linearRampToValueAtTime(800, audioCtx.currentTime + 0.3);
+        osc.frequency.linearRampToValueAtTime(400, audioCtx.currentTime + 0.6);
+        osc.frequency.linearRampToValueAtTime(800, audioCtx.currentTime + 0.9);
+        osc.frequency.linearRampToValueAtTime(400, audioCtx.currentTime + 1.2);
+        osc.start(); osc.stop(audioCtx.currentTime + 1.5);
+    }
+
+    // ==========================================
+    // GOOGLE SHEETS LEADERBOARD INTEGRATION
+    // ==========================================
+    const G_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyBZvxiRxHuURCXXHycl1ssjC6h7qBtE1oTSPlEymLXpHYqT57UP1oiuqYdobqH060N/exec";
+
+    function saveScoreToCloud() {
+        if (!soloPlayer.name || soloPlayer.score <= 0) return;
+
+        let formData = new FormData();
+        formData.append("name", soloPlayer.name);
+        formData.append("score", soloPlayer.score);
+
+        fetch(G_SCRIPT_URL, {
+            method: "POST",
+            body: formData,
+            mode: "no-cors"
+        }).then(() => console.log("Score synced silently to server."))
+            .catch(err => console.error("Sync error:", err));
+    }
+
+    function openGlobalLeaderboard() {
+        if(typeof playClick === "function") playClick();
+
+        el('main-popup-card').className = "popup-card leaderboard-mode";
+        el('popup-badge-label').textContent = "World Wide Web";
+        el('popup-badge-label').style.background = "#8b5cf6";
+        el('popup-cat-title').textContent = "🌍 Global Leaderboard";
+        el('popup-cat-desc').style.display = "block";
+        el('popup-cat-desc').textContent = "Live view from the official Excel Sheet Server.";
+
+        let freshTime = new Date().getTime();
+
+        let html = `
+            <div class="iframe-container">
+                <iframe src="${G_SCRIPT_URL}?v=${freshTime}" title="Global Leaderboard"></iframe>
+            </div>
+            <p style="font-size: 0.85rem; color: var(--text-muted);">Scores are saved automatically when you complete a category.</p>
+        `;
+
+        el('popup-dynamic-injection-zone').innerHTML = html;
+
+        hide('popup-standard-actions'); hide('popup-intervention-actions'); hide('popup-finalboss-actions'); show('popup-scoreboard-actions');
+        show('announcement-popup');
+    }
+
+    // ==========================================
+    // ANTI-CHEAT (TAB SWITCH DETECTION)
+    // ==========================================
+    document.addEventListener("visibilitychange", function() {
+        if (document.hidden && activeCat !== "" && !el('solo-question-screen').classList.contains('hidden')) {
+            soloPlayer.score = Math.max(0, soloPlayer.score - 15);
+            el('solo-nav-score').textContent = soloPlayer.score;
+            showToast("Anti-Cheat: Tab switching detected! -15 Points.");
+        }
+    });
+
+    // ==========================================
+    // NEW SOLO DATA & POOLS (TRIVIA & SCRAMBLE)
+    // ==========================================
+    const soloGameData = {
+        "Pop Culture & Gaming": [
+            { q: "Anong kulay ng hiyas o gem ang ginagamit sa laro na Sims para ipakita ang mood o emosyon ng isang karakter?", options: ["Pula", "Asul", "Berde", "Lila"], ans: "C" },
+            { q: "Sino ang tinaguriang 'Popstar Royalty' ng Pilipinas na sikat sa kanyang kantang 'Tala'?", options: ["Regine Velasquez", "Sarah Geronimo", "Yeng Constantino", "Moira Dela Torre"], ans: "B" },
+            { q: "Sa Mobile Legends: Bang Bang, sino ang signature Hero na gumagamit ng mga lumilipad na cables para sa matinding mobility?", options: ["Gusion", "Ling", "Fanny", "Chou"], ans: "C" },
+            { q: "Anong sikat na serye ng HBO ang may pamosong linyang 'Winter is Coming'?", options: ["The Witcher", "Game of Thrones", "House of the Dragon", "Breaking Bad"], ans: "B" },
+            { q: "Sino ang bida sa sikat na pelikulang 'John Wick' na mahilig gumamit ng lapis laban sa mga kaaway?", options: ["Keanu Reeves", "Tom Cruise", "Brad Pitt", "Matt Damon"], ans: "A" }
+        ],
+        "Science & Tech Breakthroughs": [
+            { q: "Ano ang ibig sabihin ng titik 'G' sa mga mobile network standards tulad ng 4G at 5G?", options: ["Global", "Generation", "Gigabyte", "Gateway"], ans: "B" },
+            { q: "Sino ang imbentor na nakatuklas sa 'Penicillin' na nagligtas ng milyun-milyong buhay mula sa impeksyon?", options: ["Louis Pasteur", "Alexander Fleming", "Albert Einstein", "Marie Curie"], ans: "B" },
+            { q: "Anong planeta sa ating solar system ang binansagang 'Red Planet' dahil sa iron oxide sa ibabaw nito?", options: ["Venus", "Mars", "Jupiter", "Saturn"], ans: "B" },
+            { q: "Aling organ sa katawan ng tao ang pangunahing kumokonsumo ng pinakamaraming enerhiya at oxygen (mga 20%)?", options: ["Puso", "Atay", "Bagis", "Brain (Utak)"], ans: "D" },
+            { q: "Ano ang pangalan ng sikat na kumpanya ng electric cars na pagmamay-ari ng bilyunaryong si Elon Musk?", options: ["Lucid", "Rivian", "Tesla", "BYD"], ans: "C" }
+        ],
+        "General Trivia & Culture": [
+            { q: "Ilang kulay ang bumubuo sa isang karaniwang Bahaghari (Rainbow)?", options: ["5", "6", "7", "8"], ans: "C" },
+            { q: "Anong bansa ang kilala bilang pinagmulan ng sikat na pagkaing 'Sushi'?", options: ["China", "South Korea", "Japan", "Thailand"], ans: "C" },
+            { q: "Ano ang pambansang ibon ng Pilipinas na kilala rin bilang 'Haribon'?", options: ["Kalaw", "Philippine Eagle", "Maya", "Loro"], ans: "B" },
+            { q: "Anong lungsod sa Italya ang kilala sa pagkakaroon ng 'Leaning Tower' o nakatagilid na tore?", options: ["Rome", "Venice", "Florence", "Pisa"], ans: "D" },
+            { q: "Sino ang sumulat ng tanyag na dula o kwento ng 'Romeo and Juliet'?", options: ["Charles Dickens", "William Shakespeare", "Mark Twain", "Leo Tolstoy"], ans: "B" }
+        ]
+    };
+
+    const scrambleDict = {
+        easy: [
+            { word: "ADOBO", clue: "Paboritong lutong ulam na may toyo at suka" },
+            { word: "BUKO", clue: "May masarap na sabaw at ginagamit sa salad" },
+            { word: "ARAW", clue: "Nagbibigay ng liwanag sa buong umaga" },
+            { word: "GATAS", clue: "Kulay puting inumin para sa matibay na buto" },
+            { word: "KANIN", clue: "Pangunahing pagkain ng mga Pinoy sa hapag-kainan" },
+            { word: "LATA", clue: "Lalagyan ng sardinas o kornebeef" },
+            { word: "SILI", clue: "Maliit na gulay na nagpapakagat sa anghang" },
+            { word: "SAGING", clue: "Kulay dilaw na prutas na paborito ni Matsing" },
+            { word: "PUSA", clue: "Hayop na mahilig mag-meow at humuli ng daga" },
+            { word: "ASO", clue: "Matalik na kaibigan ng tao na laging tumatahol" },
+            { word: "isda", clue: "Nilalang sa dagat na may hasang at kaliskis" },
+            { word: "MANOK", clue: "Nagbibigay ng itlog at paboritong i-fried" },
+            { word: "KAPE", clue: "Mainit na inumin ng mga nagpupuyat sa umaga" },
+            { word: "SULAT", clue: "Ginagawa gamit ang ballpen sa papel" },
+            { word: "AKLAT", clue: "Binabasa para makakuha ng gintong kaalaman" },
+            { word: "BAHAY", clue: "Lugar kung saan nakatira ang pamilya" },
+            { word: "LARO", clue: "Ginagawa ng mga bata para maglibang" },
+            { word: "SAYA", clue: "Emosyon kapag nanalo sa isang laban" },
+            { word: "PERA", clue: "Ginagamit pambili ng mga pangangailangan" },
+            { word: "ULAM", clue: "Kasama ng kanin tuwing kakain" },
+            { word: "SABAW", clue: "Mainit na likido sa tinola o sinigang" },
+            { word: "TUBIG", clue: "Inumin kapag ikaw ay nauuhaw" },
+            { word: "PUNO", clue: "May mga dahon at nagbibigay ng sariwang hangin" },
+            { word: "KOTSE", clue: "Sasakyang may apat na gulong sa kalsada" },
+            { word: "DALAN", clue: "Dito naglalakad ang mga tao o bumabyahe" },
+            { word: "ULAN", clue: "Patak ng tubig mula sa makapal na ulap" },
+            { word: "LANGIT", clue: "Kulay asul sa taas kung saan nandoon ang araw" },
+            { word: "GABI", clue: "Oras kung kailan madilim at dapat nang matulog" },
+            { word: "UMAGA", clue: "Simula ng bagong araw paggising mo" },
+            { word: "MATA", clue: "Bahagi ng katawan na ginagamit sa pagtingin" },
+            { word: "DAHON", clue: "Kulay berde na bahagi ng halaman" },
+            { word: "PAPEL", clue: "Dito isinusulat ang mga aralin o ideya" },
+            { word: "RELO", clue: "Isinusuot sa kamay para malaman ang oras" },
+            { word: "KUTSARA", clue: "Katambal ng tinidor kapag kumakain" },
+            { word: "BASO", clue: "Lalagyan ng tubig o juice kapag iinom" },
+            { word: "KULAY", clue: "Pula, asul, dilaw, at iba pa" },
+            { word: "LALAKI", clue: "Kabaligtaran ng salitang babae" },
+            { word: "BABAE", clue: "Kabaligtaran ng salitang lalaki" },
+            { word: "GULAY", clue: "Masustansyang pagkain tulad ng pechay" },
+            { word: "PRUTAS", clue: "Matamis na pagkain tulad ng mangga" }
+        ],
+        hard: [
+            { word: "SINIGANG", clue: "Maasim at paboritong sabaw ng mga Pinoy" },
+            { word: "KALABAW", clue: "Pambansang hayop na katuwang sa bukid" },
+            { word: "BARONG", clue: "Pambansang kasuotan ng mga kalalakihan" },
+            { word: "JEEPNEY", clue: "Tinaguriang Hari ng Kalsada sa Pilipinas" },
+            { word: "BAYANIHAN", clue: "Kaugaliang Pinoy ng pagtutulungan ng pamayanan" },
+            { word: "ALIBATA", clue: "Maling tawag minsan sa sinaunang baybayin" },
+            { word: "KASAYSAYAN", clue: "Mga kwento at kaganapan sa nakaraang panahon" },
+            { word: "MAMAMAYAN", clue: "Mga taong naninirahan sa isang bansa" },
+            { word: "PAMAHALAAN", clue: "Institusyon na namamahala sa kaayusan" },
+            { word: "KALAYAAN", clue: "Katayuan ng pagiging malaya mula sa mananakop" },
+            { word: "KATAPANGAN", clue: "Katangian ng isang bayani na walang takot" },
+            { word: "KAPAYAPAAN", clue: "Kondisyon na walang gulo o digmaan" },
+            { word: "KABUNDUKAN", clue: "Lugar na binubuo ng maraming bundok" },
+            { word: "KARAGATAN", clue: "Napakalawak na anyong tubig sa daigdig" },
+            { word: "EDUKASYON", clue: "Susi sa tagumpay sa pamamagitan ng pag-aaral" },
+            { word: "TEKNOLOHIYA", clue: "Mga makabagong gadget at imbensyon ngayon" },
+            { word: "ALIPIN", clue: "Mababang uri ng tao sa sinaunang lipunan" },
+            { word: "MAHARLIKA", clue: "Uri ng mga mandirigma o may mataas na estado" },
+            { word: "BALANGAY", clue: "Sinaunang sasakyang pandagat ng mga Pilipino" },
+            { word: "KULTURA", clue: "Tradisyon, sining, at paniniwala ng isang lahi" }
+        ]
+    };
+
+    let soloPlayer = { name: "", score: 0 };
+    let activeCat = "", qIndex = 0, answersRec = [], catScore = 0, tTime = 15, tInt = null, qChances = 2;
+    let puFiftyFifty = true, puAddTimer = true;
+    let memMode = 'easy', memTarget = 6, memPairs = 0, memTime = 120, memInt = null, firstCard = null, secondCard = null, memLock = false, memActive = false;
+    let scrMode = 'easy', scrTime = 60, scrInt = null, scrActive = false, scrScore = 0, currentScrWord = {}, scrWordList = [];
+    let triviaCompleted = [];
+    let memCompleted = { easy: false, hard: false };
+    let scrCompleted = { easy: false, hard: false };
+
+    function startSoloGame() {
+        const name = el('solo-player-name').value.trim();
+        if(!name) return alert("Enter a name!");
+
+        localStorage.setItem('trivia_username', name);
+
+        soloPlayer.name = name; el('solo-nav-player-name').textContent = name;
+        hide('solo-login-screen'); show('solo-top-nav'); show('solo-board-screen');
+        renderTriviaBoard();
+    }
+
+    function switchGameTab(tabId) {
+        ['trivia', 'memory', 'scramble'].forEach(t => {
+            el(`tab-${t}`).classList.remove('active'); hide(`sect-${t}`);
+        });
+        el(`tab-${tabId}`).classList.add('active'); show(`sect-${tabId}`);
+    }
+
+    function renderTriviaBoard() {
+        const grid = el('solo-categories-grid'); grid.innerHTML = '';
+        for (const cat in soloGameData) {
+            const card = document.createElement('div');
+            const done = triviaCompleted.includes(cat);
+            card.className = `solo-cat-card ${done ? 'completed' : ''}`;
+            card.innerHTML = `<h3 style="margin:0; color:white;">${cat}</h3><p style="color:#94a3b8; font-size:0.8rem; margin:5px 0 0 0;">5 Questions</p>`;
+            card.onclick = () => { if(!done) startTrivia(cat); };
+            grid.appendChild(card);
+        }
+    }
+
+    function openSoloScoreboard() {
+        if(typeof playClick === "function") playClick();
+
+        el('main-popup-card').className = "popup-card";
+        el('popup-badge-label').textContent = "Player Stats";
+        el('popup-badge-label').style.background = "var(--primary)";
+        el('popup-cat-title').textContent = "📊 Solo Scoreboard";
+        el('popup-cat-desc').style.display = "block";
+        el('popup-cat-desc').textContent = "Here is your current arcade performance summary:";
+
+        let html = `<table class="scoreboard-table">
+            <thead><tr><th>Game Module</th><th>Status</th></tr></thead>
+            <tbody>`;
+
+        let hasEntries = false;
+
+        triviaCompleted.forEach(cat => { html += `<tr><td>Trivia: ${cat}</td><td style="color:#10b981; font-weight:bold;">Completed</td></tr>`; hasEntries = true; });
+        if(memCompleted.easy) { html += `<tr><td>Memory (Easy)</td><td style="color:#10b981; font-weight:bold;">Completed</td></tr>`; hasEntries = true; }
+        if(memCompleted.hard) { html += `<tr><td>Memory (Hard)</td><td style="color:#10b981; font-weight:bold;">Completed</td></tr>`; hasEntries = true; }
+        if(scrCompleted.easy) { html += `<tr><td>Scramble (Easy)</td><td style="color:#10b981; font-weight:bold;">Completed</td></tr>`; hasEntries = true; }
+        if(scrCompleted.hard) { html += `<tr><td>Scramble (Hard)</td><td style="color:#10b981; font-weight:bold;">Completed</td></tr>`; hasEntries = true; }
+
+        if(!hasEntries) html += `<tr><td colspan="2" style="text-align:center; color:var(--text-muted);">No games completed yet. Play some games!</td></tr>`;
+
+        html += `</tbody></table><h2 style="color:var(--primary); margin-top:20px;">Total Points: ${soloPlayer.score}</h2>`;
+        el('popup-dynamic-injection-zone').innerHTML = html;
+
+        hide('popup-standard-actions'); hide('popup-intervention-actions'); hide('popup-finalboss-actions');
+        show('popup-scoreboard-actions'); show('announcement-popup');
+    }
+
+    function startTrivia(cat) {
+        activeCat = cat; qIndex = 0; answersRec = []; catScore = 0;
+        puFiftyFifty = true; puAddTimer = true;
+        el('btn-pu-5050').disabled = false; el('btn-pu-time').disabled = false;
+
+        hide('solo-board-screen'); show('solo-question-screen');
+        loadTriviaQ();
+    }
+
+    function useFiftyFifty() {
+        if(!puFiftyFifty) return;
+        puFiftyFifty = false; el('btn-pu-5050').disabled = true;
+
+        const q = soloGameData[activeCat][qIndex];
+        const correct = q.ans;
+        const letters = ['A','B','C','D'];
+        let wrongLetters = letters.filter(l => l !== correct);
+
+        wrongLetters.sort(() => Math.random() - 0.5);
+        el(`opt-${wrongLetters[0]}`).style.visibility = 'hidden';
+        el(`opt-${wrongLetters[1]}`).style.visibility = 'hidden';
+    }
+
+    function useTimeFreeze() {
+        if(!puAddTimer) return;
+        puAddTimer = false; el('btn-pu-time').disabled = true;
+        tTime += 15;
+        updateTriviaTimer();
+    }
+
+    function loadTriviaQ() {
+        qChances = 2;
+        el('solo-q-chances').innerHTML = "❤️❤️";
+
+        const q = soloGameData[activeCat][qIndex];
+        el('solo-q-counter').textContent = `Q ${qIndex + 1} / 5`; el('solo-question-text').textContent = q.q;
+
+        let optHtml = ''; const letters = ['A','B','C','D'];
+        q.options.forEach((o, i) => {
+            optHtml += `<button class="solo-opt-btn" id="opt-${letters[i]}" onclick="ansTrivia('${letters[i]}')">
+                        <strong style="color:#3b82f6;">${letters[i]}.</strong> ${o}</button>`;
+        });
+        el('solo-options-container').innerHTML = optHtml;
+        startTriviaTimer();
+    }
+
+    function startTriviaTimer() {
+        clearInterval(tInt); tTime = 15; updateTriviaTimer();
+        tInt = setInterval(() => {
+            tTime--; updateTriviaTimer();
+            if(tTime<=0) { clearInterval(tInt); ansTrivia(null, true); }
+        }, 1000);
+    }
+
+    function updateTriviaTimer() { el('solo-timer-display').textContent = `${tTime}s`; el('solo-timer-bar').style.width = `${Math.min(100, (tTime/15)*100)}%`; }
+
+    function ansTrivia(sel, isTimeout = false) {
+        if(isTimeout) {
+            evalAndProceed(sel, false);
+            return;
+        }
+
+        const isCorrect = sel === soloGameData[activeCat][qIndex].ans;
+        const btn = el(`opt-${sel}`);
+
+        if (isCorrect) {
+            btn.style.background = '#10b981';
+            evalAndProceed(sel, true);
+        } else {
+            qChances--;
+            btn.style.background = '#ef4444';
+            btn.disabled = true;
+
+            if (qChances > 0) {
+                el('solo-q-chances').innerHTML = "❤️🖤";
+            } else {
+                el('solo-q-chances').innerHTML = "🖤🖤";
+                evalAndProceed(sel, false);
+            }
+        }
+    }
+
+    function evalAndProceed(sel, isCorrect) {
+        clearInterval(tInt);
+        document.querySelectorAll('.solo-opt-btn').forEach(b => b.disabled = true);
+
+        if(!isCorrect) el(`opt-${soloGameData[activeCat][qIndex].ans}`).style.background = '#10b981';
+
+        let pts = isCorrect ? 100 + (tTime*10) : 0;
+        soloPlayer.score += pts; catScore += pts; el('solo-nav-score').textContent = soloPlayer.score;
+
+        answersRec.push({ q: soloGameData[activeCat][qIndex].q, user: sel||"TIMEOUT", ans: soloGameData[activeCat][qIndex].ans, pts, correct: isCorrect });
+        setTimeout(nextTriviaQ, 1000);
+    }
+
+    function nextTriviaQ() {
+        qIndex++; if(qIndex < soloGameData[activeCat].length) loadTriviaQ(); else finishTrivia();
+    }
+
+    function finishTrivia() {
+        hide('solo-question-screen'); triviaCompleted.push(activeCat);
+        let oldCat = activeCat; activeCat = "";
+        el('solo-review-title').textContent = `Category Done!`;
+        el('solo-cat-total-score').textContent = `+${catScore}`;
+        el('solo-review-list').innerHTML = answersRec.map(r => `<div style="background:#0f172a; padding:10px; margin-bottom:5px; border-left:4px solid ${r.correct?'#10b981':'#ef4444'}; text-align:left;"><b>+${r.pts}</b> | ${r.q}<br><small>Ans: ${r.user} (Correct: ${r.ans})</small></div>`).join('');
+        show('solo-review-screen');
+        saveScoreToCloud();
+    }
+
+    /* Solo Memory Match */
+    function setMemMode(mode) {
+        if(memActive || memCompleted[mode]) return; memMode = mode;
+        ['easy', 'hard'].forEach(m => el(`btn-mem-${m}`).classList.remove('active'));
+        el(`btn-mem-${mode}`).classList.add('active');
+        memTarget = mode === 'easy' ? 6 : 10;
+        el('solo-mem-pairs').textContent = `0 / ${memTarget}`;
+    }
+
+    function startMemGame() {
+        const EMOJIS = ['🐶', '🐱', '🐭', '🐹', '🐰', '🦊', '🐻', '🐼', '🐨', '🐯'];
+        if(memCompleted[memMode]) return;
+        el('btn-mem-easy').disabled = true; el('btn-mem-hard').disabled = true;
+        el('solo-btn-start-mem').style.display = 'none'; memActive = true; memPairs = 0; memTime = 120;
+
+        let deck = [...EMOJIS.slice(0, memTarget), ...EMOJIS.slice(0, memTarget)].sort(() => Math.random() - 0.5);
+        const board = el('solo-memory-board'); board.style.gridTemplateColumns = `repeat(${memMode === 'hard' ? 5 : 4}, 70px)`; board.innerHTML = '';
+
+        deck.forEach(symbol => {
+            const card = document.createElement('div'); card.classList.add('mem-card');
+            card.innerHTML = `<div class="back">?</div><div class="front">${symbol}</div>`;
+            card.dataset.symbol = symbol; card.addEventListener('click', flipMemCard);
+            board.appendChild(card);
+        });
+
+        memInt = setInterval(() => { memTime--; el('solo-mem-timer').textContent = `${memTime}s`; if(memTime <= 0) endMemGame(false); }, 1000);
+    }
+
+    function flipMemCard() {
+        if (memLock || !memActive || this === firstCard) return;
+        this.classList.add('flipped');
+        if (!firstCard) { firstCard = this; return; }
+        secondCard = this;
+        if(firstCard.dataset.symbol === secondCard.dataset.symbol) {
+            memPairs++; el('solo-mem-pairs').textContent = `${memPairs} / ${memTarget}`;
+            firstCard.removeEventListener('click', flipMemCard); secondCard.removeEventListener('click', flipMemCard);
+            [firstCard, secondCard, memLock] = [null, null, false];
+            if(memPairs === memTarget) endMemGame(true);
+        } else {
+            memLock = true;
+            setTimeout(() => { firstCard.classList.remove('flipped'); secondCard.classList.remove('flipped'); [firstCard, secondCard, memLock] = [null, null, false]; }, 800);
+        }
+    }
+
+    function endMemGame(isWin) {
+        clearInterval(memInt); memActive = false;
+        memCompleted[memMode] = true; el(`btn-mem-${memMode}`).textContent += " (Done)";
+        el('btn-mem-easy').disabled = memCompleted.easy; el('btn-mem-hard').disabled = memCompleted.hard;
+        el('solo-btn-start-mem').style.display = 'block';
+        if(memCompleted.easy && memCompleted.hard) el('solo-btn-start-mem').disabled = true;
+
+        el('solo-memory-board').innerHTML = '';
+        let score = (memPairs * 50) + (isWin ? memTime * 5 : 0);
+        soloPlayer.score += score; el('solo-nav-score').textContent = soloPlayer.score;
+
+        hide('solo-board-screen');
+        el('solo-review-title').textContent = isWin ? "Memory Cleared!" : "Time's Up!";
+        el('solo-cat-total-score').textContent = `+${score}`;
+        el('solo-review-list').innerHTML = `<p>Pairs: ${memPairs} | Time Left: ${memTime}s</p>`;
+        show('solo-review-screen');
+        saveScoreToCloud();
+    }
+
+    /* Solo Word Scramble */
+    function setScrMode(mode) {
+        if(scrActive || scrCompleted[mode]) return; scrMode = mode;
+        ['easy', 'hard'].forEach(m => el(`btn-scr-${m}`).classList.remove('active'));
+        el(`btn-scr-${mode}`).classList.add('active');
+    }
+
+    function startScrambleGame() {
+        if(scrCompleted[scrMode]) return;
+        el('btn-scr-easy').disabled = true; el('btn-scr-hard').disabled = true;
+        el('btn-scr-start').style.display = 'none'; show('scr-game-area');
+
+        scrActive = true; scrScore = 0; scrTime = 60;
+        el('scr-score').textContent = scrScore; el('scr-timer').textContent = "60s";
+
+        // Shuffle the selected array pool
+        scrWordList = [...scrambleDict[scrMode]].sort(() => Math.random() - 0.5);
+        nextScrWord();
+
+        scrInt = setInterval(() => { scrTime--; el('scr-timer').textContent = `${scrTime}s`; if(scrTime <= 0) endScrGame(); }, 1000);
+    }
+
+    function nextScrWord() {
+        if(scrWordList.length === 0) {
+            // End immediately if they ran out of unique words in the session deck
+            endScrGame();
+            return;
+        }
+        // Permanently extract the word from the round deck
+        currentScrWord = scrWordList.pop();
+        let arr = currentScrWord.word.split(''); arr.sort(() => Math.random() - 0.5);
+        if(arr.join('') === currentScrWord.word) arr.reverse();
+        el('scr-word').textContent = arr.join(' '); el('scr-clue').textContent = `Clue: ${currentScrWord.clue}`;
+        el('scr-input').value = ""; el('scr-input').focus();
+    }
+
+    function checkScrAnswer() {
+        if(!scrActive) return;
+        let input = el('scr-input').value.trim().toUpperCase();
+        if(input === currentScrWord.word) {
+            scrScore += scrMode === 'easy' ? 50 : 100; el('scr-score').textContent = scrScore; nextScrWord();
+        } else {
+            el('scr-input').value = "";
+        }
+    }
+
+    function skipScrWord() {
+        if(scrActive) {
+            // Skips current word completely without returning it back into the deck array loop
+            nextScrWord();
+        }
+    }
+
+    function endScrGame() {
+        clearInterval(scrInt); scrActive = false;
+        scrCompleted[scrMode] = true; el(`btn-scr-${scrMode}`).textContent += " (Done)";
+        el('btn-scr-easy').disabled = scrCompleted.easy; el('btn-scr-hard').disabled = scrCompleted.hard;
+        hide('scr-game-area'); el('btn-scr-start').style.display = 'block';
+        if(scrCompleted.easy && scrCompleted.hard) el('btn-scr-start').disabled = true;
+
+        soloPlayer.score += scrScore; el('solo-nav-score').textContent = soloPlayer.score;
+
+        hide('solo-board-screen');
+        el('solo-review-title').textContent = "Challenge Completed!";
+        el('solo-cat-total-score').textContent = `+${scrScore}`;
+        el('solo-review-list').innerHTML = `<p>Words Mode: ${scrMode.toUpperCase()}</p><p>Total Points Earned: <b>${scrScore}</b></p>`;
+        show('solo-review-screen');
+        saveScoreToCloud();
+    }
+
+    function returnToSoloBoard() { hide('solo-review-screen'); show('solo-board-screen'); renderTriviaBoard(); }
+
+
+    // ==========================================
+    // GM MODE DATA & LOGIC (UNCHANGED GROUP PANEL)
+    // ==========================================
+    const gameMetadata = {
+        "Kusina at Lamesa": "Mga lutong Pinoy, paboritong sawsawan, at kwento sa lihiod ng hapag-kainan.",
+        "Viral Pinoy Memes": "Mga iconic at nakakatawang linya o video na yumanig sa internet ng Pilipinas.",
+        "Brain Twisters": "Logic puzzles at mind-bending riddles para sa mga mabilis mag-isip.",
+        "Nature & Earth": "Tungkol sa mga bulkan, bagyo, kakaibang hayop, at likas na yaman ng daigdig.",
+        "Wika at Katutubo": "Makukulay na salitang Tagalog, sawikain, at kulturang pamana.",
+        "Sinaunang Pinas": "Pre-colonial era, mga datu, ginto, at pamumuhay bago dumating ang mga Kastila.",
+        "Bagong Tipan (NT)": "Mga kwento, milagro, at sulat ng mga Apostol sa Bagong Tipan ng Bibliya.",
+        "Retro Gaming": "Classic consoles, Family Computer era, at mga maalamat na laro ng nakaraan.",
+        "Social Media Trends": "Hashtags, content layouts, at mga trending algorithms ngayon.",
+        "Pinoy Superheroes": "Mga lokal na komiks masterpieces, kapangyarihan, at mga bida sa telebisyon.",
+        "K-Drama & Hallyu": "Sikat na Korean series, K-pop milestones, at cultural waves na patok sa bansa.",
+        "Tech & Gadgets": "Artificial Intelligence breakthroughs, computing systems, at mobile hardware trends.",
+        "Tusok-Tusok Master": "Mga street food classics at inihaw sa kanto.",
+        "Batang 90s Kalye": "Mga paboritong larong kalye ng mga kabataan bago magkaroon ng internet.",
+        "OPM Hits": "Mga sikat na kanta, banda, at mang-aawit ng Original Pilipino Music."
+    };
+
+    const gameData = {
+        "Kusina at Lamesa": [
+            { q: "Ano ang tawag sa tradisyunal na paraan ng pagluluto ng Pinoy kung saan tinatapa o pinausukan ang karne o isda gamit ang kahoy?", options: ["Pasingaw", "Asado", "Pinausukan / Tinapa", "Nilaga"], ans: "C" },
+            { q: "Anong sikat na prutas ang tinaguriang 'King of Fruits' sa Mindanao na kilala sa matapang na amoy ngunit napakatamis na lasa?", options: ["Marang", "Durian", "Suha", "Mangosteen"], ans: "B" },
+            { q: "Kapag ang ulam ay Sinigang, ano ang pambansang sawsawan na may kasamang sili at kalamansi ang madalas ihanda sa tabi?", options: ["Suka", "Patis", "Toyo", "Bagoong Balayan"], ans: "B" },
+            { q: "Aling tanyag na kakanin mula sa malagkit na kanin ang niluluto sa loob ng kawayan tuwing panahon ng Paskuhan?", options: ["Bibingka", "Puto Bumbong", "Kutsinta", "Sapin-sapin"], ans: "B" },
+            { q: "Ano ang sikretong sahog sa tunay na Batangas Lomi na nagpapakapal ng sabaw nito nang husto?", options: ["Gawgaw o Cornstarch", "Binateng Itlog", "Gatas na Evaporada", "Nilagawang Kalabasa"], ans: "A" }
+        ],
+        "Viral Pinoy Memes": [
+            { q: "Sino ang sikat na personalidad na laging nagiging meme tuwing sasapit ang Setyembre dahil sa kanyang mga maagang Pamaskong kanta?", options: ["Rey Valera", "Jose Mari Chan", "Gary Valenciano", "Ogie Alcasid"], ans: "B" },
+            { q: "Anong hayop ang naging viral sa social media dahil sa tunog nitong parang tumatawa ng 'Gusto ko na sumuko'?", options: ["Ang Viral na Tupa", "Ang Umiiyak na Pusa", "Ang Tumatawang Palaka", "Ang Sumisigaw na Kambing"], ans: "D" },
+            { q: "Anong iconic na linya ng isang bata sa interview ang naging sagot ng bayan kapag tinatanong kung bakit wala pa silang jowa o pera?", options: ["'Bawal po lumabas'", "'Nasa puso ko po'", "'Ewan ko, dumedede pa ako niyan'", "'Gusto ko na maging patatas'"], ans: "C" },
+            { q: "Kapag sinabi mong 'Ikaw na ang main character ngayon,' anong trending local soundtrack ang madalas itugtog sa TikTok para sa'yo?", options: ["Pantropiko", "Salamin, Salamin", "Gento", "Raining in Manila"], ans: "B" },
+            { q: "Ano ang ibig sabihin ng viral internet phrase na 'Delulu' na hango sa salitang Ingles na madalas gamitin ng kabataan ngayon?", options: ["Seryoso sa buhay", "Delusional o mapangpantasya", "Mabilis magalit", "Laging tulog"], ans: "B" }
+        ],
+        "Brain Twisters": [
+            { q: "May pitong kapatid na lalaki sa isang pamilya, at ang bawat isa sa kanila ay may isang kapatid na babae. Ilan silang magkakapatid sa kabuuan?", options: ["7", "8", "14", "9"], ans: "B" },
+            { q: "Ano ang mayroon sa dulo ng isang 'Bahaghari' na makikita mo rin sa simula ng salitang 'Ilog'?", options: ["Ginto", "Ulan", "Letrang 'I'", "Tubig"], ans: "C" },
+            { q: "Kung ang isang eroplano ay bumagsak nang xakto sa border ng Pilipinas at Malaysia, saan ililibing ang mga nakaligtas?", options: ["Sa Pilipinas", "Sa Malaysia", "Sa neutral waters", "Bawal ilibing ang mga buhay/nakaligtas"], ans: "D" },
+            { q: "Ano ang lumalaki kapag binabawasan mo, pero lumiliit kapag dinadagdagan mo?", options: ["Butas", "Utang", "Kandila", "Lobo"], ans: "A" },
+            { q: "Anong buwan sa isang taon ang mayroon dalawampu't walong (28) araw?", options: ["Pebrero lang", "Pebrero tuwing leap year lang", "Lahat ng buwan ay may 28 araw", "Walang buwan"], ans: "C" }
+        ],
+        "Nature & Earth": [
+            { q: "Anong bulkang hugis 'perfect cone' sa Albay ang kilala sa kasaysayan dahil sa pinakamalubhang pagsabog nito noong 1814?", options: ["Bulkang Taal", "Bulkang Kanlaon", "Bulkang Mayon", "Bulkang Pinatubo"], ans: "C" },
+            { q: "Ano ang tawag sa pinakamalaking structural dynamic ocean current system sa mundo na matatagpuan sa Pacific Ocean?", options: ["Kuroshio Current", "The Great Barrier", "Mariana Drift", "Ring of Fire"], ans: "A" },
+            { q: "Anong pambihira at endangered na ibon sa bansa ang itinuturing na isa sa pinakamalaking agila sa buong mundo pagdating sa wing surface?", options: ["Haribon / Philippine Eagle", "Kalaw", "Tarictic Hornbill", "Lawin"], ans: "A" },
+            { q: "Anong gas sa Earth's stratosphere ang humaharang sa mapanganib na ultraviolet (UV) rays mula sa sikat ng araw?", options: ["Carbon Monoxide", "Ozone", "Methane", "Argon"], ans: "B" },
+            { q: "Ano ang tawag sa natural phenomenon kung saan nagliliwanag ang dagat sa gabi dahil sa mga microscopic organisms na nagre-react sa alon?", options: ["Bioluminescence", "Photosynthesis", "Aurora Marine", "Phosphorescence"], ans: "A" }
+        ],
+        "Wika at Katutubo": [
+            { q: "Ano ang kahulugan ng sawikain o idyomang 'Mababaw ang luha' ng isang tao?", options: ["Madaling umiyak", "Maraming pera", "Mabilis makalimot", "Laging masaya"], ans: "A" },
+            { q: "Ano ang katutubong lumang sistema ng pagsulat ng mga Pilipino bago pa man dumating ang mga dayuhang Kastila?", options: ["Alibata", "Baybayin", "Sanskrit", "Hieroglyphics"], ans: "B" },
+            { q: "Ano ang ibig sabihin ng malalim na salitang Tagalog na 'Anluwage' sa lumang hanapbuhay?", options: ["Guro", "Magsasaka", "Karpintero", "Mangingisda"], ans: "C" },
+            { q: "Aling epiko ng mga Maranao ang itinuturing na isa sa pinakamahabang pasalitang panitikan sa buong kasaysayan ng Pilipinas?", options: ["Biag ni Lam-ang", "Darangen", "Ibalon", "Hinilawod"], ans: "B" },
+            { q: "Ano ang tinutukoy ng salitang 'Salimpapaw' sa modernong transportasyon?", options: ["Barko", "Tren", "Eroplano", "Submarine"], ans: "C" }
+        ],
+        "Sinaunang Pinas": [
+            { q: "Ano ang tawag sa gintong sash o belt artifact na nadiskubre sa Surigao na nagpapatunay ng marangyang buhay ng sinaunang Pilipino?", options: ["Surigao Treasure Gold Halos", "Agusan Image", "Butuan Golden Sash", "Surigao Golden Sash"], ans: "D" },
+            { q: "Sino ang kilalang pinuno ng Mactan na nagtanggol sa kanyang teritoryo laban sa pananakop ni Ferdinand Magellan noong 1521?", options: ["Rajah Humabon", "Lapulapu", "Rajah Sulayman", "Datu Puti"], ans: "B" },
+            { q: "Ano ang tawag sa sasakyang pandagat ng mga sinaunang Pilipino na ginagamit sa kalakalan at digmaan, na naging hango rin sa salitang 'Barangay'?", options: ["Galleon", "Balangay", "Caracoa", "Junk"], ans: "B" },
+            { q: "Anong uri ng panlipunang uri (social class) ang tinutukoy ng salitang 'Maharlika' sa sinaunang Luzon?", options: ["Mga Alipin", "Mga Malayang Tao at Mandirigma", "Mga Datu at Lakan", "Mga Dayuhang Mangangalakal"], ans: "B" },
+            { q: "Sino ang pinuno ng Bohol na nakipag-sandugo (Blood Compact) sa Kastilang si Miguel Lopez de Legazpi noong 1565?", options: ["Rajah Tupas", "Datu Sikatuna", "Rajah Lakandula", "Datu Bankaw"], ans: "B" }
+        ],
+        "Bagong Tipan (NT)": [
+            { q: "Sino ang sumulat ng Aklat ng mga Gawa (Acts of the Apostles) na isa ring manggagamot o doktor sa kasulatan?", options: ["Mateo", "Juan", "Lucas", "Marcos"], ans: "C" },
+            { q: "Sa anong lungsod unang tinawag na mga 'Kristiyano' ang mga tagasunod ng Panginoong Hesus?", options: ["Jerusalem", "Antioquia (Antioch)", "Damasco", "Roma"], ans: "B" },
+            { q: "Sino ang Apostol na kilala sa pag-aalinlangan (doubting) hangga't hindi niya nakikita at nahahawakan ang sugat ng muling nabuhay na Hesus?", options: ["Pedro", "Tomas", "Andres", "Santiago"], ans: "B" },
+            { q: "Ilang sulat o epistola sa Bagong Tipan ang kabuuang kinikilala na isinulat ni Apostol Pablo?", options: ["7 sulat", "12 sulat", "13 o 14 na sulat", "21 sulat"], ans: "C" },
+            { q: "Sino ang pinakaunang Kristiyanong martir na pinagbabato hanggang sa mamatay dahil sa kanyang matapang na pangangaral sa harap ng Sanedrin?", options: ["Esteban (Stephen)", "Felipe", "Santiago", "Timoteo"], ans: "A" }
+        ],
+        "Retro Gaming": [
+            { q: "Anong sikat na 8-bit console ng Nintendo ang gumamit ng mga hugis parihabang cartridges na kailangang 'i-hipan' kapag ayaw gumana?", options: ["Sega Mega Drive", "Family Computer / NES", "Game Boy", "Atari 2600"], ans: "B" },
+            { q: "Sino ang lumikha at nagdisenyo ng maalamat na arcade game na 'Pac-Man' para sa kumpanyang Namco noong 1980?", options: ["Shigeru Miyamoto", "Toru Iwatani", "Hideo Kojima", "Hironobu Sakaguchi"], ans: "B" },
+            { q: "Anong kulay ng sumbrero ang isinusuot ni Luigi, ang kilalang kapatid ng pambansang karakter na si Mario?", options: ["Pula", "Asul", "Berde", "Dilaw"], ans: "C" },
+            { q: "Sa classic game na Tetris, ilang bloke (squares) ang bumubuo sa bawat isang gumagalaw na hugis o piraso?", options: ["3 bloke", "4 na bloke", "5 bloke", "6 na bloke"], ans: "B" },
+            { q: "Anong console ng Sony ang itinuturing na pinakamabentang video game console sa buong kasaysayan ng mundo?", options: ["PlayStation 1", "PlayStation 2", "PlayStation 4", "PlayStation 5"], ans: "B" }
+        ],
+        "Social Media Trends": [
+            { q: "Anong video platform ang nagpasikat ng format na maikli at vertical na content na kalaunan ay kinopya ng YouTube (Shorts) at Instagram (Reels)?", options: ["Vine", "TikTok", "Snapchat", "Tumblr"], ans: "B" },
+            { q: "Ano ang tawag sa metric control panel setup na nagpapakita kung ilang tao ang nakakita, nag-click, at nag-share ng iyong profile posts?", options: ["Insights / Analytics", "Feed Engine", "Algorithmic Filter", "Engagement Hub"], ans: "A" },
+            { q: "Anong simbolo ang ginagamit sa social media para mag-grupo ng mga trending topics upang madaling mahanap ng mga user?", options: ["@ (At sign)", "# (Hashtag)", "$ (Dollar sign)", "& (Ampersand)"], ans: "B" },
+            { q: "Anong sikat na digital avatar asset trend ang gumamit ng blockchain technology para magbenta ng mga mamahaling larawan ng unggoy online?", options: ["NFT (Non-Fungible Token)", "Metaverse Skin", "AI Render Art", "Bitmoji Pro"], ans: "A" },
+            { q: "Kapag ang isang video ay mabilis na kumalat sa buong mundo sa loob ng ilang oras, ano ang unibersal na tawag dito?", options: ["Trending Stream", "Viral", "Boosted Content", "Syndicated Post"], ans: "B" }
+        ],
+        "Pinoy Superheroes": [
+            { q: "Sino ang maalamat na Pilipinong nobelista at taga-guhit na lumikha sa tanyag na karakter na si Darna at Captain Barbell?", options: ["Mars Ravelo", "Carlo J. Caparas", "Francisco Coching", "Larry Alcala"], ans: "A" },
+            { q: "Anong mahiwagang bagay ang kailangang lunukin ni Narda upang siya ay magbago ng anyo at maging si Darna?", options: ["Isang Gintong Singsing", "Isang Puting Bato", "Isang Mahiwagang Kristal", "Isang Pulang Hiyas"], ans: "B" },
+            { q: "Sino ang superhero na nakakakuha ng pambihirang lakas tuwing hahawakan niya ang isang mahiwagang sandata na bigay ng mga engkanto?", options: ["Lastikman", "Captain Barbell", "Panday", "Pedro Penduko"], ans: "C" },
+            { q: "Ano ang natatanging kapangyarihan ng superhero na si Lastikman na nilikha rin para sa komiks?", options: ["Nakakalipad sa kalawakan", "Nababago ang anyo at kayang mag-stretch ng katawan parang goma", "Nakakapag-basa ng isip", "Nakahihinga sa ilalim ng dagat"], ans: "B" },
+            { q: "Sino ang mortal na kaaway at tanyag na kontrabida ni Darna na may buhok na binubuo ng mga buhay na ahas?", options: ["Valentina", "Medusa", "Amaya", "Branka"], ans: "A" }
+        ],
+        "K-Drama & Hallyu": [
+            { q: "Anong sikat na 2019 K-Drama ang umiikot sa kwento ng isang South Korean heiress na aksidenteng napunta sa North Korea dahil sa paragliding?", options: ["Goblin", "Crash Landing on You", "Descendants of the Sun", "Itaewon Class"], ans: "B" },
+            { q: "Sino ang sikat na South Korean actor na bumida sa mga tanyag na serye gaya ng 'Legend of the Blue Sea' at 'Boys Over Flowers'?", options: ["Lee Min-ho", "Hyun Bin", "Song Joong-ki", "Park Seo-joon"], ans: "A" },
+            { q: "Aling K-Pop group ang gumawa ng kasaysayan bilang kauna-unahang grupo na nanguna sa Billboard Hot 100 chart gamit ang kantang 'Dynamite'?", options: ["EXO", "BIGBANG", "BTS", "BLACKPINK"], ans: "C" },
+            { q: "Ano ang tawag sa tradisyunal na kasuotan ng mga Koreano na madalas makita sa mga makasaysayang serye o Historical K-Dramas?", options: ["Kimono", "Hanbok", "Cheongsam", "Baro't Saya"], ans: "B" },
+            { q: "Anong Netflix thriller K-Drama ang naging isang pandaigdigang phenomenon noong 2021 kung saan ang mga karakter ay naglalaro ng pambatang laro para sa pera?", options: ["All of Us Are Dead", "Squid Game", "Sweet Home", "The Glory"], ans: "B" }
+        ],
+        "Tech & Gadgets": [
+            { q: "Ano ang buong kahulugan ng acronym na 'AI' sa makabagong computer software development?", options: ["Advanced Internet", "Artificial Intelligence", "Automated Interface", "Algorithmic Index"], ans: "B" },
+            { q: "Anong component o piyesa ang tinaguriang 'Brain of the Computer' na siyang nagpoproseso ng lahat ng basic commands?", options: ["RAM", "Hard Drive", "CPU (Central Processing Unit)", "Graphics Card"], ans: "C" },
+            { q: "Anong unibersal na connection standard ang ginagamit na ngayon sa halos lahat ng bagong smartphones at laptops para sa charging at data transfer?", options: ["Micro-USB", "Lightning", "USB Type-C", "Mini-USB"], ans: "C" },
+            { q: "Ano ang tawag sa tech system architecture na nagpapahintulot sa iyo na mag-imbak ng files sa internet sa halip na sa physical hard drive mo?", options: ["Cloud Computing / Storage", "Local Server", "Virtual Box", "Cyber Drive"], ans: "A" },
+            { q: "Ilang bits (binary digits) ang bumubuo sa eksaktong isang (1) Byte ng data storage system?", options: ["4 bits", "8 bits", "16 bits", "32 bits"], ans: "B" }
+        ],
+        "Tusok-Tusok Master": [
+            { q: "Ano ang tawag sa inihaw na dugo ng baboy na hiniwa nang hugis square o rectangle?", options: ["Betamax", "Adidas", "Helmet", "Walkman"], ans: "A" },
+            { q: "Ang paboritong street food na 'Kwek-Kwek' ay gawa sa anong uri ng itlog?", options: ["Itlog ng Manok", "Itlog ng Pugo", "Itlog ng Itik", "Itlog ng Pabo"], ans: "B" },
+            { q: "Ano ang ibig sabihin ng 'Adidas' sa mundo ng street food sa Pilipinas?", options: ["Ulo ng manok", "Bituka ng baboy", "Paa ng manok", "Balat ng baboy"], ans: "C" },
+            { q: "Anong klaseng sawsawan ang matamis, kulay brown, at paboritong ipares sa Fishball?", options: ["Spicy Suka", "Manong's Sauce", "Toyo-Mansi", "Mang Tomas"], ans: "B" },
+            { q: "Ano ang tawag sa inihaw na bituka ng manok na paboritong pulutan o meryenda?", options: ["Isaw", "Tenga", "Proben", "Kikiam"], ans: "A" }
+        ],
+        "Batang 90s Kalye": [
+            { q: "Sa larong Tumbang Preso, ano ang pangunahing bagay na binabantayan ng 'Taya'?", options: ["Tsinelas", "Barya", "Lata", "Bola"], ans: "C" },
+            { q: "Anong sikat na laro ang nangangailangan mong tumalon-talon sa mga iginuhit na kahon sa lupa gamit ang isang paa?", options: ["Luksong Baka", "Piko", "Patintero", "Chinese Garter"], ans: "B" },
+            { q: "Sa larong Tagu-taguan, ano ang unang sinisigaw ng taya bago siya magsimulang maghanap?", options: ["'Ready or not, here I come!'", "'Tagu-taguan, maliwanag ang buwan...'", "'Sino ang hindi nakatago, patay!'", "'Isa, dalawa, tumatlo, aswang!'"], ans: "B" },
+            { q: "Ilang maliliit na butas (holes) meron ang isang standard na sungka board, hindi kasama ang dalawang malaking 'bahay' sa dulo?", options: ["10", "12", "14", "16"], ans: "C" },
+            { q: "Sa larong Patintero, ano ang tawag sa taya na may karapatang tumakbo sa pinakagitnang linya pahaba?", options: ["Haring taya", "Patotot", "Tukador", "Bantay-Sarado"], ans: "B" }
+        ],
+        "OPM Hits": [
+            { q: "Anong tanyag na OPM band ang kumanta ng mga sikat na awiting 'Ang Huling El Bimbo', 'Ligaya', at 'Magasin'?", options: ["Parokya ni Edgar", "Rivermaya", "Eraserheads", "Sponge Cola"], ans: "C" },
+            { q: "Sino ang kinikilalang 'Asia's Songbird' at isa sa mga pinakamagaling na mang-aawit sa kasaysayan ng Pilipinas?", options: ["Lea Salonga", "Regine Velasquez", "Sarah Geronimo", "Lani Misalucha"], ans: "B" },
+            { q: "Anong sikat na P-Pop boy group ang nagpasikat ng mga hit songs na 'Gento', 'MAPA', at 'Bazinga'?", options: ["BGYO", "Alamat", "SB19", "1st.One"], ans: "C" },
+            { q: "Sino ang naging orihinal na bokalista (vocalist) ng bandang Rivermaya bago siya naging matagumpay na solo artist?", options: ["Rico Blanco", "Bamboo Mañalac", "Ely Buendia", "Chito Miranda"], ans: "B" },
+            { q: "Kaninong sikat na boses nagmula ang paboritong Christmas anthem ng Pilipinas na 'Christmas In Our Hearts'?", options: ["Gary Valenciano", "Martin Nievera", "Ariel Rivera", "Jose Mari Chan"], ans: "D" }
+        ]
+    };
+
+    const divineInterventions = [
+        { label: "Bonus Question 1", q: "LUMANG TIPAN RIDDLE: Isa akong siyudad na madalas mabanggit sa kasulatan kung saan ang ibig sabihin ng aking pangalan ay 'House of Bread'. Isang makasaysayang kapanganakan ang naganap dito. Anong siyudad ako?", ans: "BETLEHEM (Bethlehem)" },
+        { label: "Bonus Question 2", q: "CHURCH HISTORY TRIVIA: Noong taong 1521, si Martin Luther ay ipinatawag sa harap ng isang opisyal na asembleya ng Holy Roman Empire para panagutan ang kanyang mga isinulat na reporma. Ano ang tawag sa makasaysayang pulong na ito?", ans: "DIET OF WORMS" }
+    ];
+
+    const audienceIntermissions = [
+        { q: "AUDIENCE RIDDLE: Mayroon akong mga susi (keys) ngunit wala akong mga pinto. Mayroon akong space pero walang kwarto. Pwede mo akong pasukin (enter) pero bawal kang lumabas. Ano ako?", ans: "KEYBOARD ng Computer" },
+        { q: "AUDIENCE RIDDLE: Lumalakad ako kahit walang paa. Umiiyak ako kahit walang mata. Tumatakbo ako kapag mainit ang panahon. Ano ako?", ans: "YELO (Ice)" },
+        { q: "AUDIENCE RIDDLE: Hindi hayop, hindi tao, pero may mga dahon (leaves). Binubuksan pero hindi pinto. Ano ako?", ans: "AKLAT (Book)" }
+    ];
+
+    const finalBossData = {
+        q: "🔥 FINAL BOSS: Isulat sa papel! Ano ang pangalan ng unang aklat sa Bibliya na HINDI hango sa pangalan ng tao, kundi sa isang makasaysayang kaganapan ng paglikas?",
+        ans: "EXODUS (Exodo)"
+    };
+
+    let teams = [], categoryWinners = {}, activeCategory = "", activeQuestionIndex = 0, activeQuestionAnswered = false, selectedRandomCategory = "", currentActiveBonus = null;
+    let categoryStartScores = [];
+    let activeModifiers = { silent: false, speed: false };
+    let blitzTimeLeft = 7, blitzInterval = null;
+    let gameDurationSeconds = 0, gameClockInterval = null;
+    let nextCategoryBlitz = false;
+
+    function initGameClock() {
+        if(gameClockInterval) return;
+        show('game-session-clock-wrapper');
+        gameClockInterval = setInterval(() => {
+            gameDurationSeconds++;
+            const mins = Math.floor(gameDurationSeconds / 60).toString().padStart(2, '0');
+            const secs = (gameDurationSeconds % 60).toString().padStart(2, '0');
+            el('game-session-clock-wrapper').textContent = `⏱️ Run Time: ${mins}:${secs}`;
+        }, 1000);
+    }
+
+    function toggleModifier(type) {
+        playClick();
+        activeModifiers[type] = !activeModifiers[type];
+        const targetEl = el(`mod-${type}`);
+        if(type === 'silent') {
+            targetEl.className = `mod-pill ${activeModifiers.silent ? 'active-silent' : ''}`;
+            targetEl.textContent = `🤫 Silent Disciple: ${activeModifiers.silent ? 'ON' : 'OFF'}`;
+        } else {
+            targetEl.className = `mod-pill ${activeModifiers.speed ? 'active-speed' : ''}`;
+            targetEl.textContent = `⚡ 7s Speed Blitz: ${activeModifiers.speed ? 'ON' : 'OFF'}`;
+        }
+    }
+
+    function generateTeamInputs() {
+        const count = parseInt(el('team-count').value);
+        if (!count || count < 2) return alert("Maglagay po ng 2 o higit pang bilang ng teams.");
+        const container = el('team-names-container');
+        container.innerHTML = '<p style="font-weight:700; margin-bottom:10px; color:var(--primary);">Pangalanan ang bawat Ministry / Team:</p>';
+        for(let i = 1; i <= count; i++) {
+            container.innerHTML += `<div class="input-group"><input type="text" class="gm-input" id="team-name-${i}" placeholder="Halimbawa: Team ${i}"></div>`;
+        }
+        show('start-game-btn');
+    }
+
+    function startGame() {
+        initAudio();
+        const count = parseInt(el('team-count').value);
+        teams = [];
+        for(let i = 1; i <= count; i++) {
+            const val = el(`team-name-${i}`).value.trim();
+            teams.push({ name: val ? val : `Team ${i}`, score: 0 });
+        }
+        el('main-subtitle').textContent = "Live Game Session: Game Master Panel";
+        hide('setup-view'); show('top-nav-view');
+        initGameClock(); buildMasterSheet(); switchTab('board');
+    }
+
+    function switchTab(target) {
+        document.querySelectorAll('.btn-nav').forEach(b => b.classList.remove('active'));
+        hide('master-sheet-view'); hide('categories-view'); hide('questions-view');
+        el('categories-grid').classList.remove('randomizing-active');
+        document.querySelectorAll('.category-card').forEach(c => c.classList.remove('random-highlight'));
+
+        if (target === 'sheet') {
+            document.body.classList.remove('intense-blitz-active');
+            el('nav-sheet').classList.add('active');
+            show('master-sheet-view');
+        } else {
+            el('nav-board').classList.add('active');
+            if (activeCategory) {
+                show('questions-view');
+                if (activeModifiers.speed && !activeQuestionAnswered) document.body.classList.add('intense-blitz-active');
+            } else {
+                rollBlitzChance();
+                renderCategories();
+                show('categories-view');
+            }
+        }
+    }
+
+    function buildMasterSheet() {
+        const sel = el('ms-cat-select');
+        sel.innerHTML = '<option value="">-- Pumili ng Category --</option>';
+        for (const cat in gameData) {
+            sel.innerHTML += `<option value="${cat}">${cat}</option>`;
+        }
+        sel.innerHTML += `<option value="BONUS">🔥 Divine Interventions & Audience Riddles</option>`;
+    }
+
+    function updateMasterSheet() {
+        const cat = el('ms-cat-select').value;
+        const content = el('ms-cat-content');
+        content.innerHTML = "";
+        if(!cat) return;
+
+        if(cat === "BONUS") {
+            let diHtml = `<div class="ms-category" style="border-left-color: #8e44ad;"><h3 style="color: #8e44ad; margin-top:0;">🔥 Divine Interventions</h3>`;
+            divineInterventions.forEach(item => { diHtml += `<div><strong>${item.label}:</strong> ${item.q}</div><div class="ms-ans" style="color:#8e44ad;">Ans: ${item.ans}</div><br>`; });
+            diHtml += `</div><div class="ms-category" style="border-left-color: #009688;"><h3 style="color: #009688; margin-top:0;">👥 Audience Riddles</h3>`;
+            audienceIntermissions.forEach(item => { diHtml += `<div><strong>Riddle:</strong> ${item.q}</div><div class="ms-ans" style="color:#009688;">Ans: ${item.ans}</div><br>`; });
+            diHtml += '</div>';
+            content.innerHTML = diHtml;
+        } else {
+            let html = `<div class="ms-category"><h3 style="margin-top:0;">${cat}</h3>`;
+            gameData[cat].forEach((item, idx) => { html += `<div><strong>${idx + 1}. ${item.q}</strong></div><div class="ms-ans">Answer Key: Option ${item.ans}</div><br>`; });
+            html += '</div>';
+            content.innerHTML = html;
+        }
+    }
+
+    function rollBlitzChance() {
+        if(!nextCategoryBlitz) {
+            if(Math.random() < 0.20) {
+                nextCategoryBlitz = true; show('blitz-warning-banner');
+            } else { hide('blitz-warning-banner'); }
+        }
+    }
+
+    function toggleCategoryState(catName) {
+        playClick();
+        if(categoryWinners[catName]) {
+            delete categoryWinners[catName];
+        } else {
+            categoryWinners[catName] = "Manually Closed";
+        }
+        renderCategories();
+    }
+
+    function renderCategories() {
+        const grid = el('categories-grid'); grid.innerHTML = '';
+        for (const cat in gameData) {
+            const card = document.createElement('div');
+            card.id = `card-${cat.replace(/[^a-zA-Z0-9]/g, "")}`;
+            const completed = categoryWinners[cat];
+            card.className = `category-card ${completed ? 'completed' : ''}`;
+
+            const descText = gameMetadata[cat] || "";
+            let innerHTML = `<h3 class="category-title">${cat}</h3><span class="category-desc">${descText}</span>`;
+
+            if(completed) {
+                innerHTML += `<div><span class="winner-badge">Winner: ${categoryWinners[cat]}</span>`;
+                innerHTML += `<br><button class="btn-pu" style="margin-top: 10px;" onclick="event.stopPropagation(); toggleCategoryState('${cat}')">🔄 Re-open / Reset</button></div>`;
+            } else {
+                innerHTML += `<div><button class="btn-pu" style="margin-top: 10px; opacity: 0.5;" onclick="event.stopPropagation(); toggleCategoryState('${cat}')">🔒 Close Category</button></div>`;
+            }
+
+            card.innerHTML = innerHTML;
+
+            card.onclick = () => {
+                if(!completed) { playClick(); openCategory(cat); }
+            };
+
+            grid.appendChild(card);
+        }
+    }
+
+    function startRandomizer() {
+        const available = Object.keys(gameData).filter(c => !categoryWinners[c]);
+        if (!available.length) return alert("Lahat ng categories ay tapos o sarado na!");
+
+        el('btn-randomize').disabled = true;
+        el('categories-grid').scrollIntoView({ behavior: 'smooth', block: 'center' });
+        const grid = el('categories-grid'); grid.classList.add('randomizing-active');
+
+        let spins = 30, currentIdx = Math.floor(Math.random() * available.length), delay = 40;
+        function spin() {
+            document.querySelectorAll('.category-card').forEach(c => c.classList.remove('random-highlight'));
+            currentIdx = Math.floor(Math.random() * available.length);
+            const cat = available[currentIdx];
+            const card = el(`card-${cat.replace(/[^a-zA-Z0-9]/g, "")}`);
+            if(card) card.classList.add('random-highlight');
+            playBloop(currentIdx);
+
+            if (spins > 0) {
+                spins--; delay += 10; setTimeout(spin, delay);
+            } else {
+                el('btn-randomize').disabled = false; selectedRandomCategory = available[currentIdx];
+                setTimeout(() => { grid.classList.remove('randomizing-active'); triggerAnnouncementPopup(selectedRandomCategory); }, 850);
+            }
+        }
+        spin();
+    }
+
+    function triggerAnnouncementPopup(catName) {
+        el('main-popup-card').className = "popup-card";
+        el('popup-dynamic-injection-zone').innerHTML = "";
+        el('popup-badge-label').textContent = "Target Chosen"; el('popup-badge-label').style.background = "var(--primary)";
+        el('popup-cat-title').textContent = catName;
+        el('popup-cat-desc').style.display = "block"; el('popup-cat-desc').textContent = gameMetadata[catName] || "";
+
+        show('popup-standard-actions'); hide('popup-intervention-actions'); hide('popup-scoreboard-actions'); hide('popup-finalboss-actions');
+        show('announcement-popup');
+    }
+
+    function triggerDivineIntervention() {
+        playClick(); el('main-popup-card').className = "popup-card intervention-mode";
+        el('popup-badge-label').textContent = "⚡ DIVINE INTERVENTION"; el('popup-cat-title').textContent = "Pumili ng Inyong Destiny";
+        el('popup-cat-desc').style.display = "none";
+        el('popup-dynamic-injection-zone').innerHTML = `
+      <div id="di-initial-choice-view">
+        <p style="color: #dcdde1; font-weight: 500; font-size: 0.95rem; margin-bottom: 20px;">Pumili ng isa nang bulag. High risk, high reward ito!</p>
+        <div class="di-choice-grid">
+          <button class="btn-di-choice" onclick="selectDivineBonus(0)">🎁 Choice A</button>
+          <button class="btn-di-choice" onclick="selectDivineBonus(1)">🎁 Choice B</button>
+        </div>
+      </div>
+      <div class="intervention-scroll-box hidden" id="divine-live-scroll-box"></div>
+    `;
+        hide('popup-standard-actions'); hide('popup-scoreboard-actions'); hide('popup-finalboss-actions'); show('popup-intervention-actions');
+        el('btn-reveal-ans').style.display = "none";
+        show('announcement-popup');
+    }
+
+    function selectDivineBonus(index) {
+        playClick();
+        const bonus = divineInterventions[index];
+        hide('di-initial-choice-view');
+
+        const scrollBox = el('divine-live-scroll-box');
+        scrollBox.innerHTML = `
+      <span class="popup-badge" style="background:#be2edd; color:white; font-size: 0.75rem;">🔥 MAY HALONG 10 POINTS ANG TANONG NA ITO</span>
+      <div class="intervention-question-text">${bonus.q}</div>
+      <div id='di-reveal-box' class='answer-panel hidden' style='margin: 15px auto 0 auto; background: #fff176; color: #1e272e;'>
+        Tamang Sagot: ${bonus.ans}
+      </div>
+    `;
+        scrollBox.classList.remove('hidden');
+
+        el('btn-reveal-ans').style.display = "block";
+        el('btn-reveal-ans').onclick = function() {
+            playDing(); show('di-reveal-box'); el('btn-reveal-ans').style.display = "none";
+
+            let teamHtml = `<div style="margin-top:20px; text-align:left; border-top: 1px solid rgba(0,0,0,0.1); padding-top:15px;">
+        <p style="color:#b33939; margin-bottom:10px; font-weight:bold; font-size:0.9rem; text-transform:uppercase;">I-click ang nakasagot para sa +10 Points:</p>
+        <div style="display:flex; flex-wrap:wrap; gap:10px;">`;
+            teams.forEach((t, i) => {
+                teamHtml += `<button class="btn-secondary btn-di-team" style="border:none; background:#8e44ad; color:white; font-size:0.9rem;" onclick="awardBonusPoints(${i}, 10, this)">🏆 ${t.name}</button>`;
+            });
+            teamHtml += `</div></div>`;
+            el('di-reveal-box').innerHTML += teamHtml;
+        };
+    }
+
+    function triggerAudienceIntermission() {
+        playClick(); el('main-popup-card').className = "popup-card audience-mode";
+        el('popup-badge-label').textContent = "👥 AUDIENCE BREAK"; el('popup-badge-label').style.background = "#009688";
+        el('popup-cat-title').textContent = "Tanong Para sa Crowd!"; el('popup-cat-desc').style.display = "none";
+
+        el('popup-dynamic-injection-zone').innerHTML = `
+      <div id="aud-initial-choice-view">
+        <p style="color: var(--text-muted); font-weight: 500; margin-bottom: 20px;">Pumili ng isa sa mga riddles:</p>
+        <div class="di-choice-grid" style="grid-template-columns: 1fr 1fr 1fr;">
+          <button class="btn-di-choice" style="background:#009688; border-color:#00796b; padding:10px;" onclick="selectAudienceRiddle(0)">❓ Riddle 1</button>
+          <button class="btn-di-choice" style="background:#009688; border-color:#00796b; padding:10px;" onclick="selectAudienceRiddle(1)">❓ Riddle 2</button>
+          <button class="btn-di-choice" style="background:#009688; border-color:#00796b; padding:10px;" onclick="selectAudienceRiddle(2)">❓ Riddle 3</button>
+        </div>
+      </div>
+      <div class="audience-scroll-box hidden" id="aud-live-scroll-box"></div>
+    `;
+
+        hide('popup-standard-actions'); hide('popup-scoreboard-actions'); hide('popup-finalboss-actions'); show('popup-intervention-actions');
+        el('btn-reveal-ans').style.display = "none";
+        show('announcement-popup');
+    }
+
+    function selectAudienceRiddle(index) {
+        playClick();
+        const riddle = audienceIntermissions[index];
+        hide('aud-initial-choice-view');
+
+        const scrollBox = el('aud-live-scroll-box');
+        scrollBox.innerHTML = `
+      <span class="popup-badge" style="background:#009688; color:white; font-size:0.75rem;">Kahit sino sa nakaupo pwedeng sumagot (+10 Pts)</span>
+      <div class="audience-question-text">${riddle.q}</div>
+      <div id='aud-reveal-box' class='answer-panel hidden' style='margin: 15px auto 0 auto; background: #fff176; color: #1e272e;'>
+        Tamang Sagot: ${riddle.ans}
+      </div>
+    `;
+        scrollBox.classList.remove('hidden');
+
+        el('btn-reveal-ans').style.display = "block";
+        el('btn-reveal-ans').onclick = function() {
+            playDing(); show('aud-reveal-box'); el('btn-reveal-ans').style.display = "none";
+
+            let teamHtml = `<div style="margin-top:20px; text-align:left; border-top: 1px solid rgba(0,0,0,0.1); padding-top:15px;">
+        <p style="color:#009688; margin-bottom:10px; font-weight:bold; font-size:0.9rem; text-transform:uppercase;">I-click ang team ng nakasagot para sa +10 Points:</p>
+        <div style="display:flex; flex-wrap:wrap; gap:10px;">`;
+            teams.forEach((t, i) => {
+                teamHtml += `<button class="btn-secondary btn-di-team" style="border:none; background:#009688; color:white; font-size:0.9rem;" onclick="awardBonusPoints(${i}, 10, this)">🏆 ${t.name}</button>`;
+            });
+            teamHtml += `</div></div>`;
+            el('aud-reveal-box').innerHTML += teamHtml;
+        };
+    }
+
+    function awardBonusPoints(idx, pts, btnObj) {
+        teams[idx].score += pts;
+        document.querySelectorAll('.btn-di-team').forEach(b => { b.disabled = true; b.style.opacity = '0.4'; });
+        btnObj.style.opacity = '1'; btnObj.textContent = `✔️ Awarded to ${teams[idx].name}`; btnObj.style.background = "#27ae60";
+        alert(`🎉 ${pts} Points successfully added to ${teams[idx].name}! New Score: ${teams[idx].score}`);
+    }
+
+    function triggerFinalBoss() {
+        el('main-popup-card').className = "popup-card";
+        el('popup-badge-label').textContent = "💀 ALL OR NOTHING"; el('popup-badge-label').style.background = "#c0392b";
+        el('popup-cat-title').textContent = "Final Wager Round"; el('popup-cat-desc').style.display = "block";
+        el('popup-cat-desc').textContent = "GM, ilagay ang taya ng bawat team bago ipakita ang tanong.";
+
+        let wagerHtml = `<div class="wager-grid">`;
+        teams.forEach((t, idx) => { wagerHtml += `<div class="wager-row"><label>${t.name} (Pts: ${t.score})</label><input type="number" id="wager-input-${idx}" min="0" max="${t.score}" placeholder="Taya..."></div>`; });
+        wagerHtml += `</div>`;
+        el('popup-dynamic-injection-zone').innerHTML = wagerHtml;
+
+        hide('popup-standard-actions'); hide('popup-intervention-actions'); hide('popup-scoreboard-actions'); show('popup-finalboss-actions');
+        show('announcement-popup');
+    }
+
+    function startFinalBossQuestion() {
+        playSiren(); el('popup-cat-desc').style.display = "none";
+        let html = `<div class="audience-scroll-box" style="border-color:#c0392b;">
+      <div class="audience-question-text" style="color:#c0392b;">${finalBossData.q}</div>
+      <div id='fb-reveal-box' class='answer-panel hidden'>Answer: ${finalBossData.ans}</div>
+    </div><div style="text-align:left; margin-top:20px;">`;
+
+        teams.forEach((t, idx) => {
+            let w = parseInt(el(`wager-input-${idx}`).value) || 0;
+            html += `<div style="display:flex; justify-content:space-between; margin-bottom:10px; align-items:center; background:#f1f5f9; padding:12px; border-radius:8px; color:var(--text-main);">
+        <strong style="font-size:1.05rem;">${t.name} <br><span style="color:var(--text-muted); font-size:0.85rem;">(Taya: ${w})</span></strong>
+        <div style="display:flex; gap:8px;">
+          <button class="btn-pu btn-fb-${idx}" style="background:#22c55e; color:white; border:none; padding:8px 15px; font-size:0.9rem;" onclick="applyWager(${idx}, ${w}, 1)">🏆 Win (+${w})</button>
+          <button class="btn-pu btn-fb-${idx}" style="background:#ef4444; color:white; border:none; padding:8px 15px; font-size:0.9rem;" onclick="applyWager(${idx}, ${w}, -1)">❌ Lose (-${w})</button>
+        </div>
+      </div>`;
+        });
+        html += `</div>`;
+        el('popup-dynamic-injection-zone').innerHTML = html;
+
+        hide('popup-finalboss-actions'); show('popup-intervention-actions');
+
+        el('btn-reveal-ans').style.display = "block";
+        el('btn-reveal-ans').onclick = function() {
+            playDing(); show('fb-reveal-box'); el('btn-reveal-ans').style.display = "none";
+        };
+    }
+
+    function applyWager(idx, amt, mult) {
+        teams[idx].score += (amt * mult);
+        if(mult > 0) playClick();
+
+        document.querySelectorAll(`.btn-fb-${idx}`).forEach(b => { b.disabled = true; b.style.opacity = "0.4"; });
+        alert(`Taya na ${amt} ay ${mult > 0 ? 'NAIDAGDAG sa' : 'BINAWAS sa'} ${teams[idx].name}! New Score: ${teams[idx].score}`);
+    }
+
+    function closeInterventionPopup() { playClick(); hide('announcement-popup'); el('popup-dynamic-injection-zone').innerHTML = ""; document.querySelectorAll('.category-card').forEach(c => c.classList.remove('random-highlight')); }
+
+    function openScoreboardPopup() {
+        playClick(); el('main-popup-card').className = "popup-card";
+        el('popup-badge-label').textContent = "Standings Board"; el('popup-badge-label').style.background = "var(--success)";
+        el('popup-cat-title').textContent = "🏆 Kasalukuyang Ranking"; el('popup-cat-desc').style.display = "none";
+
+        renderScoreboardPopupHTML();
+
+        hide('popup-standard-actions'); hide('popup-intervention-actions'); hide('popup-finalboss-actions'); show('popup-scoreboard-actions'); show('announcement-popup');
+    }
+
+    function renderScoreboardPopupHTML() {
+        let scoreRowsHtml = `<table class="scoreboard-table"><thead><tr><th>Ministry / Team</th><th>Score</th><th>Edit</th></tr></thead><tbody>`;
+        let mappedTeams = teams.map((t, idx) => ({...t, origIdx: idx}));
+        mappedTeams.sort((a,b) => b.score - a.score).forEach(t => {
+            scoreRowsHtml += `<tr>
+        <td><strong>${t.name}</strong></td>
+        <td class="score-number">${t.score}</td>
+        <td>
+          <button class="sb-edit-btn" onclick="adjPopScore(${t.origIdx}, 1)">+</button>
+          <button class="sb-edit-btn" onclick="adjPopScore(${t.origIdx}, -1)">-</button>
+        </td>
+      </tr>`;
+        });
+        scoreRowsHtml += `</tbody></table>`;
+        el('popup-dynamic-injection-zone').innerHTML = scoreRowsHtml;
+    }
+
+    function adjPopScore(idx, amt) {
+        teams[idx].score = Math.max(0, teams[idx].score + amt);
+        renderScoreboardPopupHTML();
+    }
+
+    function closeScoreboardPopup() { playClick(); hide('announcement-popup'); el('popup-dynamic-injection-zone').innerHTML = ""; }
+    function triggerReSpin() { playClick(); hide('announcement-popup'); startRandomizer(); }
+    function closeAnnouncementPopup(launchCategory) {
+        playClick(); hide('announcement-popup');
+        if(launchCategory && selectedRandomCategory) openCategory(selectedRandomCategory);
+        else document.querySelectorAll('.category-card').forEach(c => c.classList.remove('random-highlight'));
+        selectedRandomCategory = "";
+    }
+
+    function openCategory(catName) {
+        activeCategory = catName;
+        activeQuestionIndex = 0;
+        activeQuestionAnswered = false;
+        categoryStartScores = teams.map(t => t.score);
+
+        if(nextCategoryBlitz) {
+            activeModifiers.speed = true;
+            el('mod-speed').className = `mod-pill active-speed`;
+            el('mod-speed').textContent = `⚡ 7s Speed Blitz: ON`;
+            nextCategoryBlitz = false;
+            hide('blitz-warning-banner');
+        }
+
+        switchTab('board');
+        renderQuestionSlide();
+        renderEmbeddedScoringDashboard();
+    }
+
+    function initBlitzTimer() {
+        clearBlitzInterval();
+        if (!activeModifiers.speed) { hide('blitz-timer-container'); document.body.classList.remove('intense-blitz-active'); return; }
+        document.body.classList.add('intense-blitz-active'); blitzTimeLeft = 7; show('blitz-timer-container'); updateBlitzTimerUI();
+
+        blitzInterval = setInterval(() => {
+            blitzTimeLeft--; updateBlitzTimerUI();
+            if (blitzTimeLeft <= 0) {
+                clearBlitzInterval(); playBuzzer();
+                if (activeQuestionIndex < gameData[activeCategory].length - 1) {
+                    alert("⏳ TIME'S UP! Walang nakasagot sa loob ng 7 segundo. Lipat na sa susunod na slide!"); changeQuestionSlide(1);
+                } else {
+                    alert("⏳ TIME'S UP sa huling tanong! I-click ang green button para matapos ang category."); activeQuestionAnswered = true; renderQuestionSlide();
+                }
+            }
+        }, 1000);
+    }
+
+    function clearBlitzInterval() { if (blitzInterval) { clearInterval(blitzInterval); blitzInterval = null; } document.body.classList.remove('intense-blitz-active'); }
+    function updateBlitzTimerUI() { el('blitz-live-bar').style.width = `${(blitzTimeLeft / 7) * 100}%`; el('blitz-live-text').textContent = `REMAINING BLITZ TIME: ${blitzTimeLeft}s`; }
+
+    function renderQuestionSlide() {
+        const items = gameData[activeCategory], total = items.length, item = items[activeQuestionIndex];
+        el('question-progress-label').textContent = `Tanong ${activeQuestionIndex + 1} mula sa ${total}`;
+
+        const noticeContainer = el('live-modifier-notice-container'); noticeContainer.innerHTML = "";
+        if(activeModifiers.silent) noticeContainer.innerHTML += `<div class="live-modifier-notice">🤫 SILENT DISCIPLE RULE ACTIVE: Bawal bumulong o magsalita! Sign language at sulat-kamay lang ang pwede!</div>`;
+        if(activeModifiers.speed) noticeContainer.innerHTML += `<div class="live-modifier-notice" style="background:#fec2c2; color:#991b1b; border-left-color:#ef4444;">⚡ SPEED BLITZ RUNNING: Mabilisang pagsagot, 7 segundo lamang!</div>`;
+
+        let optionsHtml = '<div class="options-grid">';
+        const letters = ['A', 'B', 'C', 'D'];
+        item.options.forEach((opt, i) => { optionsHtml += `<div class="option-item" id="opt-btn-${letters[i]}" onclick="evaluateChoice('${letters[i]}')"><strong>${letters[i]})</strong> ${opt}</div>`; });
+        optionsHtml += '</div>';
+
+        el('question-body-area').innerHTML = `<div class="q-text">${item.q}</div> ${optionsHtml}<div id="slide-answer-box" class="answer-panel ${activeQuestionAnswered ? '' : 'hidden'}">Verified System Answer: Option ${item.ans}</div>`;
+        el('btn-prev-slide').disabled = (activeQuestionIndex === 0); el('btn-next-slide').disabled = (activeQuestionIndex === total - 1);
+
+        const actionBtn = el('btn-action-slide');
+        actionBtn.textContent = activeQuestionAnswered ? "Itago ang Sagot" : "Ipakita ang Sagot";
+        actionBtn.style.background = activeQuestionAnswered ? "var(--text-muted)" : "var(--primary)";
+        el('btn-finalize-cat').style.display = (activeQuestionIndex === total - 1 && activeQuestionAnswered) ? "block" : "none";
+
+        if (!activeQuestionAnswered) initBlitzTimer();
+        else { hide('blitz-timer-container'); document.body.classList.remove('intense-blitz-active'); }
+    }
+
+    function evaluateChoice(letter) {
+        const correctLetter = gameData[activeCategory][activeQuestionIndex].ans;
+        const targetElement = el(`opt-btn-${letter}`);
+
+        if (letter === correctLetter) {
+            clearBlitzInterval(); hide('blitz-timer-container'); targetElement.classList.add('correct'); activeQuestionAnswered = true; show('slide-answer-box');
+            if(activeQuestionIndex === gameData[activeCategory].length - 1) el('btn-finalize-cat').style.display = "block";
+        } else {
+            targetElement.classList.add('wrong');
+            playBuzzer();
+        }
+    }
+
+    function handleSlideAction() { activeQuestionAnswered = !activeQuestionAnswered; if(activeQuestionAnswered) { clearBlitzInterval(); hide('blitz-timer-container'); } renderQuestionSlide(); }
+    function changeQuestionSlide(dir) { clearBlitzInterval(); activeQuestionIndex += dir; activeQuestionAnswered = false; renderQuestionSlide(); }
+
+    function renderEmbeddedScoringDashboard() {
+        const container = el('embedded-scoring-rows'); container.innerHTML = '';
+        teams.forEach((team, idx) => {
+            container.innerHTML += `
+        <div class="scoring-row">
+          <div class="team-info">
+            <span class="team-identity">${team.name}</span>
+          </div>
+          <div class="actions-cluster">
+            <button class="btn-adjustment btn-dec" onclick="adjustScore(${idx}, -1)">-</button>
+            <span class="current-val" id="embed-s-${idx}">${team.score}</span>
+            <button class="btn-adjustment btn-inc" onclick="adjustScore(${idx}, 1)">+</button>
+          </div>
+        </div>`;
+        });
+    }
+
+    function adjustScore(idx, amt) {
+        teams[idx].score = Math.max(0, teams[idx].score + amt);
+        el(`embed-s-${idx}`).textContent = teams[idx].score;
+    }
+
+    function finalizeCategorySession() {
+        clearBlitzInterval();
+
+        let diffs = teams.map((t, i) => t.score - categoryStartScores[i]);
+        let maxDiff = Math.max(...diffs);
+        let winners = [];
+        if (maxDiff > 0) {
+            teams.forEach((t, i) => { if(diffs[i] === maxDiff) winners.push(t.name); });
+            categoryWinners[activeCategory] = winners.join(", ");
+        } else {
+            categoryWinners[activeCategory] = "No Winner";
+        }
+
+        activeCategory = "";
+        backToCategoriesFromQuestions();
+    }
+
+    function backToCategoriesFromQuestions() { clearBlitzInterval(); activeCategory = ""; hide('questions-view'); switchTab('board'); }
+</script>
+</body>
+</html>
